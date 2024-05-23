@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
-using System.Data;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PortalArcomix.Pages
 {
@@ -25,14 +29,26 @@ namespace PortalArcomix.Pages
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             string connectionString = _configuration.GetConnectionString("PortalArcomixDB")!;
             bool isAuthenticated = AuthenticateUser(Email, Password, connectionString);
 
             if (isAuthenticated)
             {
-                // Simulate a successful login and redirect to the home page
+                // Create claims
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, Email)
+                };
+
+                // Create claims identity
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                // Sign in
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                // Redirect to the Index page
                 return RedirectToPage("/Index");
             }
 
@@ -57,5 +73,6 @@ namespace PortalArcomix.Pages
         }
     }
 }
+
 
 
