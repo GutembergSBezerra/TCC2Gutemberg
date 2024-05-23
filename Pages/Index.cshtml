@@ -5,7 +5,65 @@
     Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: #1878BB; margin-top: 20px; margin-bottom: 60px;">Bem Vindo ao Portal do Arco-mix!</h1>
+            </div>
+
+            <!-- First line of Buttons Homepage -->
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a asp-page="/Privacy" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_Cadastro_de_fornecedores.png" alt="Cadastro de Fornecedores" />
+                            <h5>DADOS FORNECEDOR</h5>
+                            <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <div class="frame" onclick="window.location.href = '@Url.Page("/Privacy")'">
+                        <img width="80px" src="~/imgs/ic_cadastro_de_produtos.png" alt="Gestão de Produtos" />
+                        <h5>GESTÃO DE PRODUTOS</h5>
+                        <p class="text-justify">Cadastrar, Editar, Substituir</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <form method="post">
+                        <button type="submit" class="btn btn-link" style="text-decoration: none; color: inherit; display: block; border: none; padding: 0;">
+                            <div class="frame">
+                                <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
+                                <h5>GESTÃO DE FORNECEDORES</h5>
+                                <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <a asp-page="/NovoUsuario" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_NovoCadastro.png" />
+                            <h5>NOVO CADASTRO</h5>
+                            <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <a asp-page="/CadastroMeusDados" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_MeusDados.png" />
+                            <h5>MEUS DADOS</h5>
+                            <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
