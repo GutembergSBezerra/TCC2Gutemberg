@@ -25,10 +25,13 @@ namespace PortalArcomix.Pages
 
         public void OnGet()
         {
+            ViewData["HideNavbarAndFooter"] = true;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["HideNavbarAndFooter"] = true;
+
             string? connectionString = _configuration.GetConnectionString("PortalArcomixDB");
 
             if (string.IsNullOrEmpty(connectionString))

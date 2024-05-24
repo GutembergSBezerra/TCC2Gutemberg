@@ -22,51 +22,57 @@
     @RenderSection("head", required: false)
 </head>
 <body>
-    <div id="bemvindo">
-        <nav class="navbar navbar-expand-lg navbar-light" id="mainNavbar">
-            <a class="navbar-brand" asp-page="/Index">
-                <img src="~/imgs/Arcomix_colorido_120_100.png" />
-                <img src="~/imgs/Arco_vita_colorido_120_100.png" />
-                Inicio
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-lg-0">
-                    <!-- Add navigation links here -->
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-page="/Login">Login</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-page="/Account/Logout" style="display:none;">Sair</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-page="/Account/Profile" style="display:none;">Hello User</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-
-    <!-- Main content PlaceHolder -->
-    <div>
-        @RenderBody()
-    </div>
-    <!-- Main content PlaceHolder -->
-
-    <footer id="mainFooter" class="container-fluid text-center" style="background: #545454;">
-        <div id="footer1" class="row">
-            <!-- Optional content for footer1 -->
+    @if (!(ViewData["HideNavbarAndFooter"] as bool? ?? false))
+    {
+        <div id="bemvindo">
+            <nav class="navbar navbar-expand-lg navbar-light" id="mainNavbar">
+                <a class="navbar-brand" asp-page="/Index">
+                    <img src="~/imgs/Arcomix_colorido_120_100.png" />
+                    <img src="~/imgs/Arco_vita_colorido_120_100.png" />
+                    Inicio
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-lg-0">
+                        <!-- Add navigation links here -->
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-page="/Login">Login</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-page="/Account/Logout" style="display:none;">Sair</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-page="/Account/Profile" style="display:none;">Hello User</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <div id="footer2" class="row">
-            <div class="col-12">
-                <p style="color: whitesmoke">&copy; Todos os Direitos Reservados <a class="footerlinks" href="#" target="_blank">HGS Tech</a></p>
-            </div>
+        }
+
+        <!-- Main content PlaceHolder -->
+        <div>
+            @RenderBody()
         </div>
-    </footer>
+        <!-- Main content PlaceHolder -->
+
+    @if (!(ViewData["HideNavbarAndFooter"] as bool? ?? false))
+    {
+        <footer id="mainFooter" class="container-fluid text-center" style="background: #545454;">
+            <div id="footer1" class="row">
+                <!-- Optional content for footer1 -->
+            </div>
+            <div id="footer2" class="row">
+                <div class="col-12">
+                    <p style="color: whitesmoke">&copy; Todos os Direitos Reservados <a class="footerlinks" href="#" target="_blank">HGS Tech</a></p>
+                </div>
+            </div>
+        </footer>
+    }
 
     <!-- Bootstrap JS -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
