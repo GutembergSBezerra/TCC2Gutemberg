@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,8 @@ builder.Services.AddAuthentication("Cookies")
     .AddCookie(options =>
     {
         options.LoginPath = "/Login";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+        options.SlidingExpiration = true;
     });
 
 var app = builder.Build();
@@ -38,5 +43,12 @@ app.Use(async (context, next) =>
 
 app.MapRazorPages();
 
-app.Run();
+// Logout route
+app.MapPost("/Logout", async context =>
+{
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    context.Response.Redirect("/Login");
+});
 
+
+app.Run();

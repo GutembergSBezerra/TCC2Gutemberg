@@ -43,7 +43,9 @@
                             <a class="nav-link" asp-page="/Login">Login</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" asp-page="/Logout">Sair</a>
+                            <form method="post" action="/Logout">
+                                <button type="submit" class="nav-link btn btn-link">Sair</button>
+                            </form>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link" asp-page="/Account/Profile" style="display:none;">Hello User</a>
