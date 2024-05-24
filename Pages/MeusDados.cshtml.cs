@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +12,7 @@ namespace PortalArcomix.Pages
     public class MeusDadosModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private const string IncorrectPasswordAttemptsSessionKey = "IncorrectPasswordAttempts";
 
         public MeusDadosModel(IConfiguration configuration)
         {
@@ -82,10 +85,21 @@ namespace PortalArcomix.Pages
                         await updateCmd.ExecuteNonQueryAsync();
 
                         SuccessMessage = "Senha Alterada com sucesso";
+                        HttpContext.Session.Remove(IncorrectPasswordAttemptsSessionKey); // Reset the attempt count on success
                     }
                     else
                     {
-                        ErrorMessage = "Senha Atual Incorreta";
+                        int incorrectAttempts = HttpContext.Session.GetInt32(IncorrectPasswordAttemptsSessionKey) ?? 0;
+                        incorrectAttempts++;
+                        HttpContext.Session.SetInt32(IncorrectPasswordAttemptsSessionKey, incorrectAttempts);
+
+                        if (incorrectAttempts >= 3)
+                        {
+                            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                            return RedirectToPage("/Login");
+                        }
+
+                        ErrorMessage = $"Senha Atual Incorreta. Tentativas restantes: {3 - incorrectAttempts}";
                     }
                 }
             }
@@ -107,3 +121,4 @@ namespace PortalArcomix.Pages
         }
     }
 }
+

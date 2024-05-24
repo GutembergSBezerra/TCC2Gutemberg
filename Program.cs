@@ -13,6 +13,8 @@ builder.Services.AddAuthentication("Cookies")
         options.SlidingExpiration = true;
     });
 
+builder.Services.AddSession(); // Add this line
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +29,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession(); // Add this line
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -49,6 +52,5 @@ app.MapPost("/Logout", async context =>
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     context.Response.Redirect("/Login");
 });
-
 
 app.Run();
