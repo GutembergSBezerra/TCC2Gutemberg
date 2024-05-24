@@ -28,12 +28,17 @@ namespace PortalArcomix.Pages
         public string ErrorMessage { get; set; } = string.Empty;
         public string SuccessMessage { get; set; } = string.Empty;
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
+            // Check if the user is authenticated
+            if (User?.Identity?.IsAuthenticated != true)
             {
-                Response.Redirect("/Login");
+                // Redirect to the Login page if the user is not authenticated
+                return RedirectToPage("/Login");
             }
+
+            // If authenticated, continue with the normal page processing
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
