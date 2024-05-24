@@ -1,0 +1,84 @@
+﻿@page
+@model MeusDadosModel
+@{
+    ViewData["Title"] = "Meus Dados";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row align-items-center" style="margin-top: 50px;">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body framelogin">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h3 style="color: #1878BB;">Meus Dados</h3>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col text-center">
+                            <hr>
+                            <span class="badge rounded-pill text-bg-primary">Alterar Senha</span>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Senha Atual</label>
+                                <div class="form-group mb-3">
+                                    <input type="password" class="form-control" id="IDoldPassword" name="OldPassword" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Nova Senha</label>
+                                <div class="form-group mb-3">
+                                    <input type="password" class="form-control" id="IDnewPassword" name="NewPassword" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Repetir Nova Senha</label>
+                                <div class="form-group mb-3">
+                                    <input type="password" class="form-control" id="IDconfirmPassword" name="ConfirmPassword" required />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-grid gap-2 mt-4">
+                                    <button class="btn btn-primary" type="submit">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function htmlDecode(input) {
+            var e = document.createElement('div');
+            e.innerHTML = input;
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <text>
+                alert(htmlDecode('@Html.Raw(Model.ErrorMessage)'));
+            </text>
+        }
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <text>
+                alert(htmlDecode('@Html.Raw(Model.SuccessMessage)'));
+            </text>
+        }
+    </script>
+}
