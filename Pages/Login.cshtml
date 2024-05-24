@@ -58,3 +58,14 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <script>
+            alert('@Model.ErrorMessage');
+        </script>
+    }
+}
+
+

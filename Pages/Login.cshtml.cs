@@ -25,6 +25,8 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public string Password { get; set; } = string.Empty;
 
+        public string ErrorMessage { get; set; } = string.Empty;
+
         public void OnGet()
         {
         }
@@ -52,8 +54,8 @@ namespace PortalArcomix.Pages
                 return RedirectToPage("/Index");
             }
 
-            // If login fails, show an error message
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            // If login fails, set the error message
+            ErrorMessage = "Email ou Senha Incorretos";
             return Page();
         }
 
@@ -73,6 +75,7 @@ namespace PortalArcomix.Pages
         }
     }
 }
+
 
 
 

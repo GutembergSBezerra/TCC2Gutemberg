@@ -1,10 +1,71 @@
 ﻿@page
 @model RecuperacaoSenhaModel
 @{
-    ViewData["Title"] = "RecuperacaoSenha";
+    ViewData["Title"] = "Recuperação de Senha";
     Layout = "_Layout";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container vh-100">
+    <div class="row align-items-center h-100">
+        <!-- Card Login -->
+        <div class="col-md-4 mx-auto">
+            <div class="card" style="margin-top: 100px;">
+                <div class="card-body framelogin">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h5 style="color: #1878BB;">Esqueceu sua senha?</h5>
+                        </div>
+                    </div>
 
-<p>PAGINA DE RECUPERAÇÃO DE SENHA</p>
+                    <div class="row">
+                        <div class="col">
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <br />
+                            <span style="color: #718288; font-weight: bold;">Enviaremos um e-mail com instruções de como redefinir sua senha</span>
+                            <br />
+                            <br />
+                            <form method="post">
+                                <label>Usuário</label>
+
+                                <div class="form-group mb-3">
+                                    <input type="email" class="form-control" id="IDemail" name="Email" placeholder="Email" required />
+                                </div>
+                                <br />
+
+                                <div class="d-grid gap-2 mb-3">
+                                    <button class="btn btn-primary" type="submit">Enviar</button>
+                                </div>
+
+                                <div class="d-grid gap-2 mb-3">
+                                    <a href="/Login" class="btn btn-link">Cancelar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function htmlDecode(input) {
+            var e = document.createElement('div');
+            e.innerHTML = input;
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <text>
+                alert(htmlDecode('@Model.ErrorMessage'));
+            </text>
+        }
+    </script>
+}

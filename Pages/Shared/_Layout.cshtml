@@ -75,6 +75,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <!-- Custom JS -->
     <script src="~/js/site.js"></script>
+
+    <script>
+        function htmlDecode(input) {
+            var e = document.createElement('div');
+            e.innerHTML = input;
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
-<img src="~/imgs/arcomixfavicon.ico" />
