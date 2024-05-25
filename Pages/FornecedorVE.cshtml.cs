@@ -18,6 +18,7 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public FornecedorData Fornecedor { get; set; }
+        public bool IsSubmissionSuccessful { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -46,8 +47,11 @@ namespace PortalArcomix.Pages
             // Refresh the data
             Fornecedor = await GetFornecedorData(cnpj);
 
+            IsSubmissionSuccessful = true; // Set the flag to true after successful update
+
             return Page();
         }
+
 
         private async Task<FornecedorData> GetFornecedorData(string cnpj)
         {
@@ -168,5 +172,7 @@ namespace PortalArcomix.Pages
         public string TipoFornecedor { get; set; }
         public string FornecedorAlimentos { get; set; }
         public string CompradorPrincipal { get; set; }
+
+
     }
 }

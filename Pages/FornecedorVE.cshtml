@@ -248,3 +248,16 @@ else
 {
     <p>No data found for the provided CNPJ.</p>
 }
+
+<div data-success="@Model.IsSubmissionSuccessful" style="display:none;" id="successIndicator"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var isSuccessful = document.getElementById('successIndicator').getAttribute('data-success');
+            if (isSuccessful === 'True') { // Check against 'True' because Razor will render boolean True/False with capital T/F
+                alert("Cadastro atualizado com sucesso");
+            }
+        });
+    </script>
+}
