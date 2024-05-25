@@ -235,6 +235,70 @@
                     </div>
                 </div>
 
+                <!-- Dados Bancarios Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" id="DadosBancariosCadastro">
+                            <div class="col">
+                                <h4 style="color: #1878BB; margin-bottom: 20px;">Dados Bancarios</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="idBanco">Banco:</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" name="Banco">
+                                        <option selected>@Model.DadosBancarios.Banco</option>
+                                        <option value="Caixa Economica">Caixa Economica</option>
+                                        <option value="Banco do Brasil">Banco do Brasil</option>
+                                        <option value="Itau">Itau</option>
+                                        <option value="Bradesco">Bradesco</option>
+                                        <option value="Santander">Santander</option>
+                                        <option value="Banco Inter">Banco Inter</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idAgencia">Agencia</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.DadosBancarios.Agencia" name="Agencia" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idTipoConta">Tipo de Conta</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" name="TipoConta">
+                                        <option selected>@Model.DadosBancarios.TipoConta</option>
+                                        <option value="Pessoa Juridica">Pessoa Juridica</option>
+                                        <option value="Pessoa Fisica">Pessoa Fisica</option>
+                                        <option value="Poupança">Poupança</option>
+                                        <option value="Conta Investimento">Conta Investimento</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idNConta">Nº Conta:</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.DadosBancarios.NumeroConta" name="NumeroConta" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="idCNPJConta">CNPJ Titular Conta:</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.DadosBancarios.CNPJContaTitular" name="CNPJContaTitular" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col">
                         <button type="submit" class="btn btn-primary">Salvar Alterações</button>

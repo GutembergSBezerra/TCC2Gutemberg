@@ -18,6 +18,8 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public FornecedorData Fornecedor { get; set; }
+        [BindProperty]
+        public DadosBancariosData DadosBancarios { get; set; }
         public bool IsSubmissionSuccessful { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -29,6 +31,7 @@ namespace PortalArcomix.Pages
             }
 
             Fornecedor = await GetFornecedorData(cnpj);
+            DadosBancarios = await GetDadosBancariosData(cnpj);
             return Page();
         }
 
@@ -41,17 +44,19 @@ namespace PortalArcomix.Pages
             }
 
             Fornecedor.CNPJ = cnpj; // Ensure the CNPJ remains the same
+            DadosBancarios.CNPJ = cnpj;
 
             await UpdateFornecedorData(Fornecedor);
+            await UpdateDadosBancariosData(DadosBancarios);
 
             // Refresh the data
             Fornecedor = await GetFornecedorData(cnpj);
+            DadosBancarios = await GetDadosBancariosData(cnpj);
 
             IsSubmissionSuccessful = true; // Set the flag to true after successful update
 
             return Page();
         }
-
 
         private async Task<FornecedorData> GetFornecedorData(string cnpj)
         {
@@ -91,6 +96,38 @@ namespace PortalArcomix.Pages
                                 TipoFornecedor = reader["TipoFornecedor"].ToString(),
                                 FornecedorAlimentos = reader["FornecedorAlimentos"].ToString(),
                                 CompradorPrincipal = reader["CompradorPrincipal"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private async Task<DadosBancariosData> GetDadosBancariosData(string cnpj)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    SELECT Banco, Agencia, TipoConta, NumeroConta, CNPJContaTitular
+                    FROM Tbl_DadosBancariosFornecedor
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", cnpj);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new DadosBancariosData
+                            {
+                                Banco = reader["Banco"].ToString(),
+                                Agencia = reader["Agencia"].ToString(),
+                                TipoConta = reader["TipoConta"].ToString(),
+                                NumeroConta = reader["NumeroConta"].ToString(),
+                                CNPJContaTitular = reader["CNPJContaTitular"].ToString()
                             };
                         }
                     }
@@ -150,6 +187,34 @@ namespace PortalArcomix.Pages
                 }
             }
         }
+
+        private async Task UpdateDadosBancariosData(DadosBancariosData dadosBancarios)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    UPDATE Tbl_DadosBancariosFornecedor
+                    SET Banco = @Banco,
+                        Agencia = @Agencia,
+                        TipoConta = @TipoConta,
+                        NumeroConta = @NumeroConta,
+                        CNPJContaTitular = @CNPJContaTitular
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", dadosBancarios.CNPJ);
+                    cmd.Parameters.AddWithValue("@Banco", dadosBancarios.Banco);
+                    cmd.Parameters.AddWithValue("@Agencia", dadosBancarios.Agencia);
+                    cmd.Parameters.AddWithValue("@TipoConta", dadosBancarios.TipoConta);
+                    cmd.Parameters.AddWithValue("@NumeroConta", dadosBancarios.NumeroConta);
+                    cmd.Parameters.AddWithValue("@CNPJContaTitular", dadosBancarios.CNPJContaTitular);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 
     public class FornecedorData
@@ -172,7 +237,15 @@ namespace PortalArcomix.Pages
         public string TipoFornecedor { get; set; }
         public string FornecedorAlimentos { get; set; }
         public string CompradorPrincipal { get; set; }
+    }
 
-
+    public class DadosBancariosData
+    {
+        public string CNPJ { get; set; }
+        public string Banco { get; set; }
+        public string Agencia { get; set; }
+        public string TipoConta { get; set; }
+        public string NumeroConta { get; set; }
+        public string CNPJContaTitular { get; set; }
     }
 }
