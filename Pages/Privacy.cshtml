@@ -1,10 +1,19 @@
 ﻿@page
-@model PrivacyModel
+@model PortalArcomix.Pages.PrivacyModel
+@using System.Security.Claims
+
 @{
     ViewData["Title"] = "Privacy Policy";
     Layout = "_Layout";
+    var user = User;
+    var email = user.Identity.Name;
+    var role = user.FindFirst(claim => claim.Type == ClaimTypes.Role)?.Value;
+    var cnpj = user.FindFirst(claim => claim.Type == "CNPJ")?.Value;
+
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>FornecedorVE</h2>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p>Email: @email</p>
+<p>Role: @role</p>
+<p>CNPJ: @cnpj</p>

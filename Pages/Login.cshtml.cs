@@ -37,7 +37,7 @@ namespace PortalArcomix.Pages
             ViewData["HideNavbarAndFooter"] = true;
 
             string connectionString = _configuration.GetConnectionString("PortalArcomixDB")!;
-            var (isAuthenticated, role) = AuthenticateUser(Email, Password, connectionString);
+            var (isAuthenticated, role, cnpj) = AuthenticateUser(Email, Password, connectionString);
 
             if (isAuthenticated && !string.IsNullOrEmpty(role))
             {
@@ -47,6 +47,12 @@ namespace PortalArcomix.Pages
                     new Claim(ClaimTypes.Name, Email),
                     new Claim(ClaimTypes.Role, role)
                 };
+
+                // Add CNPJ claim if it exists
+                if (!string.IsNullOrEmpty(cnpj))
+                {
+                    claims.Add(new Claim("CNPJ", cnpj));
+                }
 
                 // Create claims identity
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -63,12 +69,12 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-        private (bool, string) AuthenticateUser(string email, string password, string connectionString)
+        private (bool, string, string) AuthenticateUser(string email, string password, string connectionString)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                string query = "SELECT Senha, TipoUsuario FROM Tbl_Usuario WHERE Email=@Email";
+                string query = "SELECT Senha, TipoUsuario, CNPJ FROM Tbl_Usuario WHERE Email=@Email";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@Email", email);
 
@@ -78,19 +84,21 @@ namespace PortalArcomix.Pages
                     {
                         var storedPassword = reader["Senha"].ToString();
                         var role = reader["TipoUsuario"].ToString();
+                        var cnpj = reader["CNPJ"]?.ToString();
 
                         // Check if the password matches and role is not null or empty
                         if (password == storedPassword && !string.IsNullOrEmpty(role))
                         {
-                            return (true, role);
+                            return (true, role, cnpj);
                         }
                     }
                 }
-                return (false, string.Empty); // Ensure a non-null string is returned
+                return (false, string.Empty, string.Empty); // Ensure non-null strings are returned
             }
         }
     }
 }
+
 
 
 
