@@ -1,8 +1,250 @@
 ﻿@page
 @model PortalArcomix.Pages.FornecedorVEModel
-@using System.Security.Claims
-
 @{
     ViewData["Title"] = "FornecedorVE";
     Layout = "_Layout";
+}
+
+<h2>FornecedorVE</h2>
+
+@if (Model.Fornecedor != null)
+{
+    <form method="post">
+        <div class="card">
+            <div class="card-body">
+                <div class="row" id="DadosFornecedorCadastro">
+                    <div class="col">
+                        <h4 style="color: #1878BB; margin-bottom: 20px;">Dados do Fornecedor</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>CNPJ:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.CNPJ" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label>Razão Social:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.RazaoSocial" name="RazaoSocial" />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label>Fantasia:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.Fantasia" name="Fantasia" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>IE:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.IE" name="IE" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label>CNAE:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.CNAE" name="CNAE" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>CEP:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.CEP" name="CEP" />
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <label>Logradouro:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.Logradouro" name="Logradouro" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label>Nº:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.NumeroEndereco" name="NumeroEndereco" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Bairro:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.Bairro" name="Bairro" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Complemento:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.Complemento" name="Complemento" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="idUF">UF:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="UF">
+                                <option selected>@Model.Fornecedor.UF</option>
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MS">MS</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label>Cidade:</label>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" value="@Model.Fornecedor.Cidade" name="Cidade" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row" id="DadosFiscaisCadastro">
+                    <div class="col">
+                        <h4 style="color: #1878BB; margin-bottom: 20px;">Dados Fiscais</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="idMicroEmpresa">Micro Empresa:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="MicroEmpresa">
+                                <option selected>@Model.Fornecedor.MicroEmpresa</option>
+                                <option value="SIM">SIM</option>
+                                <option value="NÃO">NÃO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="idContribuiICMS">Contribui ICMS:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="ContribuiICMS">
+                                <option selected>@Model.Fornecedor.ContribuiICMS</option>
+                                <option value="SIM">SIM</option>
+                                <option value="NÃO">NÃO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="idContribuiIPI">Contribui IPI:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="ContribuiIPI">
+                                <option selected>@Model.Fornecedor.ContribuiIPI</option>
+                                <option value="SIM">SIM</option>
+                                <option value="NÃO">NÃO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="idFornTipo">Tipo de Fornecedor:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="TipoFornecedor">
+                                <option selected>@Model.Fornecedor.TipoFornecedor</option>
+                                <option value="Distribuidor">Distribuidor</option>
+                                <option value="Industria">Industria</option>
+                                <option value="Transportadora">Transportadora</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="idFornAlimentos">Fornecedor de Alimentos:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="FornecedorAlimentos">
+                                <option selected>@Model.Fornecedor.FornecedorAlimentos</option>
+                                <option value="Alimentos Industrializados">Alimentos Industrializados</option>
+                                <option value="Alimentos Não Industrializados">Alimentos Não Industrializados</option>
+                                <option value="Não Fornece Alimentos">Não Fornece Alimentos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="idCompPrincipal">Comprador Arco-Mix Principal:</label>
+                        <div class="form-group mb-3">
+                            <select class="form-control" name="CompradorPrincipal">
+                                <option selected>@Model.Fornecedor.CompradorPrincipal</option>
+                                <option value="Ana Sales">Ana Sales</option>
+                                <option value="Bruno Santos">Bruno Santos</option>
+                                <option value="Carlos Costa">Carlos Costa</option>
+                                <option value="DoCarmo">DoCarmo</option>
+                                <option value="Hugo Souza">Hugo Souza</option>
+                                <option value="João Vieira">João Vieira</option>
+                                <option value="Juliana Maria">Juliana Maria</option>
+                                <option value="Juliana Medeiros">Juliana Medeiros</option>
+                                <option value="Melque">Melque</option>
+                                <option value="Raphael Mendes">Raphael Mendes</option>
+                                <option value="Gilberto">Gilberto</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <p>No data found for the provided CNPJ.</p>
 }
