@@ -16,6 +16,7 @@ namespace PortalArcomix.Pages
             _configuration = configuration;
         }
 
+        [BindProperty]
         public FornecedorData Fornecedor { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -27,6 +28,24 @@ namespace PortalArcomix.Pages
             }
 
             Fornecedor = await GetFornecedorData(cnpj);
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var cnpj = User.FindFirst("CNPJ")?.Value;
+            if (string.IsNullOrEmpty(cnpj))
+            {
+                return RedirectToPage("/Login");
+            }
+
+            Fornecedor.CNPJ = cnpj; // Ensure the CNPJ remains the same
+
+            await UpdateFornecedorData(Fornecedor);
+
+            // Refresh the data
+            Fornecedor = await GetFornecedorData(cnpj);
+
             return Page();
         }
 
@@ -75,6 +94,58 @@ namespace PortalArcomix.Pages
             }
             return null;
         }
+
+        private async Task UpdateFornecedorData(FornecedorData fornecedor)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    UPDATE Tbl_Fornecedor
+                    SET RazaoSocial = @RazaoSocial,
+                        Fantasia = @Fantasia,
+                        IE = @IE,
+                        CNAE = @CNAE,
+                        CEP = @CEP,
+                        Logradouro = @Logradouro,
+                        NumeroEndereco = @NumeroEndereco,
+                        Bairro = @Bairro,
+                        Complemento = @Complemento,
+                        UF = @UF,
+                        Cidade = @Cidade,
+                        MicroEmpresa = @MicroEmpresa,
+                        ContribuiICMS = @ContribuiICMS,
+                        ContribuiIPI = @ContribuiIPI,
+                        TipoFornecedor = @TipoFornecedor,
+                        FornecedorAlimentos = @FornecedorAlimentos,
+                        CompradorPrincipal = @CompradorPrincipal
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", fornecedor.CNPJ);
+                    cmd.Parameters.AddWithValue("@RazaoSocial", fornecedor.RazaoSocial);
+                    cmd.Parameters.AddWithValue("@Fantasia", fornecedor.Fantasia);
+                    cmd.Parameters.AddWithValue("@IE", fornecedor.IE);
+                    cmd.Parameters.AddWithValue("@CNAE", fornecedor.CNAE);
+                    cmd.Parameters.AddWithValue("@CEP", fornecedor.CEP);
+                    cmd.Parameters.AddWithValue("@Logradouro", fornecedor.Logradouro);
+                    cmd.Parameters.AddWithValue("@NumeroEndereco", fornecedor.NumeroEndereco);
+                    cmd.Parameters.AddWithValue("@Bairro", fornecedor.Bairro);
+                    cmd.Parameters.AddWithValue("@Complemento", fornecedor.Complemento);
+                    cmd.Parameters.AddWithValue("@UF", fornecedor.UF);
+                    cmd.Parameters.AddWithValue("@Cidade", fornecedor.Cidade);
+                    cmd.Parameters.AddWithValue("@MicroEmpresa", fornecedor.MicroEmpresa);
+                    cmd.Parameters.AddWithValue("@ContribuiICMS", fornecedor.ContribuiICMS);
+                    cmd.Parameters.AddWithValue("@ContribuiIPI", fornecedor.ContribuiIPI);
+                    cmd.Parameters.AddWithValue("@TipoFornecedor", fornecedor.TipoFornecedor);
+                    cmd.Parameters.AddWithValue("@FornecedorAlimentos", fornecedor.FornecedorAlimentos);
+                    cmd.Parameters.AddWithValue("@CompradorPrincipal", fornecedor.CompradorPrincipal);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 
     public class FornecedorData
@@ -99,5 +170,3 @@ namespace PortalArcomix.Pages
         public string CompradorPrincipal { get; set; }
     }
 }
-
-
