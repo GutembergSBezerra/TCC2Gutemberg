@@ -299,6 +299,119 @@
                     </div>
                 </div>
 
+                <!-- Contatos Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" id="ContatosCadastro">
+                            <div class="col">
+                                <h4 style="color: #1878BB; margin-bottom: 20px;">Contatos</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="idContatoVendedor">Vendedor:</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.ContatoVendedor" name="Contatos.ContatoVendedor" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idDDD">DDD</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.DDDVendedor" name="Contatos.DDDVendedor" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="idTelefone">Telefone</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.TelefoneVendedor" name="Contatos.TelefoneVendedor" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idEmail">Email</label>
+                                <div class="form-group mb-3">
+                                    <input type="email" class="form-control" value="@Model.Contatos.EmailVendedor" name="Contatos.EmailVendedor" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="idContatoGerente">Gerente:</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.ContatoGerente" name="Contatos.ContatoGerente" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idDDDGerente">DDD</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.DDDGerente" name="Contatos.DDDGerente" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="idTelefoneGerente">Telefone</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.TelefoneGerente" name="Contatos.TelefoneGerente" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idEmailGerente">Email</label>
+                                <div class="form-group mb-3">
+                                    <input type="email" class="form-control" value="@Model.Contatos.EmailGerente" name="Contatos.EmailGerente" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="idRespFinanceiro">Responsavel Financeiro:</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.ResponsavelFinanceiro" name="Contatos.ResponsavelFinanceiro" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idDDDRespFinanceiro">DDD</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.DDDRespFinanceiro" name="Contatos.DDDRespFinanceiro" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="idTelefoneRespFinanceiro">Telefone</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.TelefoneRespFinanceiro" name="Contatos.TelefoneRespFinanceiro" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idEmailRespFinanceiro">Email</label>
+                                <div class="form-group mb-3">
+                                    <input type="email" class="form-control" value="@Model.Contatos.EmailRespFinanceiro" name="Contatos.EmailRespFinanceiro" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 style="color: #718288; margin-top: 30px; margin-left: 220px; font-weight: bold;">Telefone Fixo da Empresa:</h6>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idDDDTelefoneFixoEmpresa">DDD</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.DDDTelefoneFixoEmpresa" name="Contatos.DDDTelefoneFixoEmpresa" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="idTelefoneFixoEmpresa">Telefone</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" value="@Model.Contatos.TelefoneFixoEmpresa" name="Contatos.TelefoneFixoEmpresa" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col">
                         <button type="submit" class="btn btn-primary">Salvar Alterações</button>

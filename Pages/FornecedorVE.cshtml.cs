@@ -20,6 +20,8 @@ namespace PortalArcomix.Pages
         public FornecedorData Fornecedor { get; set; }
         [BindProperty]
         public DadosBancariosData DadosBancarios { get; set; }
+        [BindProperty]
+        public ContatosData Contatos { get; set; }
         public bool IsSubmissionSuccessful { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -32,6 +34,7 @@ namespace PortalArcomix.Pages
 
             Fornecedor = await GetFornecedorData(cnpj);
             DadosBancarios = await GetDadosBancariosData(cnpj);
+            Contatos = await GetContatosData(cnpj);
             return Page();
         }
 
@@ -45,13 +48,16 @@ namespace PortalArcomix.Pages
 
             Fornecedor.CNPJ = cnpj; // Ensure the CNPJ remains the same
             DadosBancarios.CNPJ = cnpj;
+            Contatos.CNPJ = cnpj;
 
             await UpdateFornecedorData(Fornecedor);
             await UpdateDadosBancariosData(DadosBancarios);
+            await UpdateContatosData(Contatos);
 
             // Refresh the data
             Fornecedor = await GetFornecedorData(cnpj);
             DadosBancarios = await GetDadosBancariosData(cnpj);
+            Contatos = await GetContatosData(cnpj);
 
             IsSubmissionSuccessful = true; // Set the flag to true after successful update
 
@@ -128,6 +134,50 @@ namespace PortalArcomix.Pages
                                 TipoConta = reader["TipoConta"].ToString(),
                                 NumeroConta = reader["NumeroConta"].ToString(),
                                 CNPJContaTitular = reader["CNPJContaTitular"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private async Task<ContatosData> GetContatosData(string cnpj)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    SELECT ContatoVendedor, DDDVendedor, TelefoneVendedor, EmailVendedor, 
+                           ContatoGerente, DDDGerente, TelefoneGerente, EmailGerente, 
+                           ResponsavelFinanceiro, DDDRespFinanceiro, TelefoneRespFinanceiro, EmailRespFinanceiro, 
+                           DDDTelefoneFixoEmpresa, TelefoneFixoEmpresa
+                    FROM Tbl_ContatosFornecedor
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", cnpj);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new ContatosData
+                            {
+                                ContatoVendedor = reader["ContatoVendedor"].ToString(),
+                                DDDVendedor = reader["DDDVendedor"].ToString(),
+                                TelefoneVendedor = reader["TelefoneVendedor"].ToString(),
+                                EmailVendedor = reader["EmailVendedor"].ToString(),
+                                ContatoGerente = reader["ContatoGerente"].ToString(),
+                                DDDGerente = reader["DDDGerente"].ToString(),
+                                TelefoneGerente = reader["TelefoneGerente"].ToString(),
+                                EmailGerente = reader["EmailGerente"].ToString(),
+                                ResponsavelFinanceiro = reader["ResponsavelFinanceiro"].ToString(),
+                                DDDRespFinanceiro = reader["DDDRespFinanceiro"].ToString(),
+                                TelefoneRespFinanceiro = reader["TelefoneRespFinanceiro"].ToString(),
+                                EmailRespFinanceiro = reader["EmailRespFinanceiro"].ToString(),
+                                DDDTelefoneFixoEmpresa = reader["DDDTelefoneFixoEmpresa"].ToString(),
+                                TelefoneFixoEmpresa = reader["TelefoneFixoEmpresa"].ToString()
                             };
                         }
                     }
@@ -215,6 +265,52 @@ namespace PortalArcomix.Pages
                 }
             }
         }
+
+        private async Task UpdateContatosData(ContatosData contatos)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    UPDATE Tbl_ContatosFornecedor
+                    SET ContatoVendedor = @ContatoVendedor,
+                        DDDVendedor = @DDDVendedor,
+                        TelefoneVendedor = @TelefoneVendedor,
+                        EmailVendedor = @EmailVendedor,
+                        ContatoGerente = @ContatoGerente,
+                        DDDGerente = @DDDGerente,
+                        TelefoneGerente = @TelefoneGerente,
+                        EmailGerente = @EmailGerente,
+                        ResponsavelFinanceiro = @ResponsavelFinanceiro,
+                        DDDRespFinanceiro = @DDDRespFinanceiro,
+                        TelefoneRespFinanceiro = @TelefoneRespFinanceiro,
+                        EmailRespFinanceiro = @EmailRespFinanceiro,
+                        DDDTelefoneFixoEmpresa = @DDDTelefoneFixoEmpresa,
+                        TelefoneFixoEmpresa = @TelefoneFixoEmpresa
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", contatos.CNPJ);
+                    cmd.Parameters.AddWithValue("@ContatoVendedor", contatos.ContatoVendedor);
+                    cmd.Parameters.AddWithValue("@DDDVendedor", contatos.DDDVendedor);
+                    cmd.Parameters.AddWithValue("@TelefoneVendedor", contatos.TelefoneVendedor);
+                    cmd.Parameters.AddWithValue("@EmailVendedor", contatos.EmailVendedor);
+                    cmd.Parameters.AddWithValue("@ContatoGerente", contatos.ContatoGerente);
+                    cmd.Parameters.AddWithValue("@DDDGerente", contatos.DDDGerente);
+                    cmd.Parameters.AddWithValue("@TelefoneGerente", contatos.TelefoneGerente);
+                    cmd.Parameters.AddWithValue("@EmailGerente", contatos.EmailGerente);
+                    cmd.Parameters.AddWithValue("@ResponsavelFinanceiro", contatos.ResponsavelFinanceiro);
+                    cmd.Parameters.AddWithValue("@DDDRespFinanceiro", contatos.DDDRespFinanceiro);
+                    cmd.Parameters.AddWithValue("@TelefoneRespFinanceiro", contatos.TelefoneRespFinanceiro);
+                    cmd.Parameters.AddWithValue("@EmailRespFinanceiro", contatos.EmailRespFinanceiro);
+                    cmd.Parameters.AddWithValue("@DDDTelefoneFixoEmpresa", contatos.DDDTelefoneFixoEmpresa);
+                    cmd.Parameters.AddWithValue("@TelefoneFixoEmpresa", contatos.TelefoneFixoEmpresa);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 
     public class FornecedorData
@@ -248,4 +344,24 @@ namespace PortalArcomix.Pages
         public string NumeroConta { get; set; }
         public string CNPJContaTitular { get; set; }
     }
+
+    public class ContatosData
+    {
+        public string CNPJ { get; set; }
+        public string ContatoVendedor { get; set; }
+        public string DDDVendedor { get; set; }
+        public string TelefoneVendedor { get; set; }
+        public string EmailVendedor { get; set; }
+        public string ContatoGerente { get; set; }
+        public string DDDGerente { get; set; }
+        public string TelefoneGerente { get; set; }
+        public string EmailGerente { get; set; }
+        public string ResponsavelFinanceiro { get; set; }
+        public string DDDRespFinanceiro { get; set; }
+        public string TelefoneRespFinanceiro { get; set; }
+        public string EmailRespFinanceiro { get; set; }
+        public string DDDTelefoneFixoEmpresa { get; set; }
+        public string TelefoneFixoEmpresa { get; set; }
+    }
 }
+
