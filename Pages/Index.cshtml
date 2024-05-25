@@ -14,15 +14,19 @@
 
             <!-- First line of Buttons Homepage -->
             <div class="row">
-                <div class="col-md-4 text-center">
-                    <a asp-page="/Privacy" class="text-center" style="text-decoration: none; color: inherit; display: block;">
-                        <div class="frame">
-                            <img width="80px" src="~/imgs/ic_Cadastro_de_fornecedores.png" alt="Cadastro de Fornecedores" />
-                            <h5>DADOS FORNECEDOR</h5>
-                            <p class="text-justify">Cadastrar, Editar, Consultar</p>
-                        </div>
-                    </a>
-                </div>
+
+                @if (User.IsInRole("Fornecedor"))
+                {
+                    <div class="col-md-4 text-center">
+                        <a asp-page="/Privacy" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="frame">
+                                <img width="80px" src="~/imgs/ic_Cadastro_de_fornecedores.png" alt="Cadastro de Fornecedores" />
+                                <h5>DADOS FORNECEDOR</h5>
+                                <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                            </div>
+                        </a>
+                    </div>
+                }
 
                 <div class="col-md-4 text-center">
                     <div class="frame" onclick="window.location.href = '@Url.Page("/Privacy")'">
@@ -32,27 +36,33 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 text-center">
-                    <form method="post">
-                        <button type="submit" class="btn btn-link" style="text-decoration: none; color: inherit; display: block; border: none; padding: 0;">
+                @if (!User.IsInRole("Fornecedor"))
+                {
+                    <div class="col-md-4 text-center">
+                        <form method="post">
+                            <button type="submit" class="btn btn-link" style="text-decoration: none; color: inherit; display: block; border: none; padding: 0;">
+                                <div class="frame">
+                                    <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
+                                    <h5>GESTÃO DE FORNECEDORES</h5>
+                                    <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                }
+
+                @if (User.IsInRole("Gerência"))
+                {
+                    <div class="col-md-4 text-center">
+                        <a asp-page="/NovoUsuario" class="text-center" style="text-decoration: none; color: inherit; display: block;">
                             <div class="frame">
-                                <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
-                                <h5>GESTÃO DE FORNECEDORES</h5>
+                                <img width="80px" src="~/imgs/ic_NovoCadastro.png" />
+                                <h5>NOVO CADASTRO</h5>
                                 <p class="text-justify">Cadastrar, Editar, Consultar</p>
                             </div>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="col-md-4 text-center">
-                    <a asp-page="/NovoUsuario" class="text-center" style="text-decoration: none; color: inherit; display: block;">
-                        <div class="frame">
-                            <img width="80px" src="~/imgs/ic_NovoCadastro.png" />
-                            <h5>NOVO CADASTRO</h5>
-                            <p class="text-justify">Cadastrar, Editar, Consultar</p>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                }
 
 
                 <div class="col-md-4 text-center">
