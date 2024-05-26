@@ -24,6 +24,8 @@ namespace PortalArcomix.Pages
         public ContatosData Contatos { get; set; }
         [BindProperty]
         public FornecedorNegociacao FornecedorNegociacao { get; set; } // Add this line
+        [BindProperty]
+        public SegurancaAlimentos SegurancaAlimentos { get; set; }
 
         public bool IsSubmissionSuccessful { get; set; }
 
@@ -39,6 +41,7 @@ namespace PortalArcomix.Pages
             DadosBancarios = await GetDadosBancariosData(cnpj);
             Contatos = await GetContatosData(cnpj);
             FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj); // Add this line
+            SegurancaAlimentos = await GetSegurancaAlimentosData(cnpj);
 
             return Page();
         }
@@ -55,17 +58,20 @@ namespace PortalArcomix.Pages
             DadosBancarios.CNPJ = cnpj;
             Contatos.CNPJ = cnpj;
             FornecedorNegociacao.CNPJ = cnpj; // Add this line
+            SegurancaAlimentos.CNPJ = cnpj;
 
             await UpdateFornecedorData(Fornecedor);
             await UpdateDadosBancariosData(DadosBancarios);
             await UpdateContatosData(Contatos);
             await UpdateFornecedorNegociacaoData(FornecedorNegociacao); // Add this line
+            await UpdateSegurancaAlimentosData(SegurancaAlimentos);
 
             // Refresh the data
             Fornecedor = await GetFornecedorData(cnpj);
             DadosBancarios = await GetDadosBancariosData(cnpj);
             Contatos = await GetContatosData(cnpj);
             FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj); // Add this line
+            SegurancaAlimentos = await GetSegurancaAlimentosData(cnpj);
 
             IsSubmissionSuccessful = true; // Set the flag to true after successful update
 
@@ -247,6 +253,64 @@ namespace PortalArcomix.Pages
                                 CadastroAtacado = reader["CadastroAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["CadastroAtacado"]) : 0,
                                 FinanceiroAtacado = reader["FinanceiroAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["FinanceiroAtacado"]) : 0,
                                 MarketingAtacado = reader["MarketingAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["MarketingAtacado"]) : 0,
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private async Task<SegurancaAlimentos> GetSegurancaAlimentosData(string cnpj)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    SELECT CNPJ, AtividadeEmpresa, OrgaoFiscalizacao, NumeroRegistroOrgao, ResponsavelTecnico, DDDTecnico, TelefoneTecnico, EmailTecnico, 
+                           BPFImplantadoPraticado, SistemaTratamentoResiduos, ControleSaudeColaboradores, CIPMIPImplementado, SistemaIdentificacaoRastreabilidade, 
+                           ProcedimentoPadraoFabricacao, ControleQualidadeImplementado, ProcedimentoPadraoRecebimento, SistemaTratamentoReclamacoes, 
+                           TransporteProprio, FichaTecnicaProdutos, ControleProdutosNaoConforme, ExigeHigienizacaoCIP, RegistrosComprovacaoSistemas, LicencasPertinentes, 
+                           EnviaAmostrasCliente, ControleAguaAbastecimento, Parecer, DescricaoAvaliacao
+                    FROM Tbl_SegurancaAlimentosFornecedor
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", cnpj);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new SegurancaAlimentos
+                            {
+                                CNPJ = reader["CNPJ"].ToString(),
+                                AtividadeEmpresa = reader["AtividadeEmpresa"].ToString(),
+                                OrgaoFiscalizacao = reader["OrgaoFiscalizacao"].ToString(),
+                                NumeroRegistroOrgao = reader["NumeroRegistroOrgao"].ToString(),
+                                ResponsavelTecnico = reader["ResponsavelTecnico"].ToString(),
+                                DDDTecnico = reader["DDDTecnico"].ToString(),
+                                TelefoneTecnico = reader["TelefoneTecnico"].ToString(),
+                                EmailTecnico = reader["EmailTecnico"].ToString(),
+                                BPFImplantadoPraticado = (bool)reader["BPFImplantadoPraticado"],
+                                SistemaTratamentoResiduos = (bool)reader["SistemaTratamentoResiduos"],
+                                ControleSaudeColaboradores = (bool)reader["ControleSaudeColaboradores"],
+                                CIPMIPImplementado = (bool)reader["CIPMIPImplementado"],
+                                SistemaIdentificacaoRastreabilidade = (bool)reader["SistemaIdentificacaoRastreabilidade"],
+                                ProcedimentoPadraoFabricacao = (bool)reader["ProcedimentoPadraoFabricacao"],
+                                ControleQualidadeImplementado = (bool)reader["ControleQualidadeImplementado"],
+                                ProcedimentoPadraoRecebimento = (bool)reader["ProcedimentoPadraoRecebimento"],
+                                SistemaTratamentoReclamacoes = (bool)reader["SistemaTratamentoReclamacoes"],
+                                TransporteProprio = (bool)reader["TransporteProprio"],
+                                FichaTecnicaProdutos = (bool)reader["FichaTecnicaProdutos"],
+                                ControleProdutosNaoConforme = (bool)reader["ControleProdutosNaoConforme"],
+                                ExigeHigienizacaoCIP = (bool)reader["ExigeHigienizacaoCIP"],
+                                RegistrosComprovacaoSistemas = (bool)reader["RegistrosComprovacaoSistemas"],
+                                LicencasPertinentes = (bool)reader["LicencasPertinentes"],
+                                EnviaAmostrasCliente = (bool)reader["EnviaAmostrasCliente"],
+                                ControleAguaAbastecimento = (bool)reader["ControleAguaAbastecimento"],
+                                Parecer = reader["Parecer"].ToString(),
+                                DescricaoAvaliacao = reader["DescricaoAvaliacao"].ToString()
                             };
                         }
                     }
@@ -458,6 +522,76 @@ namespace PortalArcomix.Pages
                 }
             }
         }
+
+        private async Task UpdateSegurancaAlimentosData(SegurancaAlimentos segurancaAlimentos)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    UPDATE Tbl_SegurancaAlimentosFornecedor
+                    SET AtividadeEmpresa = @AtividadeEmpresa,
+                        OrgaoFiscalizacao = @OrgaoFiscalizacao,
+                        NumeroRegistroOrgao = @NumeroRegistroOrgao,
+                        ResponsavelTecnico = @ResponsavelTecnico,
+                        DDDTecnico = @DDDTecnico,
+                        TelefoneTecnico = @TelefoneTecnico,
+                        EmailTecnico = @EmailTecnico,
+                        BPFImplantadoPraticado = @BPFImplantadoPraticado,
+                        SistemaTratamentoResiduos = @SistemaTratamentoResiduos,
+                        ControleSaudeColaboradores = @ControleSaudeColaboradores,
+                        CIPMIPImplementado = @CIPMIPImplementado,
+                        SistemaIdentificacaoRastreabilidade = @SistemaIdentificacaoRastreabilidade,
+                        ProcedimentoPadraoFabricacao = @ProcedimentoPadraoFabricacao,
+                        ControleQualidadeImplementado = @ControleQualidadeImplementado,
+                        ProcedimentoPadraoRecebimento = @ProcedimentoPadraoRecebimento,
+                        SistemaTratamentoReclamacoes = @SistemaTratamentoReclamacoes,
+                        TransporteProprio = @TransporteProprio,
+                        FichaTecnicaProdutos = @FichaTecnicaProdutos,
+                        ControleProdutosNaoConforme = @ControleProdutosNaoConforme,
+                        ExigeHigienizacaoCIP = @ExigeHigienizacaoCIP,
+                        RegistrosComprovacaoSistemas = @RegistrosComprovacaoSistemas,
+                        LicencasPertinentes = @LicencasPertinentes,
+                        EnviaAmostrasCliente = @EnviaAmostrasCliente,
+                        ControleAguaAbastecimento = @ControleAguaAbastecimento,
+                        Parecer = @Parecer,
+                        DescricaoAvaliacao = @DescricaoAvaliacao
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", segurancaAlimentos.CNPJ);
+                    cmd.Parameters.AddWithValue("@AtividadeEmpresa", segurancaAlimentos.AtividadeEmpresa);
+                    cmd.Parameters.AddWithValue("@OrgaoFiscalizacao", segurancaAlimentos.OrgaoFiscalizacao);
+                    cmd.Parameters.AddWithValue("@NumeroRegistroOrgao", segurancaAlimentos.NumeroRegistroOrgao);
+                    cmd.Parameters.AddWithValue("@ResponsavelTecnico", segurancaAlimentos.ResponsavelTecnico);
+                    cmd.Parameters.AddWithValue("@DDDTecnico", segurancaAlimentos.DDDTecnico);
+                    cmd.Parameters.AddWithValue("@TelefoneTecnico", segurancaAlimentos.TelefoneTecnico);
+                    cmd.Parameters.AddWithValue("@EmailTecnico", segurancaAlimentos.EmailTecnico);
+                    cmd.Parameters.AddWithValue("@BPFImplantadoPraticado", segurancaAlimentos.BPFImplantadoPraticado);
+                    cmd.Parameters.AddWithValue("@SistemaTratamentoResiduos", segurancaAlimentos.SistemaTratamentoResiduos);
+                    cmd.Parameters.AddWithValue("@ControleSaudeColaboradores", segurancaAlimentos.ControleSaudeColaboradores);
+                    cmd.Parameters.AddWithValue("@CIPMIPImplementado", segurancaAlimentos.CIPMIPImplementado);
+                    cmd.Parameters.AddWithValue("@SistemaIdentificacaoRastreabilidade", segurancaAlimentos.SistemaIdentificacaoRastreabilidade);
+                    cmd.Parameters.AddWithValue("@ProcedimentoPadraoFabricacao", segurancaAlimentos.ProcedimentoPadraoFabricacao);
+                    cmd.Parameters.AddWithValue("@ControleQualidadeImplementado", segurancaAlimentos.ControleQualidadeImplementado);
+                    cmd.Parameters.AddWithValue("@ProcedimentoPadraoRecebimento", segurancaAlimentos.ProcedimentoPadraoRecebimento);
+                    cmd.Parameters.AddWithValue("@SistemaTratamentoReclamacoes", segurancaAlimentos.SistemaTratamentoReclamacoes);
+                    cmd.Parameters.AddWithValue("@TransporteProprio", segurancaAlimentos.TransporteProprio);
+                    cmd.Parameters.AddWithValue("@FichaTecnicaProdutos", segurancaAlimentos.FichaTecnicaProdutos);
+                    cmd.Parameters.AddWithValue("@ControleProdutosNaoConforme", segurancaAlimentos.ControleProdutosNaoConforme);
+                    cmd.Parameters.AddWithValue("@ExigeHigienizacaoCIP", segurancaAlimentos.ExigeHigienizacaoCIP);
+                    cmd.Parameters.AddWithValue("@RegistrosComprovacaoSistemas", segurancaAlimentos.RegistrosComprovacaoSistemas);
+                    cmd.Parameters.AddWithValue("@LicencasPertinentes", segurancaAlimentos.LicencasPertinentes);
+                    cmd.Parameters.AddWithValue("@EnviaAmostrasCliente", segurancaAlimentos.EnviaAmostrasCliente);
+                    cmd.Parameters.AddWithValue("@ControleAguaAbastecimento", segurancaAlimentos.ControleAguaAbastecimento);
+                    cmd.Parameters.AddWithValue("@Parecer", segurancaAlimentos.Parecer);
+                    cmd.Parameters.AddWithValue("@DescricaoAvaliacao", segurancaAlimentos.DescricaoAvaliacao);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 
     public class FornecedorData
@@ -545,4 +679,36 @@ namespace PortalArcomix.Pages
         public decimal FinanceiroAtacado { get; set; }
         public decimal MarketingAtacado { get; set; }
     }
+
+    public class SegurancaAlimentos
+    {
+        public string CNPJ { get; set; }
+        public string AtividadeEmpresa { get; set; }
+        public string OrgaoFiscalizacao { get; set; }
+        public string NumeroRegistroOrgao { get; set; }
+        public string ResponsavelTecnico { get; set; }
+        public string DDDTecnico { get; set; }
+        public string TelefoneTecnico { get; set; }
+        public string EmailTecnico { get; set; }
+        public bool BPFImplantadoPraticado { get; set; }
+        public bool SistemaTratamentoResiduos { get; set; }
+        public bool ControleSaudeColaboradores { get; set; }
+        public bool CIPMIPImplementado { get; set; }
+        public bool SistemaIdentificacaoRastreabilidade { get; set; }
+        public bool ProcedimentoPadraoFabricacao { get; set; }
+        public bool ControleQualidadeImplementado { get; set; }
+        public bool ProcedimentoPadraoRecebimento { get; set; }
+        public bool SistemaTratamentoReclamacoes { get; set; }
+        public bool TransporteProprio { get; set; }
+        public bool FichaTecnicaProdutos { get; set; }
+        public bool ControleProdutosNaoConforme { get; set; }
+        public bool ExigeHigienizacaoCIP { get; set; }
+        public bool RegistrosComprovacaoSistemas { get; set; }
+        public bool LicencasPertinentes { get; set; }
+        public bool EnviaAmostrasCliente { get; set; }
+        public bool ControleAguaAbastecimento { get; set; }
+        public string Parecer { get; set; }
+        public string DescricaoAvaliacao { get; set; }
+    }
 }
+
