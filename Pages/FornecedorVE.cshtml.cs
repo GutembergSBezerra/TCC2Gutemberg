@@ -22,6 +22,9 @@ namespace PortalArcomix.Pages
         public DadosBancariosData DadosBancarios { get; set; }
         [BindProperty]
         public ContatosData Contatos { get; set; }
+        [BindProperty]
+        public FornecedorNegociacao FornecedorNegociacao { get; set; } // Add this line
+
         public bool IsSubmissionSuccessful { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -35,6 +38,8 @@ namespace PortalArcomix.Pages
             Fornecedor = await GetFornecedorData(cnpj);
             DadosBancarios = await GetDadosBancariosData(cnpj);
             Contatos = await GetContatosData(cnpj);
+            FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj); // Add this line
+
             return Page();
         }
 
@@ -49,15 +54,18 @@ namespace PortalArcomix.Pages
             Fornecedor.CNPJ = cnpj; // Ensure the CNPJ remains the same
             DadosBancarios.CNPJ = cnpj;
             Contatos.CNPJ = cnpj;
+            FornecedorNegociacao.CNPJ = cnpj; // Add this line
 
             await UpdateFornecedorData(Fornecedor);
             await UpdateDadosBancariosData(DadosBancarios);
             await UpdateContatosData(Contatos);
+            await UpdateFornecedorNegociacaoData(FornecedorNegociacao); // Add this line
 
             // Refresh the data
             Fornecedor = await GetFornecedorData(cnpj);
             DadosBancarios = await GetDadosBancariosData(cnpj);
             Contatos = await GetContatosData(cnpj);
+            FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj); // Add this line
 
             IsSubmissionSuccessful = true; // Set the flag to true after successful update
 
@@ -178,6 +186,67 @@ namespace PortalArcomix.Pages
                                 EmailRespFinanceiro = reader["EmailRespFinanceiro"].ToString(),
                                 DDDTelefoneFixoEmpresa = reader["DDDTelefoneFixoEmpresa"].ToString(),
                                 TelefoneFixoEmpresa = reader["TelefoneFixoEmpresa"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private async Task<FornecedorNegociacao> GetFornecedorNegociacaoData(string cnpj)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    SELECT DataBaseVencimento, PrazoPagamentoDias, PrazoEntregaMedioDias, PrazoMedioAtrasoDias, PrazoMedioVisitaDias, VerbaCadastro,
+                           MotivoVerbaZerada, JustificativaSemVerba, DivisaoVerba, ContratoFornecedor, ApuracaoContrato, TipoContrato, MotivoSemContrato,
+                           JustificativaSemContrato, TotalPercentualVarejo, TotalPercentualAtacado, LogisticoVarejo, DevolucaoVarejo, AniversarioVarejo,
+                           ReinauguracaoVarejo, CadastroVarejo, FinanceiroVarejo, MarketingVarejo, LogisticoAtacado, DevolucaoAtacado, AniversarioAtacado,
+                           ReinauguracaoAtacado, CadastroAtacado, FinanceiroAtacado, MarketingAtacado
+                    FROM Tbl_FornecedorNegociacao
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", cnpj);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new FornecedorNegociacao
+                            {
+                                DataBaseVencimento = reader["DataBaseVencimento"].ToString(),
+                                PrazoPagamentoDias = reader["PrazoPagamentoDias"] != DBNull.Value ? Convert.ToInt32(reader["PrazoPagamentoDias"]) : 0,
+                                PrazoEntregaMedioDias = reader["PrazoEntregaMedioDias"] != DBNull.Value ? Convert.ToInt32(reader["PrazoEntregaMedioDias"]) : 0,
+                                PrazoMedioAtrasoDias = reader["PrazoMedioAtrasoDias"] != DBNull.Value ? Convert.ToInt32(reader["PrazoMedioAtrasoDias"]) : 0,
+                                PrazoMedioVisitaDias = reader["PrazoMedioVisitaDias"] != DBNull.Value ? Convert.ToInt32(reader["PrazoMedioVisitaDias"]) : 0,
+                                VerbaCadastro = reader["VerbaCadastro"] != DBNull.Value ? Convert.ToDecimal(reader["VerbaCadastro"]) : 0,
+                                MotivoVerbaZerada = reader["MotivoVerbaZerada"].ToString(),
+                                JustificativaSemVerba = reader["JustificativaSemVerba"].ToString(),
+                                DivisaoVerba = reader["DivisaoVerba"].ToString(),
+                                ContratoFornecedor = reader["ContratoFornecedor"].ToString(),
+                                ApuracaoContrato = reader["ApuracaoContrato"].ToString(),
+                                TipoContrato = reader["TipoContrato"].ToString(),
+                                MotivoSemContrato = reader["MotivoSemContrato"].ToString(),
+                                JustificativaSemContrato = reader["JustificativaSemContrato"].ToString(),
+                                TotalPercentualVarejo = reader["TotalPercentualVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPercentualVarejo"]) : 0,
+                                TotalPercentualAtacado = reader["TotalPercentualAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPercentualAtacado"]) : 0,
+                                LogisticoVarejo = reader["LogisticoVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["LogisticoVarejo"]) : 0,
+                                DevolucaoVarejo = reader["DevolucaoVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["DevolucaoVarejo"]) : 0,
+                                AniversarioVarejo = reader["AniversarioVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["AniversarioVarejo"]) : 0,
+                                ReinauguracaoVarejo = reader["ReinauguracaoVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["ReinauguracaoVarejo"]) : 0,
+                                CadastroVarejo = reader["CadastroVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["CadastroVarejo"]) : 0,
+                                FinanceiroVarejo = reader["FinanceiroVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["FinanceiroVarejo"]) : 0,
+                                MarketingVarejo = reader["MarketingVarejo"] != DBNull.Value ? Convert.ToDecimal(reader["MarketingVarejo"]) : 0,
+                                LogisticoAtacado = reader["LogisticoAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["LogisticoAtacado"]) : 0,
+                                DevolucaoAtacado = reader["DevolucaoAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["DevolucaoAtacado"]) : 0,
+                                AniversarioAtacado = reader["AniversarioAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["AniversarioAtacado"]) : 0,
+                                ReinauguracaoAtacado = reader["ReinauguracaoAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["ReinauguracaoAtacado"]) : 0,
+                                CadastroAtacado = reader["CadastroAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["CadastroAtacado"]) : 0,
+                                FinanceiroAtacado = reader["FinanceiroAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["FinanceiroAtacado"]) : 0,
+                                MarketingAtacado = reader["MarketingAtacado"] != DBNull.Value ? Convert.ToDecimal(reader["MarketingAtacado"]) : 0,
                             };
                         }
                     }
@@ -311,6 +380,84 @@ namespace PortalArcomix.Pages
                 }
             }
         }
+
+        private async Task UpdateFornecedorNegociacaoData(FornecedorNegociacao fornecedorNegociacao)
+        {
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                await con.OpenAsync();
+                string query = @"
+                    UPDATE Tbl_FornecedorNegociacao
+                    SET DataBaseVencimento = @DataBaseVencimento,
+                        PrazoPagamentoDias = @PrazoPagamentoDias,
+                        PrazoEntregaMedioDias = @PrazoEntregaMedioDias,
+                        PrazoMedioAtrasoDias = @PrazoMedioAtrasoDias,
+                        PrazoMedioVisitaDias = @PrazoMedioVisitaDias,
+                        VerbaCadastro = @VerbaCadastro,
+                        MotivoVerbaZerada = @MotivoVerbaZerada,
+                        JustificativaSemVerba = @JustificativaSemVerba,
+                        DivisaoVerba = @DivisaoVerba,
+                        ContratoFornecedor = @ContratoFornecedor,
+                        ApuracaoContrato = @ApuracaoContrato,
+                        TipoContrato = @TipoContrato,
+                        MotivoSemContrato = @MotivoSemContrato,
+                        JustificativaSemContrato = @JustificativaSemContrato,
+                        TotalPercentualVarejo = @TotalPercentualVarejo,
+                        TotalPercentualAtacado = @TotalPercentualAtacado,
+                        LogisticoVarejo = @LogisticoVarejo,
+                        DevolucaoVarejo = @DevolucaoVarejo,
+                        AniversarioVarejo = @AniversarioVarejo,
+                        ReinauguracaoVarejo = @ReinauguracaoVarejo,
+                        CadastroVarejo = @CadastroVarejo,
+                        FinanceiroVarejo = @FinanceiroVarejo,
+                        MarketingVarejo = @MarketingVarejo,
+                        LogisticoAtacado = @LogisticoAtacado,
+                        DevolucaoAtacado = @DevolucaoAtacado,
+                        AniversarioAtacado = @AniversarioAtacado,
+                        ReinauguracaoAtacado = @ReinauguracaoAtacado,
+                        CadastroAtacado = @CadastroAtacado,
+                        FinanceiroAtacado = @FinanceiroAtacado,
+                        MarketingAtacado = @MarketingAtacado
+                    WHERE CNPJ = @CNPJ";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@CNPJ", fornecedorNegociacao.CNPJ);
+                    cmd.Parameters.AddWithValue("@DataBaseVencimento", fornecedorNegociacao.DataBaseVencimento);
+                    cmd.Parameters.AddWithValue("@PrazoPagamentoDias", fornecedorNegociacao.PrazoPagamentoDias);
+                    cmd.Parameters.AddWithValue("@PrazoEntregaMedioDias", fornecedorNegociacao.PrazoEntregaMedioDias);
+                    cmd.Parameters.AddWithValue("@PrazoMedioAtrasoDias", fornecedorNegociacao.PrazoMedioAtrasoDias);
+                    cmd.Parameters.AddWithValue("@PrazoMedioVisitaDias", fornecedorNegociacao.PrazoMedioVisitaDias);
+                    cmd.Parameters.AddWithValue("@VerbaCadastro", fornecedorNegociacao.VerbaCadastro);
+                    cmd.Parameters.AddWithValue("@MotivoVerbaZerada", fornecedorNegociacao.MotivoVerbaZerada);
+                    cmd.Parameters.AddWithValue("@JustificativaSemVerba", fornecedorNegociacao.JustificativaSemVerba);
+                    cmd.Parameters.AddWithValue("@DivisaoVerba", fornecedorNegociacao.DivisaoVerba);
+                    cmd.Parameters.AddWithValue("@ContratoFornecedor", fornecedorNegociacao.ContratoFornecedor);
+                    cmd.Parameters.AddWithValue("@ApuracaoContrato", fornecedorNegociacao.ApuracaoContrato);
+                    cmd.Parameters.AddWithValue("@TipoContrato", fornecedorNegociacao.TipoContrato);
+                    cmd.Parameters.AddWithValue("@MotivoSemContrato", fornecedorNegociacao.MotivoSemContrato);
+                    cmd.Parameters.AddWithValue("@JustificativaSemContrato", fornecedorNegociacao.JustificativaSemContrato);
+                    cmd.Parameters.AddWithValue("@TotalPercentualVarejo", fornecedorNegociacao.TotalPercentualVarejo);
+                    cmd.Parameters.AddWithValue("@TotalPercentualAtacado", fornecedorNegociacao.TotalPercentualAtacado);
+                    cmd.Parameters.AddWithValue("@LogisticoVarejo", fornecedorNegociacao.LogisticoVarejo);
+                    cmd.Parameters.AddWithValue("@DevolucaoVarejo", fornecedorNegociacao.DevolucaoVarejo);
+                    cmd.Parameters.AddWithValue("@AniversarioVarejo", fornecedorNegociacao.AniversarioVarejo);
+                    cmd.Parameters.AddWithValue("@ReinauguracaoVarejo", fornecedorNegociacao.ReinauguracaoVarejo);
+                    cmd.Parameters.AddWithValue("@CadastroVarejo", fornecedorNegociacao.CadastroVarejo);
+                    cmd.Parameters.AddWithValue("@FinanceiroVarejo", fornecedorNegociacao.FinanceiroVarejo);
+                    cmd.Parameters.AddWithValue("@MarketingVarejo", fornecedorNegociacao.MarketingVarejo);
+                    cmd.Parameters.AddWithValue("@LogisticoAtacado", fornecedorNegociacao.LogisticoAtacado);
+                    cmd.Parameters.AddWithValue("@DevolucaoAtacado", fornecedorNegociacao.DevolucaoAtacado);
+                    cmd.Parameters.AddWithValue("@AniversarioAtacado", fornecedorNegociacao.AniversarioAtacado);
+                    cmd.Parameters.AddWithValue("@ReinauguracaoAtacado", fornecedorNegociacao.ReinauguracaoAtacado);
+                    cmd.Parameters.AddWithValue("@CadastroAtacado", fornecedorNegociacao.CadastroAtacado);
+                    cmd.Parameters.AddWithValue("@FinanceiroAtacado", fornecedorNegociacao.FinanceiroAtacado);
+                    cmd.Parameters.AddWithValue("@MarketingAtacado", fornecedorNegociacao.MarketingAtacado);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 
     public class FornecedorData
@@ -363,5 +510,39 @@ namespace PortalArcomix.Pages
         public string DDDTelefoneFixoEmpresa { get; set; }
         public string TelefoneFixoEmpresa { get; set; }
     }
-}
 
+    public class FornecedorNegociacao
+    {
+        public string CNPJ { get; set; }
+        public string DataBaseVencimento { get; set; }
+        public int PrazoPagamentoDias { get; set; }
+        public int PrazoEntregaMedioDias { get; set; }
+        public int PrazoMedioAtrasoDias { get; set; }
+        public int PrazoMedioVisitaDias { get; set; }
+        public decimal VerbaCadastro { get; set; }
+        public string MotivoVerbaZerada { get; set; }
+        public string JustificativaSemVerba { get; set; }
+        public string DivisaoVerba { get; set; }
+        public string ContratoFornecedor { get; set; }
+        public string ApuracaoContrato { get; set; }
+        public string TipoContrato { get; set; }
+        public string MotivoSemContrato { get; set; }
+        public string JustificativaSemContrato { get; set; }
+        public decimal TotalPercentualVarejo { get; set; }
+        public decimal TotalPercentualAtacado { get; set; }
+        public decimal LogisticoVarejo { get; set; }
+        public decimal DevolucaoVarejo { get; set; }
+        public decimal AniversarioVarejo { get; set; }
+        public decimal ReinauguracaoVarejo { get; set; }
+        public decimal CadastroVarejo { get; set; }
+        public decimal FinanceiroVarejo { get; set; }
+        public decimal MarketingVarejo { get; set; }
+        public decimal LogisticoAtacado { get; set; }
+        public decimal DevolucaoAtacado { get; set; }
+        public decimal AniversarioAtacado { get; set; }
+        public decimal ReinauguracaoAtacado { get; set; }
+        public decimal CadastroAtacado { get; set; }
+        public decimal FinanceiroAtacado { get; set; }
+        public decimal MarketingAtacado { get; set; }
+    }
+}

@@ -412,13 +412,270 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <!-- Card Negociação Fornecedor-->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" id="NegociacaoFornecedor">
+                            <div class="col">
+                                <h4 style="color: #1878BB; margin-bottom: 20px;">Negociação Fornecedor</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="idDTBaseVencimento">Data Base Vencimento</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idDTBaseVencimento" name="FornecedorNegociacao.DataBaseVencimento" asp-for="FornecedorNegociacao.DataBaseVencimento">
+                                        <option value="">Escolher...</option>
+                                        <option value="Emissão">Emissão</option>
+                                        <option value="Entrada">Entrada</option>
+                                        <option value="Saída">Saída</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Additional Fields Start -->
+                            <div class="col-md-2">
+                                <label for="idPZPagamentoDias">Prazo Pagamento (dias)</label>
+                                <div class="form-group mb-3">
+                                    <input type="number" class="form-control" id="idPZPagamentoDias" name="FornecedorNegociacao.PrazoPagamentoDias" asp-for="FornecedorNegociacao.PrazoPagamentoDias" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idPZEntregaMedio">Prazo médio Entrega (dias)</label>
+                                <div class="form-group mb-3">
+                                    <input type="number" class="form-control" id="idPZEntregaMedio" name="FornecedorNegociacao.PrazoEntregaMedioDias" asp-for="FornecedorNegociacao.PrazoEntregaMedioDias" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idPZMedioAtraso">Prazo médio Atraso (dias)</label>
+                                <div class="form-group mb-3">
+                                    <input type="number" class="form-control" id="idPZMedioAtraso" name="FornecedorNegociacao.PrazoMedioAtrasoDias" asp-for="FornecedorNegociacao.PrazoMedioAtrasoDias" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idPZMedioVisita">Prazo médio visita (dias)</label>
+                                <div class="form-group mb-3">
+                                    <input type="number" class="form-control" id="idPZMedioVisita" name="FornecedorNegociacao.PrazoMedioVisitaDias" asp-for="FornecedorNegociacao.PrazoMedioVisitaDias" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idVerbaCadastro">Verba de cadastro (R$)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control currency-input" id="idVerbaCadastro" name="FornecedorNegociacao.VerbaCadastro" asp-for="FornecedorNegociacao.VerbaCadastro" />
+                                </div>
+                            </div>
+                            <!-- Additional Fields End -->
+                        </div>
+
+                        <!-- New Fields Start -->
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="idMotivoVerbaZerada">Motivo da Verba Zerada</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idMotivoVerbaZerada" name="FornecedorNegociacao.MotivoVerbaZerada" asp-for="FornecedorNegociacao.MotivoVerbaZerada">
+                                        <option value="">Escolher...</option>
+                                        <option value="Não Paga Verba">Não Paga Verba</option>
+                                        <option value="Verba na Apuração ou Desconto">Verba na Apuração ou Desconto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="idJustificativaSemVerba">Justificativa (Sem Verba)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idJustificativaSemVerba" name="FornecedorNegociacao.JustificativaSemVerba" asp-for="FornecedorNegociacao.JustificativaSemVerba" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idDivisaoVerba">Divisão</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idDivisaoVerba" name="FornecedorNegociacao.DivisaoVerba" asp-for="FornecedorNegociacao.DivisaoVerba">
+                                        <option value="">Escolher...</option>
+                                        <option value="Atacado">Atacado</option>
+                                        <option value="Varejo">Varejo</option>
+                                        <option value="Atacado / Varejo">Atacado / Varejo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idContratoFornecedor">Contrato</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idContratoFornecedor" name="FornecedorNegociacao.ContratoFornecedor" asp-for="FornecedorNegociacao.ContratoFornecedor">
+                                        <option value="">Escolher...</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Sim, apenas Varejo">Sim, apenas Varejo</option>
+                                        <option value="Sim, apenas Atacado">Sim, apenas Atacado</option>
+                                        <option value="Sim, após o primeiro pedido">Sim, após o primeiro pedido</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="idApuracaoContrato">Apuração</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idApuracaoContrato" name="FornecedorNegociacao.ApuracaoContrato" asp-for="FornecedorNegociacao.ApuracaoContrato">
+                                        <option value="">Escolher...</option>
+                                        <option value="Líquido">Líquido</option>
+                                        <option value="Bruto">Bruto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idTipoContrato">Tipo de Contrato</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idTipoContrato" name="FornecedorNegociacao.TipoContrato" asp-for="FornecedorNegociacao.TipoContrato">
+                                        <option value="">Escolher...</option>
+                                        <option value="Desconto">Desconto</option>
+                                        <option value="Apuração">Apuração</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idMotivoSemContrato">Motivo Sem Contrato</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="idMotivoSemContrato" name="FornecedorNegociacao.MotivoSemContrato" asp-for="FornecedorNegociacao.MotivoSemContrato">
+                                        <option value="">Escolher...</option>
+                                        <option value="Rede Brasil">Rede Brasil</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="idJustificativaSemContrato">Justificativa (Sem Contrato)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idJustificativaSemContrato" name="FornecedorNegociacao.JustificativaSemContrato" asp-for="FornecedorNegociacao.JustificativaSemContrato" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Percentuais do Contrato (Varejo) -->
+                        <div class="row">
+                            <div class="col-md-3" style="display: flex; align-items: center; justify-content: center; height: 70px;">
+                                <span style="font-weight: bold; color: #718288;">Percentuais do Contrato ( Varejo )</span>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idTotalContratoVarejo">Total(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control readonly" id="idTotalContratoVarejo" name="FornecedorNegociacao.TotalPercentualVarejo" asp-for="FornecedorNegociacao.TotalPercentualVarejo" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idLogisticoVarejo">Logístico(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idLogisticoVarejo" name="FornecedorNegociacao.LogisticoVarejo" asp-for="FornecedorNegociacao.LogisticoVarejo" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idDevolucaoVarejo">Avaria(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idDevolucaoVarejo" name="FornecedorNegociacao.DevolucaoVarejo" asp-for="FornecedorNegociacao.DevolucaoVarejo" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idAniversarioVarejo">Aniversário(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idAniversarioVarejo" name="FornecedorNegociacao.AniversarioVarejo" asp-for="FornecedorNegociacao.AniversarioVarejo" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idReinauguracaoVarejo">Reinauguração(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idReinauguracaoVarejo" name="FornecedorNegociacao.ReinauguracaoVarejo" asp-for="FornecedorNegociacao.ReinauguracaoVarejo" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idCadastroVarejo">Cadastro(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idCadastroVarejo" name="FornecedorNegociacao.CadastroVarejo" asp-for="FornecedorNegociacao.CadastroVarejo" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idFinanceiroVarejo">Financeiro(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idFinanceiroVarejo" name="FornecedorNegociacao.FinanceiroVarejo" asp-for="FornecedorNegociacao.FinanceiroVarejo" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idMarketingVarejo">Marketing(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idMarketingVarejo" name="FornecedorNegociacao.MarketingVarejo" asp-for="FornecedorNegociacao.MarketingVarejo" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Percentuais do Contrato (Atacado) -->
+                        <div class="row">
+                            <div class="col-md-3" style="display: flex; align-items: center; justify-content: center; height: 70px;">
+                                <span style="font-weight: bold; color: #718288;">Percentuais do Contrato ( Atacado )</span>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idTotalContratoAtacado">Total(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control readonly" id="idTotalContratoAtacado" name="FornecedorNegociacao.TotalPercentualAtacado" asp-for="FornecedorNegociacao.TotalPercentualAtacado" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idLogisticoAtacado">Logístico(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idLogisticoAtacado" name="FornecedorNegociacao.LogisticoAtacado" asp-for="FornecedorNegociacao.LogisticoAtacado" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idDevolucaoAtacado">Avaria(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idDevolucaoAtacado" name="FornecedorNegociacao.DevolucaoAtacado" asp-for="FornecedorNegociacao.DevolucaoAtacado" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idAniversarioAtacado">Aniversário(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idAniversarioAtacado" name="FornecedorNegociacao.AniversarioAtacado" asp-for="FornecedorNegociacao.AniversarioAtacado" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idReinauguracaoAtacado">Reinauguração(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idReinauguracaoAtacado" name="FornecedorNegociacao.ReinauguracaoAtacado" asp-for="FornecedorNegociacao.ReinauguracaoAtacado" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idCadastroAtacado">Cadastro(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idCadastroAtacado" name="FornecedorNegociacao.CadastroAtacado" asp-for="FornecedorNegociacao.CadastroAtacado" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idFinanceiroAtacado">Financeiro(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idFinanceiroAtacado" name="FornecedorNegociacao.FinanceiroAtacado" asp-for="FornecedorNegociacao.FinanceiroAtacado" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="idMarketingAtacado">Marketing(%)</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="idMarketingAtacado" name="FornecedorNegociacao.MarketingAtacado" asp-for="FornecedorNegociacao.MarketingAtacado" />
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </form>
 }
 else
