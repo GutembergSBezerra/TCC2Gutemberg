@@ -204,6 +204,171 @@
                     </div>
                     <br />
 
+                    <!--Card Unidade de Venda e Compra-->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row" id="idUnidVendaCompra">
+                                <div class="col">
+                                    <h4 style="color: #1878BB;">Unidade de Venda e Compra</h4>
+                                    <span class="help-block" style="color: #ff0000;">CLIQUE EM VALIDAR PARA VERIFICAR SE OS DADOS INFORMADOS ESTÃO VÁLIDOS</span>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>EAN 13 (se pesavel, ean inexistente)</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="UnidadeVendaCompraData.EAN13" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Referencia</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="UnidadeVendaCompraData.Referencia" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>P.Bruto em Kg</label>
+                                        <input asp-for="UnidadeVendaCompraData.PesoBrutoKg" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>P.Liquido em Kg</label>
+                                        <input asp-for="UnidadeVendaCompraData.PesoLiquidoKg" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Altura (cm)</label>
+                                        <input asp-for="UnidadeVendaCompraData.AlturaCm" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Largura(cm)</label>
+                                        <input asp-for="UnidadeVendaCompraData.LarguraCm" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>Profundidade (cm)</label>
+                                        <input asp-for="UnidadeVendaCompraData.ProfundidadeCm" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>DUN 14</label>
+                                        <input asp-for="UnidadeVendaCompraData.DUN14" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>Referencia DUN 14</label>
+                                        <input asp-for="UnidadeVendaCompraData.ReferenciaDUN14" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>P.Bruto DUN 14 (Kg)</label>
+                                        <input asp-for="UnidadeVendaCompraData.PesoBrutoDUN14Kg" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>P.Liquido DUN 14 (Kg)</label>
+                                        <input asp-for="UnidadeVendaCompraData.PesoLiquidoDUN14Kg" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Altura DUN 14 (cm)</label>
+                                        <input asp-for="UnidadeVendaCompraData.AlturaDUN14Cm" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Largura DUN 14 (cm)</label>
+                                        <input asp-for="UnidadeVendaCompraData.LarguraDUN14Cm" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Profundidade DUN 14 (cm)</label>
+                                        <input asp-for="UnidadeVendaCompraData.ProfundidadeDUN14Cm" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Embalagem</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="UnidadeVendaCompraData.Embalagem" class="form-control">
+                                            <option value="">Escolher...</option>
+                                            <option value="Caixa">Caixa</option>
+                                            <option value="Fardo">Fardo</option>
+                                            <option value="Display">Display</option>
+                                            <option value="Unidade">Unidade</option>
+                                            <option value="Kilo">Kilo</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Quantidade</label>
+                                        <input asp-for="UnidadeVendaCompraData.QuantidadeUnidades" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Mesa(caixas)</label>
+                                        <input asp-for="UnidadeVendaCompraData.MesaCaixas" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Altura(caixas)</label>
+                                        <input asp-for="UnidadeVendaCompraData.AlturaCaixas" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group mb-3">
+                                        <label>ShelfLife(dias)</label>
+                                        <input asp-for="UnidadeVendaCompraData.ShelfLifeDias" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" style="margin-top: 25px;">Validar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Salvar Alterações</button>

@@ -18,10 +18,14 @@ namespace PortalArcomix.Pages
         {
             _configuration = configuration;
             Especificacoes = new EspecificacoesProduto();
+            UnidadeVendaCompraData = new UnidadeVendaCompra();
         }
 
         [BindProperty]
         public EspecificacoesProduto Especificacoes { get; set; }
+
+        [BindProperty]
+        public UnidadeVendaCompra UnidadeVendaCompraData { get; set; }
 
         [BindProperty]
         public IFormFile? UploadImagemProduto { get; set; }
@@ -36,18 +40,7 @@ namespace PortalArcomix.Pages
         // Helper method to handle null values
         private static object ToDbValue(object value)
         {
-            if (value == null)
-            {
-                return DBNull.Value;
-            }
-            else if (value is byte[] byteArray && byteArray.Length == 0)
-            {
-                return new byte[0];
-            }
-            else
-            {
-                return value;
-            }
+            return value ?? DBNull.Value;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -82,37 +75,83 @@ namespace PortalArcomix.Pages
 
             using (var conn = new SqlConnection(connectionString))
             {
-                var query = @"
-                    INSERT INTO Tbl_Produto 
-                    (GestorCompras, Marca, NovaMarca, Importado, DescricaoProduto, NCM, CEST, ICMS, IPI, PIS, COFINS, CustoUnidade, CustoCaixa, CodXML, EmbalagemFat, VerbaCadastro, MotivoVerbaZerada, ImagemProduto, CNPJ) 
-                    VALUES 
-                    (@GestorCompras, @Marca, @NovaMarca, @Importado, @DescricaoProduto, @NCM, @CEST, @ICMS, @IPI, @PIS, @COFINS, @CustoUnidade, @CustoCaixa, @CodXML, @EmbalagemFat, @VerbaCadastro, @MotivoVerbaZerada, @ImagemProduto, @CNPJ)";
-
-                using (var cmd = new SqlCommand(query, conn))
+                await conn.OpenAsync();
+                using (var transaction = conn.BeginTransaction())
                 {
-                    // Use the helper method for adding parameters
-                    cmd.Parameters.AddWithValue("@GestorCompras", ToDbValue(Especificacoes.GestorCompras!));
-                    cmd.Parameters.AddWithValue("@Marca", ToDbValue(Especificacoes.Marca!));
-                    cmd.Parameters.AddWithValue("@NovaMarca", ToDbValue(Especificacoes.NovaMarca!));
-                    cmd.Parameters.AddWithValue("@Importado", ToDbValue(Especificacoes.Importado!));
-                    cmd.Parameters.AddWithValue("@DescricaoProduto", ToDbValue(Especificacoes.DescricaoProduto!));
-                    cmd.Parameters.AddWithValue("@NCM", ToDbValue(Especificacoes.NCM!));
-                    cmd.Parameters.AddWithValue("@CEST", ToDbValue(Especificacoes.CEST!));
-                    cmd.Parameters.AddWithValue("@ICMS", ToDbValue(Especificacoes.ICMS!));
-                    cmd.Parameters.AddWithValue("@IPI", ToDbValue(Especificacoes.IPI!));
-                    cmd.Parameters.AddWithValue("@PIS", ToDbValue(Especificacoes.PIS!));
-                    cmd.Parameters.AddWithValue("@COFINS", ToDbValue(Especificacoes.COFINS!));
-                    cmd.Parameters.AddWithValue("@CustoUnidade", ToDbValue(Especificacoes.CustoUnidade!));
-                    cmd.Parameters.AddWithValue("@CustoCaixa", ToDbValue(Especificacoes.CustoCaixa!));
-                    cmd.Parameters.AddWithValue("@CodXML", ToDbValue(Especificacoes.CodXML!));
-                    cmd.Parameters.AddWithValue("@EmbalagemFat", ToDbValue(Especificacoes.EmbalagemFat!));
-                    cmd.Parameters.AddWithValue("@VerbaCadastro", ToDbValue(Especificacoes.VerbaCadastro!));
-                    cmd.Parameters.AddWithValue("@MotivoVerbaZerada", ToDbValue(Especificacoes.MotivoVerbaZerada!));
-                    cmd.Parameters.AddWithValue("@ImagemProduto", ToDbValue(Especificacoes.ImagemProduto));
-                    cmd.Parameters.AddWithValue("@CNPJ", ToDbValue(Especificacoes.CNPJ!));
+                    try
+                    {
+                        var queryProduto = @"
+                            INSERT INTO Tbl_Produto 
+                            (GestorCompras, Marca, NovaMarca, Importado, DescricaoProduto, NCM, CEST, ICMS, IPI, PIS, COFINS, CustoUnidade, CustoCaixa, CodXML, EmbalagemFat, VerbaCadastro, MotivoVerbaZerada, ImagemProduto, CNPJ) 
+                            OUTPUT INSERTED.ID
+                            VALUES 
+                            (@GestorCompras, @Marca, @NovaMarca, @Importado, @DescricaoProduto, @NCM, @CEST, @ICMS, @IPI, @PIS, @COFINS, @CustoUnidade, @CustoCaixa, @CodXML, @EmbalagemFat, @VerbaCadastro, @MotivoVerbaZerada, @ImagemProduto, @CNPJ)";
 
-                    conn.Open();
-                    await cmd.ExecuteNonQueryAsync();
+                        using (var cmdProduto = new SqlCommand(queryProduto, conn, transaction))
+                        {
+                            // Use the helper method for adding parameters
+                            cmdProduto.Parameters.AddWithValue("@GestorCompras", ToDbValue(Especificacoes.GestorCompras!));
+                            cmdProduto.Parameters.AddWithValue("@Marca", ToDbValue(Especificacoes.Marca!));
+                            cmdProduto.Parameters.AddWithValue("@NovaMarca", ToDbValue(Especificacoes.NovaMarca!));
+                            cmdProduto.Parameters.AddWithValue("@Importado", ToDbValue(Especificacoes.Importado!));
+                            cmdProduto.Parameters.AddWithValue("@DescricaoProduto", ToDbValue(Especificacoes.DescricaoProduto!));
+                            cmdProduto.Parameters.AddWithValue("@NCM", ToDbValue(Especificacoes.NCM!));
+                            cmdProduto.Parameters.AddWithValue("@CEST", ToDbValue(Especificacoes.CEST!));
+                            cmdProduto.Parameters.AddWithValue("@ICMS", ToDbValue(Especificacoes.ICMS!));
+                            cmdProduto.Parameters.AddWithValue("@IPI", ToDbValue(Especificacoes.IPI!));
+                            cmdProduto.Parameters.AddWithValue("@PIS", ToDbValue(Especificacoes.PIS!));
+                            cmdProduto.Parameters.AddWithValue("@COFINS", ToDbValue(Especificacoes.COFINS!));
+                            cmdProduto.Parameters.AddWithValue("@CustoUnidade", ToDbValue(Especificacoes.CustoUnidade!));
+                            cmdProduto.Parameters.AddWithValue("@CustoCaixa", ToDbValue(Especificacoes.CustoCaixa!));
+                            cmdProduto.Parameters.AddWithValue("@CodXML", ToDbValue(Especificacoes.CodXML!));
+                            cmdProduto.Parameters.AddWithValue("@EmbalagemFat", ToDbValue(Especificacoes.EmbalagemFat!));
+                            cmdProduto.Parameters.AddWithValue("@VerbaCadastro", ToDbValue(Especificacoes.VerbaCadastro!));
+                            cmdProduto.Parameters.AddWithValue("@MotivoVerbaZerada", ToDbValue(Especificacoes.MotivoVerbaZerada!));
+                            cmdProduto.Parameters.AddWithValue("@ImagemProduto", Especificacoes.ImagemProduto != null ? (object)Especificacoes.ImagemProduto : DBNull.Value).SqlDbType = SqlDbType.VarBinary;
+                            cmdProduto.Parameters.AddWithValue("@CNPJ", ToDbValue(Especificacoes.CNPJ!));
+
+                            var produtoId = (int)await cmdProduto.ExecuteScalarAsync();
+
+                            var queryUnidadeVendaCompra = @"
+                                INSERT INTO Tbl_ProdutoVendaCompra 
+                                (ProdutoID, EAN13, Referencia, PesoBrutoKg, PesoLiquidoKg, AlturaCm, LarguraCm, ProfundidadeCm, DUN14, ReferenciaDUN14, PesoBrutoDUN14Kg, PesoLiquidoDUN14Kg, AlturaDUN14Cm, LarguraDUN14Cm, ProfundidadeDUN14Cm, Embalagem, QuantidadeUnidades, MesaCaixas, AlturaCaixas, ShelfLifeDias) 
+                                VALUES 
+                                (@ProdutoID, @EAN13, @Referencia, @PesoBrutoKg, @PesoLiquidoKg, @AlturaCm, @LarguraCm, @ProfundidadeCm, @DUN14, @ReferenciaDUN14, @PesoBrutoDUN14Kg, @PesoLiquidoDUN14Kg, @AlturaDUN14Cm, @LarguraDUN14Cm, @ProfundidadeDUN14Cm, @Embalagem, @QuantidadeUnidades, @MesaCaixas, @AlturaCaixas, @ShelfLifeDias)";
+
+                            using (var cmdUnidadeVendaCompra = new SqlCommand(queryUnidadeVendaCompra, conn, transaction))
+                            {
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@ProdutoID", produtoId);
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@EAN13", ToDbValue(UnidadeVendaCompraData.EAN13!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@Referencia", ToDbValue(UnidadeVendaCompraData.Referencia!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@PesoBrutoKg", ToDbValue(UnidadeVendaCompraData.PesoBrutoKg!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@PesoLiquidoKg", ToDbValue(UnidadeVendaCompraData.PesoLiquidoKg!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@AlturaCm", ToDbValue(UnidadeVendaCompraData.AlturaCm!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@LarguraCm", ToDbValue(UnidadeVendaCompraData.LarguraCm!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@ProfundidadeCm", ToDbValue(UnidadeVendaCompraData.ProfundidadeCm!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@DUN14", ToDbValue(UnidadeVendaCompraData.DUN14!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@ReferenciaDUN14", ToDbValue(UnidadeVendaCompraData.ReferenciaDUN14!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@PesoBrutoDUN14Kg", ToDbValue(UnidadeVendaCompraData.PesoBrutoDUN14Kg!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@PesoLiquidoDUN14Kg", ToDbValue(UnidadeVendaCompraData.PesoLiquidoDUN14Kg!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@AlturaDUN14Cm", ToDbValue(UnidadeVendaCompraData.AlturaDUN14Cm!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@LarguraDUN14Cm", ToDbValue(UnidadeVendaCompraData.LarguraDUN14Cm!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@ProfundidadeDUN14Cm", ToDbValue(UnidadeVendaCompraData.ProfundidadeDUN14Cm!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@Embalagem", ToDbValue(UnidadeVendaCompraData.Embalagem!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@QuantidadeUnidades", ToDbValue(UnidadeVendaCompraData.QuantidadeUnidades!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@MesaCaixas", ToDbValue(UnidadeVendaCompraData.MesaCaixas!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@AlturaCaixas", ToDbValue(UnidadeVendaCompraData.AlturaCaixas!));
+                                cmdUnidadeVendaCompra.Parameters.AddWithValue("@ShelfLifeDias", ToDbValue(UnidadeVendaCompraData.ShelfLifeDias!));
+
+                                await cmdUnidadeVendaCompra.ExecuteNonQueryAsync();
+                            }
+
+                            transaction.Commit();
+                        }
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
@@ -171,5 +210,47 @@ namespace PortalArcomix.Pages
             [StringLength(14)]
             public string? CNPJ { get; set; }
         }
+
+        public class UnidadeVendaCompra
+        {
+            public string? EAN13 { get; set; }
+
+            public string? Referencia { get; set; }
+
+            public decimal? PesoBrutoKg { get; set; }
+
+            public decimal? PesoLiquidoKg { get; set; }
+
+            public int? AlturaCm { get; set; }
+
+            public int? LarguraCm { get; set; }
+
+            public int? ProfundidadeCm { get; set; }
+
+            public string? DUN14 { get; set; }
+
+            public string? ReferenciaDUN14 { get; set; }
+
+            public decimal? PesoBrutoDUN14Kg { get; set; }
+
+            public decimal? PesoLiquidoDUN14Kg { get; set; }
+
+            public int? AlturaDUN14Cm { get; set; }
+
+            public int? LarguraDUN14Cm { get; set; }
+
+            public int? ProfundidadeDUN14Cm { get; set; }
+
+            public string? Embalagem { get; set; }
+
+            public int? QuantidadeUnidades { get; set; }
+
+            public int? MesaCaixas { get; set; }
+
+            public int? AlturaCaixas { get; set; }
+
+            public int? ShelfLifeDias { get; set; }
+        }
     }
 }
+
