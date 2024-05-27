@@ -369,6 +369,94 @@
                         </div>
                     </div>
 
+                    <!--Card SubEmbalagem-->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row" id="idSubEmbalagem">
+                                <div class="col">
+                                    <h4 style="color: #1878BB;">SubEmbalagem</h4>
+                                    <span class="help-block" style="color: #ff0000;">PREENCHER ESTA ABA APENAS SE HOUVER SUBEMBALAGEM</span>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>EAN 13</label>
+                                        <input asp-for="SubEmbalagemData.EAN13" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label>Referencia</label>
+                                        <input asp-for="SubEmbalagemData.Referencia" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>P.Bruto</label>
+                                        <input asp-for="SubEmbalagemData.PesoBrutoKg" class="form-control" />
+                                        <span>(em kg)</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>P.Liquido</label>
+                                        <input asp-for="SubEmbalagemData.PesoLiquidoKg" class="form-control" />
+                                        <span>(em kg)</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Altura</label>
+                                        <input asp-for="SubEmbalagemData.AlturaCm" class="form-control" />
+                                        <span>(em cm)</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Largura</label>
+                                        <input asp-for="SubEmbalagemData.LarguraCm" class="form-control" />
+                                        <span>(em cm)</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Profundidade</label>
+                                        <input asp-for="SubEmbalagemData.ProfundidadeCm" class="form-control" />
+                                        <span>(em cm)</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Embalagem</label>
+                                    <select asp-for="SubEmbalagemData.Embalagem" class="form-control">
+                                        <option value="">Escolher...</option>
+                                        <option value="Caixeta">Caixeta</option>
+                                        <option value="Pacote">Pacote</option>
+                                        <option value="Display">Display</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label>Quantidade</label>
+                                        <input asp-for="SubEmbalagemData.QuantidadeUnidades" class="form-control" />
+                                        <span>(unidades)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
                     <div class="row">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Salvar Alterações</button>

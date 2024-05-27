@@ -19,6 +19,7 @@ namespace PortalArcomix.Pages
             _configuration = configuration;
             Especificacoes = new EspecificacoesProduto();
             UnidadeVendaCompraData = new UnidadeVendaCompra();
+            SubEmbalagemData = new SubEmbalagem();
         }
 
         [BindProperty]
@@ -26,6 +27,9 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public UnidadeVendaCompra UnidadeVendaCompraData { get; set; }
+
+        [BindProperty]
+        public SubEmbalagem SubEmbalagemData { get; set; }
 
         [BindProperty]
         public IFormFile? UploadImagemProduto { get; set; }
@@ -144,6 +148,28 @@ namespace PortalArcomix.Pages
                                 await cmdUnidadeVendaCompra.ExecuteNonQueryAsync();
                             }
 
+                            var querySubEmbalagem = @"
+                                INSERT INTO Tbl_ProdutoSubEmbalagem
+                                (ProdutoID, EAN13, Referencia, PesoBrutoKg, PesoLiquidoKg, AlturaCm, LarguraCm, ProfundidadeCm, Embalagem, QuantidadeUnidades)
+                                VALUES
+                                (@ProdutoID, @EAN13, @Referencia, @PesoBrutoKg, @PesoLiquidoKg, @AlturaCm, @LarguraCm, @ProfundidadeCm, @Embalagem, @QuantidadeUnidades)";
+
+                            using (var cmdSubEmbalagem = new SqlCommand(querySubEmbalagem, conn, transaction))
+                            {
+                                cmdSubEmbalagem.Parameters.AddWithValue("@ProdutoID", produtoId);
+                                cmdSubEmbalagem.Parameters.AddWithValue("@EAN13", ToDbValue(SubEmbalagemData.EAN13!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@Referencia", ToDbValue(SubEmbalagemData.Referencia!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@PesoBrutoKg", ToDbValue(SubEmbalagemData.PesoBrutoKg!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@PesoLiquidoKg", ToDbValue(SubEmbalagemData.PesoLiquidoKg!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@AlturaCm", ToDbValue(SubEmbalagemData.AlturaCm!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@LarguraCm", ToDbValue(SubEmbalagemData.LarguraCm!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@ProfundidadeCm", ToDbValue(SubEmbalagemData.ProfundidadeCm!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@Embalagem", ToDbValue(SubEmbalagemData.Embalagem!));
+                                cmdSubEmbalagem.Parameters.AddWithValue("@QuantidadeUnidades", ToDbValue(SubEmbalagemData.QuantidadeUnidades!));
+
+                                await cmdSubEmbalagem.ExecuteNonQueryAsync();
+                            }
+
                             transaction.Commit();
                         }
                     }
@@ -251,6 +277,28 @@ namespace PortalArcomix.Pages
 
             public int? ShelfLifeDias { get; set; }
         }
+
+        public class SubEmbalagem
+        {
+            public string? EAN13 { get; set; }
+
+            public string? Referencia { get; set; }
+
+            public decimal? PesoBrutoKg { get; set; }
+
+            public decimal? PesoLiquidoKg { get; set; }
+
+            public int? AlturaCm { get; set; }
+
+            public int? LarguraCm { get; set; }
+
+            public int? ProfundidadeCm { get; set; }
+
+            public string? Embalagem { get; set; }
+
+            public int? QuantidadeUnidades { get; set; }
+        }
     }
 }
+
 
