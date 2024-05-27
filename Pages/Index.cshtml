@@ -39,15 +39,13 @@
                 @if (!User.IsInRole("Fornecedor"))
                 {
                     <div class="col-md-4 text-center">
-                        <form method="post">
-                            <button type="submit" class="btn btn-link" style="text-decoration: none; color: inherit; display: block; border: none; padding: 0;">
-                                <div class="frame">
-                                    <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
-                                    <h5>GESTÃO DE FORNECEDORES</h5>
-                                    <p class="text-justify">Cadastrar, Editar, Consultar</p>
-                                </div>
-                            </button>
-                        </form>
+                        <a asp-page="/GestaoFornecedor" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="frame">
+                                <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
+                                <h5>GESTÃO DE FORNECEDORES</h5>
+                                <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                            </div>
+                        </a>
                     </div>
                 }
 

@@ -18,10 +18,5 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-        public IActionResult OnPost()
-        {
-            // Redirect to the Privacy page
-            return RedirectToPage("/Privacy");
-        }
     }
 }
