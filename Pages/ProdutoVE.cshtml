@@ -1,0 +1,221 @@
+﻿@page
+@model PortalArcomix.Pages.ProdutoVEModel
+@{
+    ViewData["Title"] = "ProdutoVE";
+    Layout = "_Layout";
+}
+
+@if (Model.Especificacoes != null)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Column -->
+            <div class="col-md-1 sidebar">
+                <!-- Sidebar navigation items -->
+                <div class="sidebar-item">
+                    <a href="#idEspecificacoesProduto" class="sidebar-link">
+                        <i class="sidebar-icon fa-solid fa-table-list"></i>
+                        <span class="sidebar-text">Especificações</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content Column -->
+            <div class="col-md-11">
+                <form method="post" enctype="multipart/form-data">
+                    <br />
+
+                    <!-- Card Especificações Produto -->
+                    <div class="card" id="idEspecificacoesProduto">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h4 style="color: #1878BB;">Especificações</h4>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="GestorCompras">Gestor de Compras Arcomix</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="Especificacoes.GestorCompras" class="form-control">
+                                            <option value="">Escolher</option>
+                                            <option value="Ana Sales">Ana Sales</option>
+                                            <option value="Bruno Santos">Bruno Santos</option>
+                                            <option value="Carlos Costa">Carlos Costa</option>
+                                            <option value="DoCarmo">DoCarmo</option>
+                                            <option value="Hugo Souza">Hugo Souza</option>
+                                            <option value="João Vieira">João Vieira</option>
+                                            <option value="Juliana Maria">Juliana Maria</option>
+                                            <option value="Juliana Medeiros">Juliana Medeiros</option>
+                                            <option value="Melque">Melque</option>
+                                            <option value="Raphael Mendes">Raphael Mendes</option>
+                                            <option value="Gilberto">Gilberto</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="Marca">Marca:</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="Especificacoes.Marca" class="form-control">
+                                            <option value="">Escolher</option>
+                                            <option value="Nova Marca">Nova Marca</option>
+                                            <option value="Kicaldo">Kicaldo</option>
+                                            <option value="Masterboi">Masterboi</option>
+                                            <option value="Embaré">Embaré</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="Especificacoes.NovaMarca">Nova Marca:</label>
+                                        <input asp-for="Especificacoes.NovaMarca" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <label for="Importado">Importado</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="Especificacoes.Importado" class="form-control">
+                                            <option value="">Escolher...</option>
+                                            <option value="true">SIM</option>
+                                            <option value="false">NÃO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label for="DescricaoProduto">Descrição do Produto (Maximo 30 Caracteres)</label>
+                                        <input asp-for="Especificacoes.DescricaoProduto" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="NCM">NCM/SH (8Dig)</label>
+                                        <input asp-for="Especificacoes.NCM" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="CEST">CEST (7Dig)</label>
+                                        <input asp-for="Especificacoes.CEST" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label for="ICMS">ICMS%</label>
+                                        <input asp-for="Especificacoes.ICMS" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label for="IPI">IPI%</label>
+                                        <input asp-for="Especificacoes.IPI" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label for="PIS">PIS%</label>
+                                        <input asp-for="Especificacoes.PIS" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label for="COFINS">COFINS%</label>
+                                        <input asp-for="Especificacoes.COFINS" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="CustoUnidade">Custo Unidade (R$)</label>
+                                        <input asp-for="Especificacoes.CustoUnidade" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="CustoCaixa">Custo Caixa (R$)</label>
+                                        <input asp-for="Especificacoes.CustoCaixa" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <div class="form-group mb-3">
+                                        <label for="CodXML">Cód XML (44Dig)</label>
+                                        <input asp-for="Especificacoes.CodXML" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="EmbalagemFat">Embalagem Fatura</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="Especificacoes.EmbalagemFat" class="form-control">
+                                            <option value="">Escolher...</option>
+                                            <option value="DUN 14">DUN 14</option>
+                                            <option value="EAN 13">EAN 13</option>
+                                            <option value="Display">Display</option>
+                                            <option value="KG">KG</option>
+                                            <option value="Fardo">Fardo</option>
+                                            <option value="Cód.int.Forn(Ref DUN14)">Cód.int.Forn(Ref DUN14)</option>
+                                            <option value="Cód.int.Forn(Ref EAN13)">Cód.int.Forn(Ref EAN13)</option>
+                                            <option value="Cód.int.Forn(Ref Ref Display)">Cód.int.Forn(Ref Ref Display)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="VerbaCadastro">Verba Cadastro (R$)</label>
+                                        <input asp-for="Especificacoes.VerbaCadastro" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-3">
+                                        <label for="MotivoVerbaZerada">Motivo Verba Zerada</label>
+                                        <input asp-for="Especificacoes.MotivoVerbaZerada" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="form-group mb-3">
+                                        <label for="UploadImagemProduto">Imagem do Produto:</label>
+                                        <input asp-for="UploadImagemProduto" type="file" class="form-control" />
+                                        <span class="help-block" style="color: #ff0000;">* Apenas Imagens * Tamanho Máx 1MB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </div>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No data found for the provided product ID.</p>
+}
