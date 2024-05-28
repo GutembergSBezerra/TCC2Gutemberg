@@ -24,6 +24,8 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public ProdutoGC ProdutoGCDetails { get; set; } = new ProdutoGC();
 
+        public string ImageData { get; set; } // To hold the base64 image data
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -35,7 +37,7 @@ namespace PortalArcomix.Pages
             using (var conn = new SqlConnection(connectionString))
             {
                 var queryProduto = @"
-            SELECT DescricaoProduto, CNPJ, GestorCompras, Importado, CodXML, EmbalagemFat, CustoUnidade, CustoCaixa, VerbaCadastro, Marca
+            SELECT DescricaoProduto, CNPJ, GestorCompras, Importado, CodXML, EmbalagemFat, CustoUnidade, CustoCaixa, VerbaCadastro, Marca, ImagemProduto
             FROM Tbl_Produto
             WHERE ID = @Id";
 
@@ -59,6 +61,11 @@ namespace PortalArcomix.Pages
                             ProdutoDetails.CustoCaixa = reader["CustoCaixa"] != DBNull.Value ? (decimal)reader["CustoCaixa"] : (decimal?)null;
                             ProdutoDetails.VerbaCadastro = reader["VerbaCadastro"] != DBNull.Value ? (decimal)reader["VerbaCadastro"] : (decimal?)null;
                             ProdutoDetails.Marca = reader["Marca"].ToString();
+                            if (reader["ImagemProduto"] != DBNull.Value)
+                            {
+                                byte[] imageBytes = (byte[])reader["ImagemProduto"];
+                                ImageData = Convert.ToBase64String(imageBytes);
+                            }
                         }
                     }
                     await conn.CloseAsync();

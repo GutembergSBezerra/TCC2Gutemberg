@@ -366,8 +366,8 @@
                         </div>
                     </div>
 
-                   @*  <!--Card Imagem-->
-                     <div class="col-md-6">
+                    <!--Card Imagem-->
+                    <div class="col-md-6">
                         <div class="card h-100">
                             <div class="card-body">
                                 <div class="row" id="idImagem">
@@ -379,12 +379,19 @@
 
                                 <div class="row" style="height: 45vh;">
                                     <div class="col d-flex justify-content-center align-items-center" style="height: 100%;">
-                                        <img src="imgs/login_arcomix_alta.png" />
+                                        @if (!string.IsNullOrEmpty(Model.ImageData))
+                                        {
+                                            <img src="data:image/png;base64,@Model.ImageData" alt="Imagem do Produto" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        }
+                                        else
+                                        {
+                                            <p>Imagem não disponível</p>
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>  *@
+                    </div>
                 </div>
 
             </form>
@@ -412,56 +419,7 @@
     });
 </script>
 
-@* <!-- Gerenciamento de Categoria -->
-<div class="row" id="idGC">
-    <div class="col-md-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <h4 style="color: #1878BB;">Gerenciamento de Categoria</h4>
-                <br />
-                <div class="row">
-                    <div class="col-md-2 text-center" style="margin-top: 25px; font-weight: bold;">
-                        <p>Minimo:</p>
-                        <p>Máximo:</p>
-                    </div>
-                    <div class="col-md-2 text-center form-group">
-                        <span style="font-weight: bold;">Principal</span>
-                        <input type="number" class="form-control" asp-for="CategoriaPrincipal.Minimo" />
-                        <input type="number" class="form-control" asp-for="CategoriaPrincipal.Maximo" />
-                    </div>
-                    <div class="col-md-2 form-group">
-                        <input type="checkbox" id="store1Check" class="store-check" checked />
-                        <label for="store1Input">Loja 1:</label>
-                        <input type="number" class="form-control store-input" asp-for="Loja1.Minimo" />
-                        <input type="number" class="form-control store-input" asp-for="Loja1.Maximo" />
-                    </div>
-                    <div class="col-md-2 form-group">
-                        <input type="checkbox" id="store2Check" class="store-check" checked />
-                        <label for="store2Input">Loja 2:</label>
-                        <input type="number" class="form-control store-input" asp-for="Loja2.Minimo" />
-                        <input type="number" class="form-control store-input" asp-for="Loja2.Maximo" />
-                    </div>
-                    <!-- Add more stores as needed -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <h4 style="color: #1878BB;">Imagem do Produto</h4>
-                <br />
-                <div class="row" style="height: 45vh;">
-                    <div class="col d-flex justify-content-center align-items-center" style="height: 100%;">
-                        <img src="imgs/login_arcomix_alta.png" alt="Imagem do Produto" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-
+@* 
 <!-- Dados Tributários -->
 <div class="card" id="idDadosTributarios">
     <div class="card-body">
