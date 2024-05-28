@@ -32,9 +32,9 @@ namespace PortalArcomix.Pages
             using (var conn = new SqlConnection(connectionString))
             {
                 var queryProduto = @"
-                    SELECT DescricaoProduto, CNPJ, GestorCompras, Importado
-                    FROM Tbl_Produto
-                    WHERE ID = @Id";
+            SELECT DescricaoProduto, CNPJ, GestorCompras, Importado, CodXML, EmbalagemFat, CustoUnidade, CustoCaixa, VerbaCadastro, Marca
+            FROM Tbl_Produto
+            WHERE ID = @Id";
 
                 using (var cmdProduto = new SqlCommand(queryProduto, conn))
                 {
@@ -50,6 +50,12 @@ namespace PortalArcomix.Pages
                             ProdutoDetails.CNPJ = reader["CNPJ"].ToString();
                             ProdutoDetails.GestorCompras = reader["GestorCompras"].ToString();
                             ProdutoDetails.Importado = reader["Importado"] != DBNull.Value && (bool)reader["Importado"];
+                            ProdutoDetails.CodXML = reader["CodXML"].ToString();
+                            ProdutoDetails.EmbalagemFat = reader["EmbalagemFat"].ToString();
+                            ProdutoDetails.CustoUnidade = reader["CustoUnidade"] != DBNull.Value ? (decimal)reader["CustoUnidade"] : (decimal?)null;
+                            ProdutoDetails.CustoCaixa = reader["CustoCaixa"] != DBNull.Value ? (decimal)reader["CustoCaixa"] : (decimal?)null;
+                            ProdutoDetails.VerbaCadastro = reader["VerbaCadastro"] != DBNull.Value ? (decimal)reader["VerbaCadastro"] : (decimal?)null;
+                            ProdutoDetails.Marca = reader["Marca"].ToString();
                         }
                     }
                     await conn.CloseAsync();
@@ -58,9 +64,9 @@ namespace PortalArcomix.Pages
                 if (ProdutoDetails.CNPJ != null)
                 {
                     var queryFornecedor = @"
-                        SELECT RazaoSocial, TipoFornecedor
-                        FROM Tbl_Fornecedor
-                        WHERE CNPJ = @CNPJ";
+                SELECT RazaoSocial, TipoFornecedor
+                FROM Tbl_Fornecedor
+                WHERE CNPJ = @CNPJ";
 
                     using (var cmdFornecedor = new SqlCommand(queryFornecedor, conn))
                     {
@@ -83,6 +89,8 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
+
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -95,11 +103,17 @@ namespace PortalArcomix.Pages
             using (var conn = new SqlConnection(connectionString))
             {
                 var queryProduto = @"
-                    UPDATE Tbl_Produto
-                    SET DescricaoProduto = @DescricaoProduto,
-                        GestorCompras = @GestorCompras,
-                        Importado = @Importado
-                    WHERE ID = @Id";
+            UPDATE Tbl_Produto
+            SET DescricaoProduto = @DescricaoProduto,
+                GestorCompras = @GestorCompras,
+                Importado = @Importado,
+                CodXML = @CodXML,
+                EmbalagemFat = @EmbalagemFat,
+                CustoUnidade = @CustoUnidade,
+                CustoCaixa = @CustoCaixa,
+                VerbaCadastro = @VerbaCadastro,
+                Marca = @Marca
+            WHERE ID = @Id";
 
                 using (var cmdProduto = new SqlCommand(queryProduto, conn))
                 {
@@ -107,6 +121,12 @@ namespace PortalArcomix.Pages
                     cmdProduto.Parameters.AddWithValue("@DescricaoProduto", ProdutoDetails.DescricaoProduto);
                     cmdProduto.Parameters.AddWithValue("@GestorCompras", ProdutoDetails.GestorCompras);
                     cmdProduto.Parameters.AddWithValue("@Importado", ProdutoDetails.Importado);
+                    cmdProduto.Parameters.AddWithValue("@CodXML", ProdutoDetails.CodXML);
+                    cmdProduto.Parameters.AddWithValue("@EmbalagemFat", ProdutoDetails.EmbalagemFat);
+                    cmdProduto.Parameters.AddWithValue("@CustoUnidade", ProdutoDetails.CustoUnidade);
+                    cmdProduto.Parameters.AddWithValue("@CustoCaixa", ProdutoDetails.CustoCaixa);
+                    cmdProduto.Parameters.AddWithValue("@VerbaCadastro", ProdutoDetails.VerbaCadastro);
+                    cmdProduto.Parameters.AddWithValue("@Marca", ProdutoDetails.Marca);
 
                     await conn.OpenAsync();
                     await cmdProduto.ExecuteNonQueryAsync();
@@ -116,10 +136,10 @@ namespace PortalArcomix.Pages
                 if (ProdutoDetails.CNPJ != null)
                 {
                     var queryFornecedor = @"
-                        UPDATE Tbl_Fornecedor
-                        SET RazaoSocial = @RazaoSocial,
-                            TipoFornecedor = @TipoFornecedor
-                        WHERE CNPJ = @CNPJ";
+                UPDATE Tbl_Fornecedor
+                SET RazaoSocial = @RazaoSocial,
+                    TipoFornecedor = @TipoFornecedor
+                WHERE CNPJ = @CNPJ";
 
                     using (var cmdFornecedor = new SqlCommand(queryFornecedor, conn))
                     {
@@ -137,14 +157,23 @@ namespace PortalArcomix.Pages
             return RedirectToPage("/SuccessPage"); // Redirect to a success page
         }
 
+
+
         public class Produto
         {
             public int ID { get; set; }
             public string? DescricaoProduto { get; set; }
             public string? CNPJ { get; set; }
-            public string? GestorCompras { get; set; } // New property
-            public bool? Importado { get; set; } // New property
+            public string? GestorCompras { get; set; }
+            public bool? Importado { get; set; }
+            public string? CodXML { get; set; } // Changed to string
+            public string? EmbalagemFat { get; set; } // New property
+            public decimal? CustoUnidade { get; set; } // New property
+            public decimal? CustoCaixa { get; set; } // New property
+            public decimal? VerbaCadastro { get; set; } // New property
+            public string? Marca { get; set; } // New property
         }
+
 
         public class Fornecedor
         {
@@ -153,3 +182,4 @@ namespace PortalArcomix.Pages
         }
     }
 }
+

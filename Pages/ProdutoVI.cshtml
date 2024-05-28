@@ -150,7 +150,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label>Fracionamento</label>
+                                    <label>Fracionamento (novo?)</label>
                                     <select class="form-control">
                                         <option value="">Selecionar</option>
                                         <option value="SIM">SIM</option>
@@ -161,7 +161,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label>Posicionamento</label>
+                                    <label>Posicionamento (novo?)</label>
                                     <select class="form-control">
                                         <option value="">Selecionar</option>
                                         <option value="Low Price">Low Price</option>
@@ -172,7 +172,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
-                                    <label>Forma de Abastecimento</label>
+                                    <label>Forma de Abastecimento (novo?)</label>
                                     <select class="form-control">
                                         <option value="">Selecionar</option>
                                         <option value="Compra Central Entrega Central">Compra Central Entrega Central</option>
@@ -186,7 +186,7 @@
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
-                                    <label>Emb.Compra</label>
+                                    <label>Emb.Compra (novo?)</label>
                                     <select class="form-control">
                                         <option value="">Selecionar</option>
                                         <option value="Caixa">Caixa</option>
@@ -199,7 +199,7 @@
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
-                                    <label>Emb.Transf</label>
+                                    <label>Emb.Transf (novo?)</label>
                                     <select class="form-control">
                                         <option value="">Selecionar</option>
                                         <option value="Caixa">Caixa</option>
@@ -215,13 +215,13 @@
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label>Cód XML</label>
-                                    <input type="number" class="form-control" />
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.CodXML" />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label>Embalagem (XML)</label>
-                                    <select class="form-control">
+                                    <select class="form-control" asp-for="ProdutoDetails.EmbalagemFat">
                                         <option value="">Selecionar</option>
                                         <option value="DUN 14">DUN 14</option>
                                         <option value="EAN 13">EAN 13</option>
@@ -237,30 +237,30 @@
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label>Custo Un(R$)</label>
-                                    <input type="number" class="form-control" />
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.CustoUnidade" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label>Custo Cx(R$)</label>
-                                    <input type="number" class="form-control" />
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.CustoCaixa" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
-                                    <label>NºContrato</label>
+                                    <label>NºContrato (Novo?)</label>
                                     <input type="number" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label>Verba de Cadastro(R$)</label>
-                                    <input type="number" class="form-control" />
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.VerbaCadastro" />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label>Motivo da Verba Zerada</label>
+                                    <label>Motivo da Verba Zerada (dropdown ou texto?)</label>
                                     <select class="form-control">
                                         <option value="">Selecionar</option>
                                         <option value="Isento">Isento</option>
@@ -290,8 +290,8 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label>Marca:</label>
-                                    <select class="form-control">
+                                    <label>Marca</label>
+                                    <select class="form-control" asp-for="ProdutoDetails.Marca">
                                         <option value="">Selecionar</option>
                                         <option value="Nova Marca">Nova Marca</option>
                                         <option value="Kicaldo">Kicaldo</option>
@@ -308,7 +308,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
-                                    <label>Familia</label>
+                                    <label>Familia (Novo?)</label>
                                     <input type="text" class="form-control" />
                                 </div>
                             </div>
@@ -328,6 +328,7 @@
                     </div>
                 </div>
                 <br />                
+
             </form>
         </div>
     </div>
