@@ -19,7 +19,7 @@
             <div class="sidebar-item">
                 <a href="#idGC" class="sidebar-link">
                     <i class="sidebar-icon fa-solid fa-list"></i>
-                    <span class="sidebar-text">Gerenciamento de Categoria</span>
+                    <span class="sidebar-text">GC</span>
                 </a>
             </div>
             <div class="sidebar-item">
@@ -330,6 +330,8 @@
                 <br />
 
                 <!--Card Gerenciamento de Categoria-->
+
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card h-100">
@@ -394,6 +396,324 @@
                     </div>
                 </div>
 
+
+                <br />
+
+                <!-- Dados Tributários -->
+                <div class="card" id="idDadosTributarios">
+                    <div class="card-body">
+                        <h4 style="color: #1878BB;">Dados Tributários</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>NCM/SH:</label>
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.NCM" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>CEST</label>
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.CEST" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>MVA</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="idFornTipo">Cesta Basica</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control">
+                                        <option value="escolher">Selecionar</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>ICMS%</label>
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.ICMS" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>ICMS-ST%</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>IPI%</label>
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.IPI" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>PIS%</label>
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.PIS" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>COFINS%</label>
+                                    <input type="number" class="form-control" asp-for="ProdutoDetails.COFINS" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Tributação</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="idFornTipo">CST PIS/COFINS Entrada</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control">
+                                        <option value="escolher">Selecionar</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idFornTipo">CST PIS/COFINS Saída</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control">
+                                        <option value="escolher">Selecionar</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idFornTipo">Natureza da Receita</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control">
+                                        <option value="escolher">Selecionar</option>
+                                        <option value="Sim">Sim</option>
+                                        <option value="Não">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <!-- Dados Logísticos -->
+                <div class="card" id="idDadosLogisticos">
+                    <div class="card-body">
+                        <h4 style="color: #1878BB;">Dados Logísticos</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>EAN 13</label>
+                                <div class="form-group mb-2">
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Referencia Venda</label>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>P.Bruto(Kg)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>P.Liquido(Kg)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Altura (cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Largura(cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Profund(cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Mesa(Caixas)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Altura(Caixas)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>ShelfLife(Dias)</label>
+                                    <input type="number" class="form-control" />
+                                    <span><input type="checkbox" /> Não Possui</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label>DUN 14</label>
+                                    <span style="margin-left: 15px;">
+                                        <input type="checkbox" /> Não Possui
+                                    </span>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label>Referencia Compra</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>P.Bruto(Kg)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>P.Liquido(Kg)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Altura(cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Largura(cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Profund(cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Embalagem</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control">
+                                        <option value="">Selecionar</option>
+                                        <option value="Caixa">Caixa</option>
+                                        <option value="Fardo">Fardo</option>
+                                        <option value="Display">Display</option>
+                                        <option value="Unidade">Unidade</option>
+                                        <option value="Kilo">Kilo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Quantidade</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label>EAN 13 SubEmbalagem</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label>Referencia SubEmbalagem</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>P.Bruto(Kg)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>P.Liquido(Kg)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Altura(Cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Largura(Cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Profund(Cm)</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label>SubEmbalagem</label>
+                                <div class="form-group mb-3">
+                                    <select class="form-control">
+                                        <option value="">Selecionar</option>
+                                        <option value="Caixeta">Caixeta</option>
+                                        <option value="Pacote">Pacote</option>
+                                        <option value="Display">Display</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>Quantidade</label>
+                                    <input type="number" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <!-- Submit button -->
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group" style="margin-top: 25px;">
+                            <button id="idValidar" type="submit" class="btn btn-primary">Validar</button>
+                            <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -418,318 +738,3 @@
         });
     });
 </script>
-
-@* 
-<!-- Dados Tributários -->
-<div class="card" id="idDadosTributarios">
-    <div class="card-body">
-        <h4 style="color: #1878BB;">Dados Tributários</h4>
-        <br />
-        <div class="row">
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>NCM/SH:</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.NCM" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>CEST</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.CEST" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>MVA</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.MVA" />
-                </div>
-            </div>
-            <div class="col-md-2">
-                <label for="idFornTipo">Cesta Basica</label>
-                <div class="form-group mb-3">
-                    <select class="form-control" asp-for="DadosTributarios.CestaBasica">
-                        <option value="escolher">Selecionar</option>
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>ICMS%</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.ICMS" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>ICMS-ST%</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.ICMSST" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>IPI%</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.IPI" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>PIS%</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.PIS" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>COFINS%</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.COFINS" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Tributação</label>
-                    <input type="number" class="form-control" asp-for="DadosTributarios.Tributacao" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <label for="idFornTipo">CST PIS/COFINS Entrada</label>
-                <div class="form-group mb-3">
-                    <select class="form-control" asp-for="DadosTributarios.CSTPISCOFINSEntrada">
-                        <option value="escolher">Selecionar</option>
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label for="idFornTipo">CST PIS/COFINS Saída</label>
-                <div class="form-group mb-3">
-                    <select class="form-control" asp-for="DadosTributarios.CSTPISCOFINSSaida">
-                        <option value="escolher">Selecionar</option>
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label for="idFornTipo">Natureza da Receita</label>
-                <div class="form-group mb-3">
-                    <select class="form-control" asp-for="DadosTributarios.NaturezaReceita">
-                        <option value="escolher">Selecionar</option>
-                        <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-
-<!-- Dados Logísticos -->
-<div class="card" id="idDadosLogisticos">
-    <div class="card-body">
-        <h4 style="color: #1878BB;">Dados Logísticos</h4>
-        <br />
-        <div class="row">
-            <div class="col-md-2">
-                <label>EAN 13</label>
-                <div class="form-group mb-2">
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.EAN13" />
-                </div>
-            </div>
-            <div class="col-md-2">
-                <label>Referencia Venda</label>
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" asp-for="DadosLogisticos.ReferenciaVenda" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>P.Bruto(Kg)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.PesoBruto" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>P.Liquido(Kg)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.PesoLiquido" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Altura (cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.Altura" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Largura(cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.Largura" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Profund(cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.Profundidade" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Mesa(Caixas)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.MesaCaixas" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Altura(Caixas)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.AlturaCaixas" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>ShelfLife(Dias)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.ShelfLife" />
-                    <span><input type="checkbox" asp-for="DadosLogisticos.NaoPossuiShelfLife" /> Não Possui</span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <div class="form-group mb-3">
-                    <label>DUN 14</label>
-                    <span style="margin-left: 15px;">
-                        <input type="checkbox" asp-for="DadosLogisticos.NaoPossuiDUN14" /> Não Possui
-                    </span>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.DUN14" />
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group mb-3">
-                    <label>Referencia Compra</label>
-                    <input type="text" class="form-control" asp-for="DadosLogisticos.ReferenciaCompra" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>P.Bruto(Kg)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.PesoBrutoCompra" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>P.Liquido(Kg)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.PesoLiquidoCompra" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Altura(cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.AlturaCompra" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Largura(cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.LarguraCompra" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Profund(cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.ProfundidadeCompra" />
-                </div>
-            </div>
-            <div class="col-md-2">
-                <label>Embalagem</label>
-                <div class="form-group mb-3">
-                    <select class="form-control" asp-for="DadosLogisticos.Embalagem">
-                        <option value="">Selecionar</option>
-                        <option value="Caixa">Caixa</option>
-                        <option value="Fardo">Fardo</option>
-                        <option value="Display">Display</option>
-                        <option value="Unidade">Unidade</option>
-                        <option value="Kilo">Kilo</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Quantidade</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.Quantidade" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <div class="form-group mb-3">
-                    <label>EAN 13 SubEmbalagem</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.EAN13SubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group mb-3">
-                    <label>Referencia SubEmbalagem</label>
-                    <input type="text" class="form-control" asp-for="DadosLogisticos.ReferenciaSubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>P.Bruto(Kg)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.PesoBrutoSubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>P.Liquido(Kg)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.PesoLiquidoSubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Altura(Cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.AlturaSubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Largura(Cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.LarguraSubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Profund(Cm)</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.ProfundidadeSubEmbalagem" />
-                </div>
-            </div>
-            <div class="col-md-2">
-                <label>SubEmbalagem</label>
-                <div class="form-group mb-3">
-                    <select class="form-control" asp-for="DadosLogisticos.TipoSubEmbalagem">
-                        <option value="">Selecionar</option>
-                        <option value="Caixeta">Caixeta</option>
-                        <option value="Pacote">Pacote</option>
-                        <option value="Display">Display</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group mb-3">
-                    <label>Quantidade</label>
-                    <input type="number" class="form-control" asp-for="DadosLogisticos.QuantidadeSubEmbalagem" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-1">
-                <div class="form-group" style="margin-top: 25px;">
-                    <a id="idValidar" style="margin-right: 5px;" class="btn btn-primary" href="#" role="button">Validar</a>
-                    <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br /> *@

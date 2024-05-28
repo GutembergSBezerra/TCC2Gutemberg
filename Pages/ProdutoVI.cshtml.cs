@@ -37,9 +37,10 @@ namespace PortalArcomix.Pages
             using (var conn = new SqlConnection(connectionString))
             {
                 var queryProduto = @"
-            SELECT DescricaoProduto, CNPJ, GestorCompras, Importado, CodXML, EmbalagemFat, CustoUnidade, CustoCaixa, VerbaCadastro, Marca, ImagemProduto
-            FROM Tbl_Produto
-            WHERE ID = @Id";
+        SELECT DescricaoProduto, CNPJ, GestorCompras, Importado, CodXML, EmbalagemFat, CustoUnidade, CustoCaixa, VerbaCadastro, Marca, ImagemProduto,
+               NCM, CEST, ICMS, IPI, PIS, COFINS
+        FROM Tbl_Produto
+        WHERE ID = @Id";
 
                 using (var cmdProduto = new SqlCommand(queryProduto, conn))
                 {
@@ -61,6 +62,12 @@ namespace PortalArcomix.Pages
                             ProdutoDetails.CustoCaixa = reader["CustoCaixa"] != DBNull.Value ? (decimal)reader["CustoCaixa"] : (decimal?)null;
                             ProdutoDetails.VerbaCadastro = reader["VerbaCadastro"] != DBNull.Value ? (decimal)reader["VerbaCadastro"] : (decimal?)null;
                             ProdutoDetails.Marca = reader["Marca"].ToString();
+                            ProdutoDetails.NCM = reader["NCM"].ToString();
+                            ProdutoDetails.CEST = reader["CEST"].ToString();
+                            ProdutoDetails.ICMS = reader["ICMS"] != DBNull.Value ? (decimal)reader["ICMS"] : (decimal?)null;
+                            ProdutoDetails.IPI = reader["IPI"] != DBNull.Value ? (decimal)reader["IPI"] : (decimal?)null;
+                            ProdutoDetails.PIS = reader["PIS"] != DBNull.Value ? (decimal)reader["PIS"] : (decimal?)null;
+                            ProdutoDetails.COFINS = reader["COFINS"] != DBNull.Value ? (decimal)reader["COFINS"] : (decimal?)null;
                             if (reader["ImagemProduto"] != DBNull.Value)
                             {
                                 byte[] imageBytes = (byte[])reader["ImagemProduto"];
@@ -173,17 +180,17 @@ namespace PortalArcomix.Pages
 
 
         public async Task<IActionResult> OnPostAsync()
-    {
-        if (!ModelState.IsValid)
         {
-            return Page();
-        }
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-        var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+            var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
 
-        using (var conn = new SqlConnection(connectionString))
-        {
-            var queryProduto = @"
+            using (var conn = new SqlConnection(connectionString))
+            {
+                var queryProduto = @"
             UPDATE Tbl_Produto
             SET DescricaoProduto = @DescricaoProduto,
                 GestorCompras = @GestorCompras,
@@ -194,46 +201,59 @@ namespace PortalArcomix.Pages
                 CustoCaixa = @CustoCaixa,
                 VerbaCadastro = @VerbaCadastro,
                 Marca = @Marca
+                NCM = @NCM,
+                CEST = @CEST,
+                ICMS = @ICMS,
+                IPI = @IPI,
+                PIS = @PIS,
+                COFINS = @COFINS
+
             WHERE ID = @Id";
 
-            using (var cmdProduto = new SqlCommand(queryProduto, conn))
-            {
-                cmdProduto.Parameters.AddWithValue("@Id", ProdutoDetails.ID);
-                cmdProduto.Parameters.AddWithValue("@DescricaoProduto", ProdutoDetails.DescricaoProduto);
-                cmdProduto.Parameters.AddWithValue("@GestorCompras", ProdutoDetails.GestorCompras);
-                cmdProduto.Parameters.AddWithValue("@Importado", ProdutoDetails.Importado);
-                cmdProduto.Parameters.AddWithValue("@CodXML", ProdutoDetails.CodXML);
-                cmdProduto.Parameters.AddWithValue("@EmbalagemFat", ProdutoDetails.EmbalagemFat);
-                cmdProduto.Parameters.AddWithValue("@CustoUnidade", ProdutoDetails.CustoUnidade);
-                cmdProduto.Parameters.AddWithValue("@CustoCaixa", ProdutoDetails.CustoCaixa);
-                cmdProduto.Parameters.AddWithValue("@VerbaCadastro", ProdutoDetails.VerbaCadastro);
-                cmdProduto.Parameters.AddWithValue("@Marca", ProdutoDetails.Marca);
+                using (var cmdProduto = new SqlCommand(queryProduto, conn))
+                {
+                    cmdProduto.Parameters.AddWithValue("@Id", ProdutoDetails.ID);
+                    cmdProduto.Parameters.AddWithValue("@DescricaoProduto", ProdutoDetails.DescricaoProduto);
+                    cmdProduto.Parameters.AddWithValue("@GestorCompras", ProdutoDetails.GestorCompras);
+                    cmdProduto.Parameters.AddWithValue("@Importado", ProdutoDetails.Importado);
+                    cmdProduto.Parameters.AddWithValue("@CodXML", ProdutoDetails.CodXML);
+                    cmdProduto.Parameters.AddWithValue("@EmbalagemFat", ProdutoDetails.EmbalagemFat);
+                    cmdProduto.Parameters.AddWithValue("@CustoUnidade", ProdutoDetails.CustoUnidade);
+                    cmdProduto.Parameters.AddWithValue("@CustoCaixa", ProdutoDetails.CustoCaixa);
+                    cmdProduto.Parameters.AddWithValue("@VerbaCadastro", ProdutoDetails.VerbaCadastro);
+                    cmdProduto.Parameters.AddWithValue("@Marca", ProdutoDetails.Marca);
+                    cmdProduto.Parameters.AddWithValue("@NCM", ProdutoDetails.NCM);
+                    cmdProduto.Parameters.AddWithValue("@CEST", ProdutoDetails.CEST);
+                    cmdProduto.Parameters.AddWithValue("@ICMS", ProdutoDetails.ICMS);
+                    cmdProduto.Parameters.AddWithValue("@IPI", ProdutoDetails.IPI);
+                    cmdProduto.Parameters.AddWithValue("@PIS", ProdutoDetails.PIS);
+                    cmdProduto.Parameters.AddWithValue("@COFINS", ProdutoDetails.COFINS);
 
-                await conn.OpenAsync();
-                await cmdProduto.ExecuteNonQueryAsync();
-                await conn.CloseAsync();
-            }
+                    await conn.OpenAsync();
+                    await cmdProduto.ExecuteNonQueryAsync();
+                    await conn.CloseAsync();
+                }
 
-            if (ProdutoDetails.CNPJ != null)
-            {
-                var queryFornecedor = @"
+                if (ProdutoDetails.CNPJ != null)
+                {
+                    var queryFornecedor = @"
                 UPDATE Tbl_Fornecedor
                 SET RazaoSocial = @RazaoSocial,
                     TipoFornecedor = @TipoFornecedor
                 WHERE CNPJ = @CNPJ";
 
-                using (var cmdFornecedor = new SqlCommand(queryFornecedor, conn))
-                {
-                    cmdFornecedor.Parameters.AddWithValue("@CNPJ", ProdutoDetails.CNPJ);
-                    cmdFornecedor.Parameters.AddWithValue("@RazaoSocial", FornecedorDetails.RazaoSocial);
-                    cmdFornecedor.Parameters.AddWithValue("@TipoFornecedor", FornecedorDetails.TipoFornecedor);
+                    using (var cmdFornecedor = new SqlCommand(queryFornecedor, conn))
+                    {
+                        cmdFornecedor.Parameters.AddWithValue("@CNPJ", ProdutoDetails.CNPJ);
+                        cmdFornecedor.Parameters.AddWithValue("@RazaoSocial", FornecedorDetails.RazaoSocial);
+                        cmdFornecedor.Parameters.AddWithValue("@TipoFornecedor", FornecedorDetails.TipoFornecedor);
 
-                    await conn.OpenAsync();
-                    await cmdFornecedor.ExecuteNonQueryAsync();
-                    await conn.CloseAsync();
-                }
+                        await conn.OpenAsync();
+                        await cmdFornecedor.ExecuteNonQueryAsync();
+                        await conn.CloseAsync();
+                    }
 
-                var queryGC = @"
+                    var queryGC = @"
             IF EXISTS (SELECT 1 FROM Tbl_ProdutosGC WHERE ProdutoID = @ProdutoID)
             BEGIN
                 UPDATE Tbl_ProdutosGC
@@ -267,98 +287,107 @@ namespace PortalArcomix.Pages
                 VALUES (@ProdutoID, @LJ1Max, @LJ1Min, @LJ2Max, @LJ2Min, @LJ3Max, @LJ3Min, @LJ4Max, @LJ4Min, @LJ5Max, @LJ5Min, @LJ6Max, @LJ6Min, @LJ7Max, @LJ7Min, @LJ8Max, @LJ8Min, @LJ9Max, @LJ9Min, @LJ10Max, @LJ10Min, @LJ11Max, @LJ11Min, @LJ12Max, @LJ12Min, @LJ13Max, @LJ13Min, @LJ14Max, @LJ14Min, @LJ15Max, @LJ15Min, @LJ16Max, @LJ16Min, @LJ17Max, @LJ17Min, @LJ18Max, @LJ18Min, @LJ19Max, @LJ19Min, @LJ20Max, @LJ20Min, @LJ21Max, @LJ21Min, @LJ22Max, @LJ22Min)
             END";
 
-                using (var cmdGC = new SqlCommand(queryGC, conn))
-                {
-                    cmdGC.Parameters.AddWithValue("@ProdutoID", ProdutoDetails.ID);
-                    for (int i = 1; i <= 22; i++)
+                    using (var cmdGC = new SqlCommand(queryGC, conn))
                     {
-                        cmdGC.Parameters.AddWithValue($"@LJ{i}Max", Request.Form[$"LJ{i}Max"]);
-                        cmdGC.Parameters.AddWithValue($"@LJ{i}Min", Request.Form[$"LJ{i}Min"]);
-                    }
+                        cmdGC.Parameters.AddWithValue("@ProdutoID", ProdutoDetails.ID);
+                        for (int i = 1; i <= 22; i++)
+                        {
+                            cmdGC.Parameters.AddWithValue($"@LJ{i}Max", Request.Form[$"LJ{i}Max"]);
+                            cmdGC.Parameters.AddWithValue($"@LJ{i}Min", Request.Form[$"LJ{i}Min"]);
+                        }
 
-                    await conn.OpenAsync();
-                    await cmdGC.ExecuteNonQueryAsync();
-                    await conn.CloseAsync();
+                        await conn.OpenAsync();
+                        await cmdGC.ExecuteNonQueryAsync();
+                        await conn.CloseAsync();
+                    }
                 }
             }
+
+            return RedirectToPage("/SuccessPage"); // Redirect to a success page
         }
 
-        return RedirectToPage("/SuccessPage"); // Redirect to a success page
+
+
+        public class Produto
+        {
+            public int ID { get; set; }
+            public string? GestorCompras { get; set; }
+            public string? Marca { get; set; }
+            public string? NovaMarca { get; set; }
+            public bool? Importado { get; set; }
+            public string? DescricaoProduto { get; set; }
+            public string? NCM { get; set; } // char(8)
+            public string? CEST { get; set; } // char(7)
+            public decimal? ICMS { get; set; } // decimal(5, 2)
+            public decimal? IPI { get; set; } // decimal(5, 2)
+            public decimal? PIS { get; set; } // decimal(5, 2)
+            public decimal? COFINS { get; set; } // decimal(5, 2)
+            public decimal? CustoUnidade { get; set; } // decimal(8, 2)
+            public decimal? CustoCaixa { get; set; } // decimal(8, 2)
+            public string? CodXML { get; set; } // nvarchar(44)
+            public string? EmbalagemFat { get; set; } // nvarchar(50)
+            public decimal? VerbaCadastro { get; set; } // decimal(9, 2)
+            public string? MotivoVerbaZerada { get; set; } // nvarchar(255)
+            public string? CNPJ { get; set; } // char(14)
+            public byte[]? ImagemProduto { get; set; } // varbinary(MAX)
+        }
+
+
+        public class Fornecedor
+        {
+            public string? RazaoSocial { get; set; }
+            public string? TipoFornecedor { get; set; } // New property
+        }
+
+        public class ProdutoGC
+        {
+            public int ProdutoID { get; set; }
+            public int? LJ1Max { get; set; }
+            public int? LJ1Min { get; set; }
+            public int? LJ2Max { get; set; }
+            public int? LJ2Min { get; set; }
+            public int? LJ3Max { get; set; }
+            public int? LJ3Min { get; set; }
+            public int? LJ4Max { get; set; }
+            public int? LJ4Min { get; set; }
+            public int? LJ5Max { get; set; }
+            public int? LJ5Min { get; set; }
+            public int? LJ6Max { get; set; }
+            public int? LJ6Min { get; set; }
+            public int? LJ7Max { get; set; }
+            public int? LJ7Min { get; set; }
+            public int? LJ8Max { get; set; }
+            public int? LJ8Min { get; set; }
+            public int? LJ9Max { get; set; }
+            public int? LJ9Min { get; set; }
+            public int? LJ10Max { get; set; }
+            public int? LJ10Min { get; set; }
+            public int? LJ11Max { get; set; }
+            public int? LJ11Min { get; set; }
+            public int? LJ12Max { get; set; }
+            public int? LJ12Min { get; set; }
+            public int? LJ13Max { get; set; }
+            public int? LJ13Min { get; set; }
+            public int? LJ14Max { get; set; }
+            public int? LJ14Min { get; set; }
+            public int? LJ15Max { get; set; }
+            public int? LJ15Min { get; set; }
+            public int? LJ16Max { get; set; }
+            public int? LJ16Min { get; set; }
+            public int? LJ17Max { get; set; }
+            public int? LJ17Min { get; set; }
+            public int? LJ18Max { get; set; }
+            public int? LJ18Min { get; set; }
+            public int? LJ19Max { get; set; }
+            public int? LJ19Min { get; set; }
+            public int? LJ20Max { get; set; }
+            public int? LJ20Min { get; set; }
+            public int? LJ21Max { get; set; }
+            public int? LJ21Min { get; set; }
+            public int? LJ22Max { get; set; }
+            public int? LJ22Min { get; set; }
+        }
+
     }
-
-
-
-    public class Produto
-    {
-        public int ID { get; set; }
-        public string? DescricaoProduto { get; set; }
-        public string? CNPJ { get; set; }
-        public string? GestorCompras { get; set; }
-        public bool? Importado { get; set; }
-        public string? CodXML { get; set; } // Changed to string
-        public string? EmbalagemFat { get; set; } // New property
-        public decimal? CustoUnidade { get; set; } // New property
-        public decimal? CustoCaixa { get; set; } // New property
-        public decimal? VerbaCadastro { get; set; } // New property
-        public string? Marca { get; set; } // New property
-    }
-
-
-    public class Fornecedor
-    {
-        public string? RazaoSocial { get; set; }
-        public string? TipoFornecedor { get; set; } // New property
-    }
-
-    public class ProdutoGC
-    {
-        public int ProdutoID { get; set; }
-        public int? LJ1Max { get; set; }
-        public int? LJ1Min { get; set; }
-        public int? LJ2Max { get; set; }
-        public int? LJ2Min { get; set; }
-        public int? LJ3Max { get; set; }
-        public int? LJ3Min { get; set; }
-        public int? LJ4Max { get; set; }
-        public int? LJ4Min { get; set; }
-        public int? LJ5Max { get; set; }
-        public int? LJ5Min { get; set; }
-        public int? LJ6Max { get; set; }
-        public int? LJ6Min { get; set; }
-        public int? LJ7Max { get; set; }
-        public int? LJ7Min { get; set; }
-        public int? LJ8Max { get; set; }
-        public int? LJ8Min { get; set; }
-        public int? LJ9Max { get; set; }
-        public int? LJ9Min { get; set; }
-        public int? LJ10Max { get; set; }
-        public int? LJ10Min { get; set; }
-        public int? LJ11Max { get; set; }
-        public int? LJ11Min { get; set; }
-        public int? LJ12Max { get; set; }
-        public int? LJ12Min { get; set; }
-        public int? LJ13Max { get; set; }
-        public int? LJ13Min { get; set; }
-        public int? LJ14Max { get; set; }
-        public int? LJ14Min { get; set; }
-        public int? LJ15Max { get; set; }
-        public int? LJ15Min { get; set; }
-        public int? LJ16Max { get; set; }
-        public int? LJ16Min { get; set; }
-        public int? LJ17Max { get; set; }
-        public int? LJ17Min { get; set; }
-        public int? LJ18Max { get; set; }
-        public int? LJ18Min { get; set; }
-        public int? LJ19Max { get; set; }
-        public int? LJ19Min { get; set; }
-        public int? LJ20Max { get; set; }
-        public int? LJ20Min { get; set; }
-        public int? LJ21Max { get; set; }
-        public int? LJ21Min { get; set; }
-        public int? LJ22Max { get; set; }
-        public int? LJ22Min { get; set; }
-    }
-
-}
 }
 
