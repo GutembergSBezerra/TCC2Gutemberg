@@ -39,7 +39,7 @@
                                 <div class="col-md-3">
                                     <label for="GestorCompras">Gestor de Compras Arcomix</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="Especificacoes.GestorCompras" class="form-control">
+                                        <select id="GestorCompras" class="form-control validate-required" name="Especificacoes.GestorCompras">
                                             <option value="">Escolher</option>
                                             <option value="Ana Sales">Ana Sales</option>
                                             <option value="Bruno Santos">Bruno Santos</option>
@@ -59,7 +59,7 @@
                                 <div class="col-md-2">
                                     <label for="Marca">Marca:</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="Especificacoes.Marca" class="form-control">
+                                        <select asp-for="Especificacoes.Marca" class="form-control validate-required">
                                             <option value="">Escolher</option>
                                             <option value="Nova Marca">Nova Marca</option>
                                             <option value="Kicaldo">Kicaldo</option>
@@ -79,7 +79,7 @@
                                 <div class="col-md-1">
                                     <label for="Importado">Importado</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="Especificacoes.Importado" class="form-control">
+                                        <select asp-for="Especificacoes.Importado" class="form-control validate-required">
                                             <option value="">Escolher...</option>
                                             <option value="true">SIM</option>
                                             <option value="false">NÃO</option>
@@ -90,7 +90,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group mb-3">
                                         <label for="DescricaoProduto">Descrição do Produto (Maximo 30 Caracteres)</label>
-                                        <input asp-for="Especificacoes.DescricaoProduto" class="form-control" />
+                                        <input asp-for="Especificacoes.DescricaoProduto" class="form-control validate-required" />
                                     </div>
                                 </div>
                             </div>
@@ -99,49 +99,49 @@
                                 <div class="col-md-2">
                                     <div class="form-group mb-3">
                                         <label for="NCM">NCM/SH (8Dig)</label>
-                                        <input asp-for="Especificacoes.NCM" class="form-control" />
+                                        <input asp-for="Especificacoes.NCM" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="form-group mb-3">
                                         <label for="CEST">CEST (7Dig)</label>
-                                        <input asp-for="Especificacoes.CEST" class="form-control" />
+                                        <input asp-for="Especificacoes.CEST" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-1">
                                     <div class="form-group mb-3">
                                         <label for="ICMS">ICMS%</label>
-                                        <input asp-for="Especificacoes.ICMS" class="form-control" />
+                                        <input asp-for="Especificacoes.ICMS" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-1">
                                     <div class="form-group mb-3">
                                         <label for="IPI">IPI%</label>
-                                        <input asp-for="Especificacoes.IPI" class="form-control" />
+                                        <input asp-for="Especificacoes.IPI" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-1">
                                     <div class="form-group mb-3">
                                         <label for="PIS">PIS%</label>
-                                        <input asp-for="Especificacoes.PIS" class="form-control" />
+                                        <input asp-for="Especificacoes.PIS" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-1">
                                     <div class="form-group mb-3">
                                         <label for="COFINS">COFINS%</label>
-                                        <input asp-for="Especificacoes.COFINS" class="form-control" />
+                                        <input asp-for="Especificacoes.COFINS" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="form-group mb-3">
                                         <label for="CustoUnidade">Custo Unidade (R$)</label>
-                                        <input asp-for="Especificacoes.CustoUnidade" class="form-control" />
+                                        <input asp-for="Especificacoes.CustoUnidade" class="form-control validate-required" />
                                     </div>
                                 </div>
 
@@ -164,7 +164,7 @@
                                 <div class="col-md-2">
                                     <label for="EmbalagemFat">Embalagem Fatura</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="Especificacoes.EmbalagemFat" class="form-control">
+                                        <select asp-for="Especificacoes.EmbalagemFat" class="form-control validate-required">
                                             <option value="">Escolher...</option>
                                             <option value="DUN 14">DUN 14</option>
                                             <option value="EAN 13">EAN 13</option>
@@ -181,14 +181,14 @@
                                 <div class="col-md-2">
                                     <div class="form-group mb-3">
                                         <label for="VerbaCadastro">Verba Cadastro (R$)</label>
-                                        <input asp-for="Especificacoes.VerbaCadastro" class="form-control" />
+                                        <input asp-for="Especificacoes.VerbaCadastro" class="form-control validate-required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="form-group mb-3">
                                         <label for="MotivoVerbaZerada">Motivo Verba Zerada</label>
-                                        <input asp-for="Especificacoes.MotivoVerbaZerada" class="form-control" />
+                                        <input asp-for="Especificacoes.MotivoVerbaZerada" class="form-control validate-required" />
                                     </div>
                                 </div>
 
@@ -472,3 +472,30 @@ else
 {
     <p>No data found for the provided product ID.</p>
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll('.validate-required');
+
+        inputs.forEach(input => {
+            input.addEventListener('blur', function () {
+                if (this.value.trim() === '') {
+                    let label = this.closest('.form-group').querySelector('label');
+                    if (!label) {
+                        label = this.closest('.form-group').previousElementSibling;
+                    }
+                    if (label) {
+                        alert(`O campo "${label.textContent}" não pode ficar em branco`);
+                        // Remove the blur event temporarily to avoid infinite loop
+                        this.removeEventListener('blur', arguments.callee);
+                        this.focus();
+                        // Re-add the blur event after refocus
+                        setTimeout(() => {
+                            this.addEventListener('blur', arguments.callee);
+                        }, 0);
+                    }
+                }
+            });
+        });
+    });
+</script>
