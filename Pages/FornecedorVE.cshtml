@@ -107,13 +107,13 @@
                                 <div class="col-md-2">
                                     <label>CEP:</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.CEP" name="CEP" />
+                                        <input type="text" class="form-control validate-required" id="CEP" name="CEP" value="@Model.Fornecedor.CEP" onblur="fetchAddress()" />
                                     </div>
                                 </div>
                                 <div class="col-md-7">
                                     <label>Logradouro:</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.Logradouro" name="Logradouro" />
+                                        <input type="text" class="form-control validate-required" id="Logradouro" name="Logradouro" value="@Model.Fornecedor.Logradouro" />
                                     </div>
                                 </div>
                                 <div class="col-md-1">
@@ -128,7 +128,7 @@
                                 <div class="col-md-2">
                                     <label>Bairro:</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.Bairro" name="Bairro" />
+                                        <input type="text" id="Bairro" class="form-control validate-required" value="@Model.Fornecedor.Bairro" name="Bairro" />
                                     </div>
                                 </div>
 
@@ -142,8 +142,8 @@
                                 <div class="col-md-1">
                                     <label for="idUF">UF:</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="UF">
-                                            <option selected>@Model.Fornecedor.UF</option>
+                                        <select class="form-control validate-required" id="UF" name="UF">
+                                            <option value="">Selecione</option>
                                             @foreach (var uf in new List<string> { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" })
                                             {
                                                 <option value="@uf">@uf</option>
@@ -151,10 +151,11 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-5">
                                     <label>Cidade:</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.Cidade" name="Cidade" />
+                                        <input type="text" id="Cidade" class="form-control validate-required" value="@Model.Fornecedor.Cidade" name="Cidade" />
                                     </div>
                                 </div>
                             </div>
@@ -939,5 +940,28 @@ else
                 alert("Cadastro atualizado com sucesso");
             }
         });
+
+        // Function to fetch address from ViaCEP
+        function fetchAddress() {
+            const cep = document.getElementById('CEP').value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                const url = `https://viacep.com.br/ws/${cep}/json/`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.erro) {
+                            console.error('CEP não encontrado.');
+                            return;
+                        }
+                        document.getElementById('Logradouro').value = data.logradouro;
+                        document.getElementById('Bairro').value = data.bairro;
+                        document.getElementById('Cidade').value = data.localidade;
+                        document.getElementById('UF').value = data.uf;
+                    })
+                    .catch(error => console.error('Erro ao buscar o CEP:', error));
+            }
+        }
+
     </script>
 }
