@@ -17,15 +17,15 @@ namespace PortalArcomix.Pages
         }
 
         [BindProperty]
-        public FornecedorData Fornecedor { get; set; }
+        public FornecedorData? Fornecedor { get; set; }
         [BindProperty]
-        public DadosBancariosData DadosBancarios { get; set; }
+        public DadosBancariosData? DadosBancarios { get; set; }
         [BindProperty]
-        public ContatosData Contatos { get; set; }
+        public ContatosData? Contatos { get; set; }
         [BindProperty]
-        public FornecedorNegociacao FornecedorNegociacao { get; set; } // Add this line
+        public FornecedorNegociacao? FornecedorNegociacao { get; set; }
         [BindProperty]
-        public SegurancaAlimentos SegurancaAlimentos { get; set; }
+        public SegurancaAlimentos? SegurancaAlimentos { get; set; }
 
         public bool IsSubmissionSuccessful { get; set; }
 
@@ -37,11 +37,11 @@ namespace PortalArcomix.Pages
                 return RedirectToPage("/Login");
             }
 
-            Fornecedor = await GetFornecedorData(cnpj);
-            DadosBancarios = await GetDadosBancariosData(cnpj);
-            Contatos = await GetContatosData(cnpj);
-            FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj); // Add this line
-            SegurancaAlimentos = await GetSegurancaAlimentosData(cnpj);
+            Fornecedor = await GetFornecedorData(cnpj) ?? new FornecedorData();
+            DadosBancarios = await GetDadosBancariosData(cnpj) ?? new DadosBancariosData();
+            Contatos = await GetContatosData(cnpj) ?? new ContatosData();
+            FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj) ?? new FornecedorNegociacao();
+            SegurancaAlimentos = await GetSegurancaAlimentosData(cnpj) ?? new SegurancaAlimentos();
 
             return Page();
         }
@@ -54,31 +54,31 @@ namespace PortalArcomix.Pages
                 return RedirectToPage("/Login");
             }
 
-            Fornecedor.CNPJ = cnpj; // Ensure the CNPJ remains the same
-            DadosBancarios.CNPJ = cnpj;
-            Contatos.CNPJ = cnpj;
-            FornecedorNegociacao.CNPJ = cnpj; // Add this line
-            SegurancaAlimentos.CNPJ = cnpj;
+            if (Fornecedor != null) Fornecedor.CNPJ = cnpj; // Ensure the CNPJ remains the same
+            if (DadosBancarios != null) DadosBancarios.CNPJ = cnpj;
+            if (Contatos != null) Contatos.CNPJ = cnpj;
+            if (FornecedorNegociacao != null) FornecedorNegociacao.CNPJ = cnpj;
+            if (SegurancaAlimentos != null) SegurancaAlimentos.CNPJ = cnpj;
 
-            await UpdateFornecedorData(Fornecedor);
-            await UpdateDadosBancariosData(DadosBancarios);
-            await UpdateContatosData(Contatos);
-            await UpdateFornecedorNegociacaoData(FornecedorNegociacao); // Add this line
-            await UpdateSegurancaAlimentosData(SegurancaAlimentos);
+            if (Fornecedor != null) await UpdateFornecedorData(Fornecedor);
+            if (DadosBancarios != null) await UpdateDadosBancariosData(DadosBancarios);
+            if (Contatos != null) await UpdateContatosData(Contatos);
+            if (FornecedorNegociacao != null) await UpdateFornecedorNegociacaoData(FornecedorNegociacao);
+            if (SegurancaAlimentos != null) await UpdateSegurancaAlimentosData(SegurancaAlimentos);
 
             // Refresh the data
-            Fornecedor = await GetFornecedorData(cnpj);
-            DadosBancarios = await GetDadosBancariosData(cnpj);
-            Contatos = await GetContatosData(cnpj);
-            FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj); // Add this line
-            SegurancaAlimentos = await GetSegurancaAlimentosData(cnpj);
+            Fornecedor = await GetFornecedorData(cnpj) ?? new FornecedorData();
+            DadosBancarios = await GetDadosBancariosData(cnpj) ?? new DadosBancariosData();
+            Contatos = await GetContatosData(cnpj) ?? new ContatosData();
+            FornecedorNegociacao = await GetFornecedorNegociacaoData(cnpj) ?? new FornecedorNegociacao();
+            SegurancaAlimentos = await GetSegurancaAlimentosData(cnpj) ?? new SegurancaAlimentos();
 
             IsSubmissionSuccessful = true; // Set the flag to true after successful update
 
             return Page();
         }
 
-        private async Task<FornecedorData> GetFornecedorData(string cnpj)
+        private async Task<FornecedorData?> GetFornecedorData(string cnpj)
         {
             var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -124,7 +124,7 @@ namespace PortalArcomix.Pages
             return null;
         }
 
-        private async Task<DadosBancariosData> GetDadosBancariosData(string cnpj)
+        private async Task<DadosBancariosData?> GetDadosBancariosData(string cnpj)
         {
             var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -156,7 +156,7 @@ namespace PortalArcomix.Pages
             return null;
         }
 
-        private async Task<ContatosData> GetContatosData(string cnpj)
+        private async Task<ContatosData?> GetContatosData(string cnpj)
         {
             var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -200,7 +200,7 @@ namespace PortalArcomix.Pages
             return null;
         }
 
-        private async Task<FornecedorNegociacao> GetFornecedorNegociacaoData(string cnpj)
+        private async Task<FornecedorNegociacao?> GetFornecedorNegociacaoData(string cnpj)
         {
             var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -261,7 +261,7 @@ namespace PortalArcomix.Pages
             return null;
         }
 
-        private async Task<SegurancaAlimentos> GetSegurancaAlimentosData(string cnpj)
+        private async Task<SegurancaAlimentos?> GetSegurancaAlimentosData(string cnpj)
         {
             var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -596,72 +596,72 @@ namespace PortalArcomix.Pages
 
     public class FornecedorData
     {
-        public string CNPJ { get; set; }
-        public string RazaoSocial { get; set; }
-        public string Fantasia { get; set; }
-        public string IE { get; set; }
-        public string CNAE { get; set; }
-        public string CEP { get; set; }
-        public string Logradouro { get; set; }
-        public string NumeroEndereco { get; set; }
-        public string Bairro { get; set; }
-        public string Complemento { get; set; }
-        public string UF { get; set; }
-        public string Cidade { get; set; }
-        public string MicroEmpresa { get; set; }
-        public string ContribuiICMS { get; set; }
-        public string ContribuiIPI { get; set; }
-        public string TipoFornecedor { get; set; }
-        public string FornecedorAlimentos { get; set; }
-        public string CompradorPrincipal { get; set; }
+        public string CNPJ { get; set; } = string.Empty;
+        public string RazaoSocial { get; set; } = string.Empty;
+        public string Fantasia { get; set; } = string.Empty;
+        public string IE { get; set; } = string.Empty;
+        public string CNAE { get; set; } = string.Empty;
+        public string CEP { get; set; } = string.Empty;
+        public string Logradouro { get; set; } = string.Empty;
+        public string NumeroEndereco { get; set; } = string.Empty;
+        public string Bairro { get; set; } = string.Empty;
+        public string? Complemento { get; set; }
+        public string UF { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public string? MicroEmpresa { get; set; }
+        public string? ContribuiICMS { get; set; }
+        public string? ContribuiIPI { get; set; }
+        public string? TipoFornecedor { get; set; }
+        public string? FornecedorAlimentos { get; set; }
+        public string? CompradorPrincipal { get; set; }
     }
 
     public class DadosBancariosData
     {
-        public string CNPJ { get; set; }
-        public string Banco { get; set; }
-        public string Agencia { get; set; }
-        public string TipoConta { get; set; }
-        public string NumeroConta { get; set; }
-        public string CNPJContaTitular { get; set; }
+        public string CNPJ { get; set; } = string.Empty;
+        public string? Banco { get; set; }
+        public string? Agencia { get; set; }
+        public string? TipoConta { get; set; }
+        public string? NumeroConta { get; set; }
+        public string? CNPJContaTitular { get; set; }
     }
 
     public class ContatosData
     {
-        public string CNPJ { get; set; }
-        public string ContatoVendedor { get; set; }
-        public string DDDVendedor { get; set; }
-        public string TelefoneVendedor { get; set; }
-        public string EmailVendedor { get; set; }
-        public string ContatoGerente { get; set; }
-        public string DDDGerente { get; set; }
-        public string TelefoneGerente { get; set; }
-        public string EmailGerente { get; set; }
-        public string ResponsavelFinanceiro { get; set; }
-        public string DDDRespFinanceiro { get; set; }
-        public string TelefoneRespFinanceiro { get; set; }
-        public string EmailRespFinanceiro { get; set; }
-        public string DDDTelefoneFixoEmpresa { get; set; }
-        public string TelefoneFixoEmpresa { get; set; }
+        public string CNPJ { get; set; } = string.Empty;
+        public string? ContatoVendedor { get; set; }
+        public string? DDDVendedor { get; set; }
+        public string? TelefoneVendedor { get; set; }
+        public string? EmailVendedor { get; set; }
+        public string? ContatoGerente { get; set; }
+        public string? DDDGerente { get; set; }
+        public string? TelefoneGerente { get; set; }
+        public string? EmailGerente { get; set; }
+        public string? ResponsavelFinanceiro { get; set; }
+        public string? DDDRespFinanceiro { get; set; }
+        public string? TelefoneRespFinanceiro { get; set; }
+        public string? EmailRespFinanceiro { get; set; }
+        public string? DDDTelefoneFixoEmpresa { get; set; }
+        public string? TelefoneFixoEmpresa { get; set; }
     }
 
     public class FornecedorNegociacao
     {
-        public string CNPJ { get; set; }
-        public string DataBaseVencimento { get; set; }
+        public string CNPJ { get; set; } = string.Empty;
+        public string? DataBaseVencimento { get; set; }
         public int PrazoPagamentoDias { get; set; }
         public int PrazoEntregaMedioDias { get; set; }
         public int PrazoMedioAtrasoDias { get; set; }
         public int PrazoMedioVisitaDias { get; set; }
         public decimal VerbaCadastro { get; set; }
-        public string MotivoVerbaZerada { get; set; }
-        public string JustificativaSemVerba { get; set; }
-        public string DivisaoVerba { get; set; }
-        public string ContratoFornecedor { get; set; }
-        public string ApuracaoContrato { get; set; }
-        public string TipoContrato { get; set; }
-        public string MotivoSemContrato { get; set; }
-        public string JustificativaSemContrato { get; set; }
+        public string? MotivoVerbaZerada { get; set; }
+        public string? JustificativaSemVerba { get; set; }
+        public string? DivisaoVerba { get; set; }
+        public string? ContratoFornecedor { get; set; }
+        public string? ApuracaoContrato { get; set; }
+        public string? TipoContrato { get; set; }
+        public string? MotivoSemContrato { get; set; }
+        public string? JustificativaSemContrato { get; set; }
         public decimal TotalPercentualVarejo { get; set; }
         public decimal TotalPercentualAtacado { get; set; }
         public decimal LogisticoVarejo { get; set; }
@@ -682,14 +682,14 @@ namespace PortalArcomix.Pages
 
     public class SegurancaAlimentos
     {
-        public string CNPJ { get; set; }
-        public string AtividadeEmpresa { get; set; }
-        public string OrgaoFiscalizacao { get; set; }
-        public string NumeroRegistroOrgao { get; set; }
-        public string ResponsavelTecnico { get; set; }
-        public string DDDTecnico { get; set; }
-        public string TelefoneTecnico { get; set; }
-        public string EmailTecnico { get; set; }
+        public string CNPJ { get; set; } = string.Empty;
+        public string? AtividadeEmpresa { get; set; }
+        public string? OrgaoFiscalizacao { get; set; }
+        public string? NumeroRegistroOrgao { get; set; }
+        public string? ResponsavelTecnico { get; set; }
+        public string? DDDTecnico { get; set; }
+        public string? TelefoneTecnico { get; set; }
+        public string? EmailTecnico { get; set; }
         public bool BPFImplantadoPraticado { get; set; }
         public bool SistemaTratamentoResiduos { get; set; }
         public bool ControleSaudeColaboradores { get; set; }
@@ -707,8 +707,7 @@ namespace PortalArcomix.Pages
         public bool LicencasPertinentes { get; set; }
         public bool EnviaAmostrasCliente { get; set; }
         public bool ControleAguaAbastecimento { get; set; }
-        public string Parecer { get; set; }
-        public string DescricaoAvaliacao { get; set; }
+        public string? Parecer { get; set; }
+        public string? DescricaoAvaliacao { get; set; }
     }
 }
-

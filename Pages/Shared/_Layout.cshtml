@@ -15,7 +15,7 @@
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- FontAwesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link href="~/fontawesome/css/all.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" />
 
@@ -54,14 +54,13 @@
                 </div>
             </nav>
         </div>
-        }
+    }
 
-        <!-- Main content PlaceHolder -->
-        <div>
-            @RenderBody()
-        </div>
-        <!-- Main content PlaceHolder -->
-
+    <!-- Main content PlaceHolder -->
+    <div>
+        @RenderBody()
+    </div>
+    <!-- Main content PlaceHolder -->
     @if (!(ViewData["HideNavbarAndFooter"] as bool? ?? false))
     {
         <footer id="mainFooter" class="container-fluid text-center" style="background: #545454;">
@@ -80,7 +79,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- FontAwesome JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="~/fontawesome/js/all.min.js"></script>
     <!-- Custom JS -->
     <script src="~/js/site.js"></script>
 

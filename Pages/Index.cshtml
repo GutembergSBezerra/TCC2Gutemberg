@@ -28,13 +28,27 @@
                     </div>
                 }
 
-                <div class="col-md-4 text-center">
-                    <div class="frame" onclick="window.location.href = '@Url.Page("GestaoProdutoVE")'">
-                        <img width="80px" src="~/imgs/ic_cadastro_de_produtos.png" alt="Gestão de Produtos" />
-                        <h5>GESTÃO DE PRODUTOS</h5>
-                        <p class="text-justify">Cadastrar, Editar, Substituir</p>
+                 @if (User.IsInRole("Fornecedor"))
+                {
+                    <div class="col-md-4 text-center">
+                        <div class="frame" onclick="window.location.href = '@Url.Page("GestaoProdutoVE")'">
+                            <img width="80px" src="~/imgs/ic_cadastro_de_produtos.png" alt="Gestão de Produtos" />
+                            <h5>GESTÃO DE PRODUTOS</h5>
+                            <p class="text-justify">Cadastrar, Editar, Substituir</p>
+                        </div>
                     </div>
-                </div>
+                }
+
+                @if (!User.IsInRole("Fornecedor"))
+                {
+                    <div class="col-md-4 text-center">
+                        <div class="frame" onclick="window.location.href = '@Url.Page("GestaoProdutoVI")'">
+                            <img width="80px" src="~/imgs/ic_cadastro_de_produtos.png" alt="Gestão de Produtos" />
+                            <h5>GESTÃO DE PRODUTOS</h5>
+                            <p class="text-justify">Cadastrar, Editar, Substituir</p>
+                        </div>
+                    </div>
+                }
 
                 @if (!User.IsInRole("Fornecedor"))
                 {
