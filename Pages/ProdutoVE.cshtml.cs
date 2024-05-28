@@ -36,9 +36,95 @@ namespace PortalArcomix.Pages
 
         public bool IsSubmissionSuccessful { get; set; }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            // Initialization logic, if any
+            if (id.HasValue)
+            {
+                var connectionString = _configuration.GetConnectionString("PortalArcomixDB");
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    var query = @"
+                        SELECT p.GestorCompras, p.Marca, p.NovaMarca, p.Importado, p.DescricaoProduto, p.NCM, p.CEST, p.ICMS, p.IPI, p.PIS, p.COFINS, p.CustoUnidade, p.CustoCaixa, p.CodXML, p.EmbalagemFat, p.VerbaCadastro, p.MotivoVerbaZerada, p.ImagemProduto, p.CNPJ,
+                               pvc.EAN13, pvc.Referencia, pvc.PesoBrutoKg, pvc.PesoLiquidoKg, pvc.AlturaCm, pvc.LarguraCm, pvc.ProfundidadeCm, pvc.DUN14, pvc.ReferenciaDUN14, pvc.PesoBrutoDUN14Kg, pvc.PesoLiquidoDUN14Kg, pvc.AlturaDUN14Cm, pvc.LarguraDUN14Cm, pvc.ProfundidadeDUN14Cm, pvc.Embalagem, pvc.QuantidadeUnidades, pvc.MesaCaixas, pvc.AlturaCaixas, pvc.ShelfLifeDias,
+                               pse.EAN13, pse.Referencia, pse.PesoBrutoKg, pse.PesoLiquidoKg, pse.AlturaCm, pse.LarguraCm, pse.ProfundidadeCm, pse.Embalagem, pse.QuantidadeUnidades
+                        FROM Tbl_Produto p
+                        LEFT JOIN Tbl_ProdutoVendaCompra pvc ON p.ID = pvc.ProdutoID
+                        LEFT JOIN Tbl_ProdutoSubEmbalagem pse ON p.ID = pse.ProdutoID
+                        WHERE p.ID = @Id";
+
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id.Value);
+                        await conn.OpenAsync();
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                Especificacoes = new EspecificacoesProduto
+                                {
+                                    GestorCompras = reader["GestorCompras"].ToString(),
+                                    Marca = reader["Marca"].ToString(),
+                                    NovaMarca = reader["NovaMarca"].ToString(),
+                                    Importado = reader["Importado"] as bool?,
+                                    DescricaoProduto = reader["DescricaoProduto"].ToString(),
+                                    NCM = reader["NCM"].ToString(),
+                                    CEST = reader["CEST"].ToString(),
+                                    ICMS = reader["ICMS"] as decimal?,
+                                    IPI = reader["IPI"] as decimal?,
+                                    PIS = reader["PIS"] as decimal?,
+                                    COFINS = reader["COFINS"] as decimal?,
+                                    CustoUnidade = reader["CustoUnidade"] as decimal?,
+                                    CustoCaixa = reader["CustoCaixa"] as decimal?,
+                                    CodXML = reader["CodXML"].ToString(),
+                                    EmbalagemFat = reader["EmbalagemFat"].ToString(),
+                                    VerbaCadastro = reader["VerbaCadastro"] as decimal?,
+                                    MotivoVerbaZerada = reader["MotivoVerbaZerada"].ToString(),
+                                    ImagemProduto = reader["ImagemProduto"] as byte[],
+                                    CNPJ = reader["CNPJ"].ToString()
+                                };
+
+                                UnidadeVendaCompraData = new UnidadeVendaCompra
+                                {
+                                    EAN13 = reader["EAN13"].ToString(),
+                                    Referencia = reader["Referencia"].ToString(),
+                                    PesoBrutoKg = reader["PesoBrutoKg"] as decimal?,
+                                    PesoLiquidoKg = reader["PesoLiquidoKg"] as decimal?,
+                                    AlturaCm = reader["AlturaCm"] as int?,
+                                    LarguraCm = reader["LarguraCm"] as int?,
+                                    ProfundidadeCm = reader["ProfundidadeCm"] as int?,
+                                    DUN14 = reader["DUN14"].ToString(),
+                                    ReferenciaDUN14 = reader["ReferenciaDUN14"].ToString(),
+                                    PesoBrutoDUN14Kg = reader["PesoBrutoDUN14Kg"] as decimal?,
+                                    PesoLiquidoDUN14Kg = reader["PesoLiquidoDUN14Kg"] as decimal?,
+                                    AlturaDUN14Cm = reader["AlturaDUN14Cm"] as int?,
+                                    LarguraDUN14Cm = reader["LarguraDUN14Cm"] as int?,
+                                    ProfundidadeDUN14Cm = reader["ProfundidadeDUN14Cm"] as int?,
+                                    Embalagem = reader["Embalagem"].ToString(),
+                                    QuantidadeUnidades = reader["QuantidadeUnidades"] as int?,
+                                    MesaCaixas = reader["MesaCaixas"] as int?,
+                                    AlturaCaixas = reader["AlturaCaixas"] as int?,
+                                    ShelfLifeDias = reader["ShelfLifeDias"] as int?
+                                };
+
+                                SubEmbalagemData = new SubEmbalagem
+                                {
+                                    EAN13 = reader["EAN13"].ToString(),
+                                    Referencia = reader["Referencia"].ToString(),
+                                    PesoBrutoKg = reader["PesoBrutoKg"] as decimal?,
+                                    PesoLiquidoKg = reader["PesoLiquidoKg"] as decimal?,
+                                    AlturaCm = reader["AlturaCm"] as int?,
+                                    LarguraCm = reader["LarguraCm"] as int?,
+                                    ProfundidadeCm = reader["ProfundidadeCm"] as int?,
+                                    Embalagem = reader["Embalagem"].ToString(),
+                                    QuantidadeUnidades = reader["QuantidadeUnidades"] as int?
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Page();
         }
 
         // Helper method to handle null values
@@ -300,5 +386,3 @@ namespace PortalArcomix.Pages
         }
     }
 }
-
-

@@ -1,7 +1,7 @@
 ﻿@page
 @model PortalArcomix.Pages.GestaoProdutoVEModel
 @{
-    ViewData["Title"] = "Gestão de Produtos";
+    ViewData["Title"] = "GestaoProdutoVE";
     Layout = "_Layout";
 }
 
@@ -17,10 +17,8 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col">
-                            <a id="CadastroProdutoBotao" class="btn btn-primary" href="/ProdutoVE" role="button">Cadastrar Novo Produto</a>
-                        </div>
+                    <div class="gap-2">
+                        <a id="CadastroProdutoBotao" class="btn btn-primary" href="/ProdutoVE" role="button">Cadastrar Novo Produto</a>
                     </div>
 
                     <hr />
@@ -30,7 +28,7 @@
                         <form method="post">
                             <div class="row">
                                 <div class="ms-auto col-md-2">
-                                    <input type="text" name="filter" class="form-control" value="@Model.Filter" placeholder="Filtrar" />
+                                    <input type="text" name="Filter" class="form-control" value="@Model.Filter" placeholder="Enter filters separated by comma" />
                                 </div>
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-success">Filtrar</button>
@@ -48,9 +46,10 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Marca</th>
-                                        <th>Descrição</th>
+                                        <th>Descrição do Produto</th>
                                         <th>Gestor de Compras</th>
-                                        <th>EAN13</th>
+                                        <th>EAN 13</th>
+                                        <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,6 +61,11 @@
                                             <td>@produto.DescricaoProduto</td>
                                             <td>@produto.GestorCompras</td>
                                             <td>@produto.EAN13</td>
+                                            <td>
+                                                <a href="/ProdutoVE?id=@produto.ID" role="button">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -75,4 +79,3 @@
     </div>
 </div>
 <br />
-
