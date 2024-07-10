@@ -61,10 +61,17 @@
             return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
         }
 
+        function showAlertAndRedirect(message, isSuccess, redirectUrl) {
+            alert(message);
+            if (isSuccess) {
+                window.location.href = redirectUrl;
+            }
+        }
+
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
             <text>
-                alert(htmlDecode('@Model.ErrorMessage'));
+                showAlertAndRedirect(htmlDecode('@Model.ErrorMessage'), @Model.IsSuccess.ToString().ToLower(), '/Login');
             </text>
         }
     </script>
