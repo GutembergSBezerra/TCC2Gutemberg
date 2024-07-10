@@ -1,11 +1,14 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using PortalArcomix.Data;
+using PortalArcomix.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddAuthentication("Cookies")
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Login";
@@ -14,6 +17,10 @@ builder.Services.AddAuthentication("Cookies")
     });
 
 builder.Services.AddSession(); // Add this line
+
+// Add DbContext with Oracle connection
+builder.Services.AddDbContext<OracleDbContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("OracleDbContext")));
 
 var app = builder.Build();
 

@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using PortalArcomix.Data;
+using PortalArcomix.Data.Entities;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -13,10 +15,12 @@ namespace PortalArcomix.Pages
     public class LoginModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private readonly OracleDbContext _context;
 
-        public LoginModel(IConfiguration configuration)
+        public LoginModel(IConfiguration configuration, OracleDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         [BindProperty]
@@ -36,22 +40,21 @@ namespace PortalArcomix.Pages
         {
             ViewData["HideNavbarAndFooter"] = true;
 
-            string connectionString = _configuration.GetConnectionString("PortalArcomixDB")!;
-            var (isAuthenticated, role, cnpj) = AuthenticateUser(Email, Password, connectionString);
+            var user = AuthenticateUser(Email, Password);
 
-            if (isAuthenticated && !string.IsNullOrEmpty(role))
+            if (user != null)
             {
                 // Create claims including the role
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, Email),
-                    new Claim(ClaimTypes.Role, role)
+                    new Claim(ClaimTypes.Role, user.TipoUsuario)
                 };
 
                 // Add CNPJ claim if it exists
-                if (!string.IsNullOrEmpty(cnpj))
+                if (!string.IsNullOrEmpty(user.CNPJ))
                 {
-                    claims.Add(new Claim("CNPJ", cnpj));
+                    claims.Add(new Claim("CNPJ", user.CNPJ));
                 }
 
                 // Create claims identity
@@ -69,37 +72,12 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-        private (bool, string, string) AuthenticateUser(string email, string password, string connectionString)
+        private Tbl_Usuario? AuthenticateUser(string email, string password)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                con.Open();
-                string query = "SELECT Senha, TipoUsuario, CNPJ FROM Tbl_Usuario WHERE Email=@Email";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Email", email);
+            var user = _context.Tbl_Usuario
+                        .FirstOrDefault(u => u.Email == email && u.Senha == password);
 
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        var storedPassword = reader["Senha"].ToString();
-                        var role = reader["TipoUsuario"].ToString();
-                        var cnpj = reader["CNPJ"]?.ToString();
-
-                        // Check if the password matches and role is not null or empty
-                        if (password == storedPassword && !string.IsNullOrEmpty(role))
-                        {
-                            return (true, role, cnpj);
-                        }
-                    }
-                }
-                return (false, string.Empty, string.Empty); // Ensure non-null strings are returned
-            }
+            return user;
         }
     }
 }
-
-
-
-
-
