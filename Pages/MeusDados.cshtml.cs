@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using PortalArcomix.Data;
+using PortalArcomix.Data.Entities;
 using System;
-using System.Data.SqlClient;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PortalArcomix.Pages
@@ -12,11 +15,13 @@ namespace PortalArcomix.Pages
     public class MeusDadosModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private readonly OracleDbContext _context;
         private const string IncorrectPasswordAttemptsSessionKey = "IncorrectPasswordAttempts";
 
-        public MeusDadosModel(IConfiguration configuration)
+        public MeusDadosModel(IConfiguration configuration, OracleDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         [BindProperty]
@@ -65,42 +70,32 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
-            string connectionString = _configuration.GetConnectionString("PortalArcomixDB")!;
-
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                var user = _context.Tbl_Usuario.FirstOrDefault(u => u.Email == userEmail);
+
+                if (user != null && user.Senha == OldPassword)
                 {
-                    await con.OpenAsync();
-                    SqlCommand cmd = new SqlCommand("SELECT Senha FROM Tbl_Usuario WHERE Email=@Email", con);
-                    cmd.Parameters.AddWithValue("@Email", userEmail);
-                    var result = await cmd.ExecuteScalarAsync();
-                    string existingPassword = result?.ToString() ?? string.Empty;
+                    user.Senha = NewPassword;
+                    _context.Tbl_Usuario.Update(user);
+                    await _context.SaveChangesAsync();
 
-                    if (existingPassword == OldPassword)
+                    SuccessMessage = "Senha Alterada com sucesso";
+                    HttpContext.Session.Remove(IncorrectPasswordAttemptsSessionKey); // Reset the attempt count on success
+                }
+                else
+                {
+                    int incorrectAttempts = HttpContext.Session.GetInt32(IncorrectPasswordAttemptsSessionKey) ?? 0;
+                    incorrectAttempts++;
+                    HttpContext.Session.SetInt32(IncorrectPasswordAttemptsSessionKey, incorrectAttempts);
+
+                    if (incorrectAttempts >= 3)
                     {
-                        SqlCommand updateCmd = new SqlCommand("UPDATE Tbl_Usuario SET Senha=@NewPassword WHERE Email=@Email", con);
-                        updateCmd.Parameters.AddWithValue("@NewPassword", NewPassword);
-                        updateCmd.Parameters.AddWithValue("@Email", userEmail);
-                        await updateCmd.ExecuteNonQueryAsync();
-
-                        SuccessMessage = "Senha Alterada com sucesso";
-                        HttpContext.Session.Remove(IncorrectPasswordAttemptsSessionKey); // Reset the attempt count on success
+                        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        return RedirectToPage("/Login");
                     }
-                    else
-                    {
-                        int incorrectAttempts = HttpContext.Session.GetInt32(IncorrectPasswordAttemptsSessionKey) ?? 0;
-                        incorrectAttempts++;
-                        HttpContext.Session.SetInt32(IncorrectPasswordAttemptsSessionKey, incorrectAttempts);
 
-                        if (incorrectAttempts >= 3)
-                        {
-                            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                            return RedirectToPage("/Login");
-                        }
-
-                        ErrorMessage = $"Senha Atual Incorreta. Tentativas restantes: {3 - incorrectAttempts}";
-                    }
+                    ErrorMessage = $"Senha Atual Incorreta. Tentativas restantes: {3 - incorrectAttempts}";
                 }
             }
             catch (Exception ex)
@@ -121,4 +116,3 @@ namespace PortalArcomix.Pages
         }
     }
 }
-
