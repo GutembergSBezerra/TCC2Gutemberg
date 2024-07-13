@@ -26,7 +26,8 @@ namespace PortalArcomix.Data.Entities
         [Column("TIPOUSUARIO")]
         public string TipoUsuario { get; set; } = string.Empty;
 
-        [MaxLength(14)]
+        [StringLength(14, MinimumLength = 14)]
+        [RegularExpression(@"^\d{14}$", ErrorMessage = "CNPJ INVALIDO")]
         [Column("CNPJ")]
         public string? CNPJ { get; set; }
 
