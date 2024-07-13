@@ -12,7 +12,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Login";
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(240);
         options.SlidingExpiration = true;
     });
 
@@ -57,6 +57,7 @@ app.MapRazorPages();
 app.MapPost("/Logout", async context =>
 {
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    context.Session.Clear(); // Ensure session data is cleared
     context.Response.Redirect("/Login");
 });
 

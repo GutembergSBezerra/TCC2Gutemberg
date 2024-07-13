@@ -82,14 +82,13 @@
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
         <script>
-            alert('@Model.ErrorMessage');
+            alert('@Html.Raw(Model.ErrorMessage)');
         </script>
     }
-
     @if (!string.IsNullOrEmpty(Model.SuccessMessage))
     {
         <script>
-            alert('@Model.SuccessMessage');
+            alert('@Html.Raw(Model.SuccessMessage)');
         </script>
     }
 }

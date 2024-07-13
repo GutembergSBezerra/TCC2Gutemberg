@@ -2,21 +2,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PortalArcomix.Data;
+using PortalArcomix.Data.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
+using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PortalArcomix.Pages
 {
     public class NovoUsuarioModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private readonly OracleDbContext _context;
 
-        public NovoUsuarioModel(IConfiguration configuration)
+        public NovoUsuarioModel(IConfiguration configuration, OracleDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         [BindProperty]
@@ -70,8 +75,6 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
-            string connectionString = _configuration.GetConnectionString("PortalArcomixDB")!;
-
             if (await VerificarEmailAsync(Email))
             {
                 ErrorMessage = "Email já cadastrado.";
@@ -81,27 +84,23 @@ namespace PortalArcomix.Pages
             try
             {
                 string senha = GenerateValidPassword();
-                using (SqlConnection con = new SqlConnection(connectionString))
+
+                var novoUsuario = new Tbl_Usuario
                 {
-                    using (SqlCommand cmd = new SqlCommand("Proc_Criacaodeusuario", con))
-                    {
-                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Email", Email);
-                        cmd.Parameters.AddWithValue("@Senha", senha);
-                        cmd.Parameters.AddWithValue("@TipoUsuario", TipoUsuario);
-                        cmd.Parameters.AddWithValue("@Usuario", Usuario);
-                        cmd.Parameters.AddWithValue("@CNPJ", TipoUsuario == "Fornecedor" ? (object)CNPJ! : DBNull.Value);
+                    Email = Email,
+                    Senha = senha,
+                    TipoUsuario = TipoUsuario,
+                    Usuario = Usuario,
+                    CNPJ = TipoUsuario == "Fornecedor" ? CNPJ : null
+                };
 
-                        con.Open();
-                        await cmd.ExecuteNonQueryAsync();
-                        con.Close();
+                _context.Tbl_Usuario.Add(novoUsuario);
+                await _context.SaveChangesAsync();
 
-                        SendEmail(Email, senha, Usuario);
+                SendEmail(Email, senha, Usuario);
 
-                        SuccessMessage = "Cadastro realizado com sucesso!";
-                        return Page();
-                    }
-                }
+                SuccessMessage = "Cadastro realizado com sucesso!";
+                return Page();
             }
             catch (Exception ex)
             {
@@ -112,18 +111,9 @@ namespace PortalArcomix.Pages
 
         private async Task<bool> VerificarEmailAsync(string email)
         {
-            string connectionString = _configuration.GetConnectionString("PortalArcomixDB")!;
-
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Tbl_Usuario WHERE Email = @Email", con);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    await con.OpenAsync();
-                    int count = (int)await cmd.ExecuteScalarAsync();
-                    return count > 0;
-                }
+                return await _context.Tbl_Usuario.AnyAsync(u => u.Email == email);
             }
             catch (Exception ex)
             {
@@ -188,3 +178,4 @@ namespace PortalArcomix.Pages
         }
     }
 }
+
