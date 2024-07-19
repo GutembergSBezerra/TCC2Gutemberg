@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore; // Ensure this is added
 using Microsoft.Extensions.Configuration;
 using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
@@ -40,21 +41,22 @@ namespace PortalArcomix.Pages
         {
             ViewData["HideNavbarAndFooter"] = true;
 
-            var user = AuthenticateUser(Email, Password);
+            var user = await AuthenticateUserAsync(Email, Password);
 
             if (user != null)
             {
                 // Create claims including the role
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, Email),
-                    new Claim(ClaimTypes.Role, user.TipoUsuario)
-                };
+        {
+            new Claim(ClaimTypes.Name, Email),
+            new Claim(ClaimTypes.Role, user.TipoUsuario)
+        };
 
                 // Add CNPJ claim if it exists
                 if (!string.IsNullOrEmpty(user.CNPJ))
                 {
                     claims.Add(new Claim("CNPJ", user.CNPJ));
+                    HttpContext.Session.SetString("CNPJ", user.CNPJ);  // Store CNPJ in session
                 }
 
                 // Create claims identity
@@ -72,11 +74,10 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-        private Tbl_Usuario? AuthenticateUser(string email, string password)
+        private async Task<Tbl_Usuario?> AuthenticateUserAsync(string email, string password)
         {
-            var user = _context.Tbl_Usuario
-                        .FirstOrDefault(u => u.Email == email && u.Senha == password);
-
+            var user = await _context.Tbl_Usuario
+                                     .FirstOrDefaultAsync(u => u.Email == email && u.Senha == password);
             return user;
         }
     }

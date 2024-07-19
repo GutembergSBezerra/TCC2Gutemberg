@@ -47,12 +47,34 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="d-grid gap-2 mt-4">
-                                    <button class="btn btn-primary" type="submit">Salvar</button>
+                                    <button class="btn btn-primary" type="submit" name="action" value="Salvar">Salvar</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                     <hr />
+
+                    <div class="row">
+                        <div class="col text-center">
+                            <span class="badge rounded-pill text-bg-danger">Excluir Conta</span>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Senha Atual</label>
+                                <div class="form-group mb-3">
+                                    <input type="password" class="form-control" id="IDdeletePassword" name="DeletePassword" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2 mt-4">
+                                    <button class="btn btn-danger" type="submit" name="action" value="Excluir">Excluir Conta</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <br />

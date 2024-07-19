@@ -11,151 +11,144 @@
         <div class="row">
             <!-- Sidebar Column -->
             <div class="col-md-1 sidebar">
-                <!-- Sidebar navigation items -->
-                <div class="sidebar-item">
-                    <a href="#DadosFornecedorCadastro" class="sidebar-link">
-                        <i class="sidebar-icon fa fa-user"></i>
-                        <span class="sidebar-text">Dados Fornecedor</span>
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="#DadosFiscaisCadastro" class="sidebar-link">
-                        <i class="sidebar-icon fa fa-rectangle-list"></i>
-                        <span class="sidebar-text">Dados Fiscais</span>
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="#DadosBancariosCadastro" class="sidebar-link">
-                        <i class="sidebar-icon fa fa-money-check"></i>
-                        <span class="sidebar-text">Dados Bancarios</span>
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="#ContatosCadastro" class="sidebar-link">
-                        <i class="sidebar-icon fa fa-phone"></i>
-                        <span class="sidebar-text">Contatos</span>
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="#NegociacaoFornecedor" class="sidebar-link">
-                        <i class="sidebar-icon fa fa-file"></i>
-                        <span class="sidebar-text">Negociação</span>
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="#SegurancaAlimentos" class="sidebar-link">
-                        <i class="sidebar-icon fa fa-file"></i>
-                        <span class="sidebar-text">Segurança Alimentos</span>
-                    </a>
-                </div>
-
+                @* Sidebar items refactored into a loop *@
+                @{
+                    var sidebarItems = new List<(string Link, string Icon, string Text)>
+            {
+            ("#DadosFornecedorCadastro", "fa-user", "Dados Fornecedor"),
+            ("#DadosFiscaisCadastro", "fa-rectangle-list", "Dados Fiscais"),
+            ("#DadosBancariosCadastro", "fa-money-check", "Dados Bancarios"),
+            ("#ContatosCadastro", "fa-phone", "Contatos"),
+            ("#NegociacaoFornecedor", "fa-file", "Negociação"),
+            ("#SegurancaAlimentos", "fa-file", "Segurança Alimentos")
+            };
+                }
+                @foreach (var item in sidebarItems)
+                {
+                    <div class="sidebar-item">
+                        <a href="@item.Link" class="sidebar-link">
+                            <i class="sidebar-icon fa @item.Icon"></i>
+                            <span class="sidebar-text">@item.Text</span>
+                        </a>
+                    </div>
+                }
             </div>
 
             <!-- Main Content Column -->
             <div class="col-md-11">
-                <form method="post">
+                <form method="post" onsubmit="return showSuccessMessage()">
                     <br />
                     <!-- Dados Fornecedor Card -->
                     <div class="card" id="DadosFornecedorCadastro">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    
                                     <h4 style="color: #1878BB; margin-bottom: 20px;">Dados do Fornecedor</h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <hr>
+                                    <hr />
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>CNPJ:</label>
+                                    <label class="control-label">CNPJ</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control" value="@Model.Fornecedor.CNPJ" readonly />
+                                        <input asp-for="Fornecedor.CNPJ" class="form-control" readonly />
+                                        <span asp-validation-for="Fornecedor.CNPJ" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
-                                    <label>Razão Social:</label>
+                                    <label class="control-label">Razão Social</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.RazaoSocial" name="RazaoSocial" />
+                                        <input asp-for="Fornecedor.RAZAOSOCIAL" id="Fornecedor_RAZAOSOCIAL" class="form-control" onblur="validateRazaoSocial()" />
+                                        <span asp-validation-for="Fornecedor.RAZAOSOCIAL" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
-                                    <label>Fantasia:</label>
+                                    <label class="control-label">Fantasia</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.Fantasia" name="Fantasia" />
+                                        <input asp-for="Fornecedor.FANTASIA" id="Fornecedor_FANTASIA" class="form-control" onblur="validateFantasia()" />
+                                        <span asp-validation-for="Fornecedor.FANTASIA" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-1">
-                                    <label>IE:</label>
+                                    <label class="control-label">IE</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.IE" name="IE" />
+                                        <input asp-for="Fornecedor.IE" id="Fornecedor_IE" class="form-control validate-required" onblur="validateIE()" />
+                                        <span asp-validation-for="Fornecedor.IE" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-1">
-                                    <label>CNAE:</label>
+                                    <label class="control-label">CNAE</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Fornecedor.CNAE" name="CNAE" />
+                                        <input asp-for="Fornecedor.CNAE" id="Fornecedor_CNAE" class="form-control validate-required" onblur="validateCNAE()" />
+                                        <span asp-validation-for="Fornecedor.CNAE" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <label>CEP:</label>
+                                    <label class="control-label">CEP</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="CEP" name="CEP" value="@Model.Fornecedor.CEP" onblur="fetchAddress()" />
+                                        <input asp-for="Fornecedor.CEP" class="form-control validate-required" id="Fornecedor_CEP" onblur="fetchAddress(); validateCEP()" />
+                                        <span asp-validation-for="Fornecedor.CEP" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <label>Logradouro:</label>
+                                    <label class="control-label">Logradouro</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="Logradouro" name="Logradouro" value="@Model.Fornecedor.Logradouro" />
+                                        <input asp-for="Fornecedor.LOGRADOURO" class="form-control validate-required" id="Fornecedor_LOGRADOURO" onblur="validateLogradouro()" />
+                                        <span asp-validation-for="Fornecedor.LOGRADOURO" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-1">
-                                    <label>Nº:</label>
+                                    <label class="control-label">Número</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control" value="@Model.Fornecedor.NumeroEndereco" name="NumeroEndereco" />
+                                        <input asp-for="Fornecedor.NUMEROENDERECO" class="form-control" />
+                                        <span asp-validation-for="Fornecedor.NUMEROENDERECO" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- New Row -->
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>Bairro:</label>
+                                    <label class="control-label">Bairro</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" id="Bairro" class="form-control validate-required" value="@Model.Fornecedor.Bairro" name="Bairro" />
+                                        <input asp-for="Fornecedor.BAIRRO" id="Fornecedor_BAIRRO" class="form-control validate-required" onblur="validateBairro()" />
+                                        <span asp-validation-for="Fornecedor.BAIRRO" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label>Complemento:</label>
+                                    <label class="control-label">Complemento</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control" value="@Model.Fornecedor.Complemento" name="Complemento" />
+                                        <input asp-for="Fornecedor.COMPLEMENTO" class="form-control" />
+                                        <span asp-validation-for="Fornecedor.COMPLEMENTO" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-1">
-                                    <label for="idUF">UF:</label>
+                                    <label for="idUF" class="control-label">UF</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" id="UF" name="UF">
+                                        <select asp-for="Fornecedor.UF" class="form-control validate-required" id="Fornecedor_UF">
                                             <option value="">Selecione</option>
                                             @foreach (var uf in new List<string> { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" })
                                             {
-                                                <option value="@uf">@uf</option>
+                                                <option value="@uf" selected="@(Model.Fornecedor.UF == uf)">@uf</option>
                                             }
                                         </select>
+                                        <span asp-validation-for="Fornecedor.UF" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-5">
-                                    <label>Cidade:</label>
+                                    <label class="control-label">Cidade</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" id="Cidade" class="form-control validate-required" value="@Model.Fornecedor.Cidade" name="Cidade" />
+                                        <input asp-for="Fornecedor.CIDADE" id="Fornecedor_CIDADE" class="form-control validate-required" onblur="validateCidade()" />
+                                        <span asp-validation-for="Fornecedor.CIDADE" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -173,74 +166,79 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <hr>
+                                    <hr />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="idMicroEmpresa">Micro Empresa:</label>
+                                    <label class="control-label">Micro Empresa</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="MicroEmpresa">
-                                            <option selected>@Model.Fornecedor.MicroEmpresa</option>
-                                            <option value="SIM">SIM</option>
+                                        <select asp-for="Fornecedor.MICROEMPRESA" class="form-control validate-required" id="Fornecedor_MICROEMPRESA" onblur="validateSelect('Fornecedor_MICROEMPRESA')">
+                                            <option value="">Selecione</option>
+                                            <option value="SIM ">SIM</option>
                                             <option value="NÃO">NÃO</option>
                                         </select>
+                                        <span asp-validation-for="Fornecedor.MICROEMPRESA" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label for="idContribuiICMS">Contribui ICMS:</label>
+                                    <label class="control-label">Contribui ICMS</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="ContribuiICMS">
-                                            <option selected>@Model.Fornecedor.ContribuiICMS</option>
-                                            <option value="SIM">SIM</option>
+                                        <select asp-for="Fornecedor.CONTRIBUIICMS" class="form-control validate-required" id="Fornecedor_CONTRIBUIICMS" onblur="validateSelect('Fornecedor_CONTRIBUIICMS')">
+                                            <option value="">Selecione</option>
+                                            <option value="SIM ">SIM </option>
                                             <option value="NÃO">NÃO</option>
                                         </select>
+                                        <span asp-validation-for="Fornecedor.CONTRIBUIICMS" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label for="idContribuiIPI">Contribui IPI:</label>
+                                    <label class="control-label">Contribui IPI</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="ContribuiIPI">
-                                            <option selected>@Model.Fornecedor.ContribuiIPI</option>
-                                            <option value="SIM">SIM</option>
+                                        <select asp-for="Fornecedor.CONTRIBUIIPI" class="form-control validate-required" id="Fornecedor_CONTRIBUIIPI" onblur="validateSelect('Fornecedor_CONTRIBUIIPI')">
+                                            <option value="">Selecione</option>
+                                            <option value="SIM ">SIM </option>
                                             <option value="NÃO">NÃO</option>
                                         </select>
+                                        <span asp-validation-for="Fornecedor.CONTRIBUIIPI" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="idFornTipo">Tipo de Fornecedor:</label>
+                                    <label class="control-label">Tipo de Fornecedor</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="TipoFornecedor">
-                                            <option selected>@Model.Fornecedor.TipoFornecedor</option>
+                                        <select asp-for="Fornecedor.TIPOFORNECEDOR" class="form-control validate-required" id="Fornecedor_TIPOFORNECEDOR" onblur="validateSelect('Fornecedor_TIPOFORNECEDOR')">
+                                            <option value="">Selecione</option>
                                             <option value="Distribuidor">Distribuidor</option>
                                             <option value="Industria">Industria</option>
                                             <option value="Transportadora">Transportadora</option>
                                         </select>
+                                        <span asp-validation-for="Fornecedor.TIPOFORNECEDOR" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="idFornAlimentos">Fornecedor de Alimentos:</label>
+                                    <label class="control-label">Fornecedor de Alimentos</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="FornecedorAlimentos">
-                                            <option selected>@Model.Fornecedor.FornecedorAlimentos</option>
+                                        <select asp-for="Fornecedor.FORNECEDORALIMENTOS" class="form-control validate-required" id="Fornecedor_FORNECEDORALIMENTOS" onblur="validateSelect('Fornecedor_FORNECEDORALIMENTOS')">
+                                            <option value="">Selecione</option>
                                             <option value="Alimentos Industrializados">Alimentos Industrializados</option>
                                             <option value="Alimentos Não Industrializados">Alimentos Não Industrializados</option>
                                             <option value="Não Fornece Alimentos">Não Fornece Alimentos</option>
                                         </select>
+                                        <span asp-validation-for="Fornecedor.FORNECEDORALIMENTOS" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="idCompPrincipal">Comprador Arco-Mix Principal:</label>
+                                    <label class="control-label">Comprador Arco-Mix Principal</label>
                                     <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="CompradorPrincipal">
-                                            <option selected>@Model.Fornecedor.CompradorPrincipal</option>
+                                        <select asp-for="Fornecedor.COMPRADORPRINCIPAL" class="form-control validate-required" id="Fornecedor_COMPRADORPRINCIPAL" onblur="validateSelect('Fornecedor_COMPRADORPRINCIPAL')">
+                                            <option value="">Selecione</option>
                                             <option value="Ana Sales">Ana Sales</option>
                                             <option value="Bruno Santos">Bruno Santos</option>
                                             <option value="Carlos Costa">Carlos Costa</option>
@@ -253,715 +251,111 @@
                                             <option value="Raphael Mendes">Raphael Mendes</option>
                                             <option value="Gilberto">Gilberto</option>
                                         </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-
-                    <!-- Dados Bancarios Card -->
-                    <div class="card" id="DadosBancariosCadastro">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h4 style="color: #1878BB; margin-bottom: 20px;">Dados Bancarios</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <hr>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="idBanco">Banco:</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="Banco">
-                                            <option selected>@Model.DadosBancarios.Banco</option>
-                                            <option value="Caixa Economica">Caixa Economica</option>
-                                            <option value="Banco do Brasil">Banco do Brasil</option>
-                                            <option value="Itau">Itau</option>
-                                            <option value="Bradesco">Bradesco</option>
-                                            <option value="Santander">Santander</option>
-                                            <option value="Banco Inter">Banco Inter</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idAgencia">Agencia</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.DadosBancarios.Agencia" name="Agencia" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idTipoConta">Tipo de Conta</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control validate-required" name="TipoConta">
-                                            <option selected>@Model.DadosBancarios.TipoConta</option>
-                                            <option value="Pessoa Juridica">Pessoa Juridica</option>
-                                            <option value="Pessoa Fisica">Pessoa Fisica</option>
-                                            <option value="Poupança">Poupança</option>
-                                            <option value="Conta Investimento">Conta Investimento</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idNConta">Nº Conta:</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.DadosBancarios.NumeroConta" name="NumeroConta" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idCNPJConta">CNPJ Titular Conta:</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.DadosBancarios.CNPJContaTitular" name="CNPJContaTitular" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-
-                    <!-- Contatos Card -->
-                    <div class="card" id="ContatosCadastro">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h4 style="color: #1878BB; margin-bottom: 20px;">Contatos</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <hr>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="idContatoVendedor">Vendedor:</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.ContatoVendedor" name="Contatos.ContatoVendedor" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idDDD">DDD</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.DDDVendedor" name="Contatos.DDDVendedor" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idTelefone">Telefone</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.TelefoneVendedor" name="Contatos.TelefoneVendedor" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="idEmail">Email</label>
-                                    <div class="form-group mb-3">
-                                        <input type="email" class="form-control validate-required" value="@Model.Contatos.EmailVendedor" name="Contatos.EmailVendedor" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="idContatoGerente">Gerente:</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.ContatoGerente" name="Contatos.ContatoGerente" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idDDDGerente">DDD</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.DDDGerente" name="Contatos.DDDGerente" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idTelefoneGerente">Telefone</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.TelefoneGerente" name="Contatos.TelefoneGerente" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="idEmailGerente">Email</label>
-                                    <div class="form-group mb-3">
-                                        <input type="email" class="form-control validate-required" value="@Model.Contatos.EmailGerente" name="Contatos.EmailGerente" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="idRespFinanceiro">Responsavel Financeiro:</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.ResponsavelFinanceiro" name="Contatos.ResponsavelFinanceiro" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idDDDRespFinanceiro">DDD</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.DDDRespFinanceiro" name="Contatos.DDDRespFinanceiro" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idTelefoneRespFinanceiro">Telefone</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.TelefoneRespFinanceiro" name="Contatos.TelefoneRespFinanceiro" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="idEmailRespFinanceiro">Email</label>
-                                    <div class="form-group mb-3">
-                                        <input type="email" class="form-control validate-required" value="@Model.Contatos.EmailRespFinanceiro" name="Contatos.EmailRespFinanceiro" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h6 style="color: #718288; margin-top: 30px; margin-left: 220px; font-weight: bold;">Telefone Fixo da Empresa:</h6>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idDDDTelefoneFixoEmpresa">DDD</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.DDDTelefoneFixoEmpresa" name="Contatos.DDDTelefoneFixoEmpresa" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idTelefoneFixoEmpresa">Telefone</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" value="@Model.Contatos.TelefoneFixoEmpresa" name="Contatos.TelefoneFixoEmpresa" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                    <br />
-
-                    <!-- Card Negociação Fornecedor-->
-                    <div class="card" id="NegociacaoFornecedor">
-                        <div class="card-body">
-                            <div class="row" >
-                                <div class="col">
-                                    <h4 style="color: #1878BB; margin-bottom: 20px;">Negociação Fornecedor</h4>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <hr>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="idDTBaseVencimento">Data Base Vencimento</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idDTBaseVencimento" name="FornecedorNegociacao.DataBaseVencimento" asp-for="FornecedorNegociacao.DataBaseVencimento">
-                                            <option value="">Escolher...</option>
-                                            <option value="Emissão">Emissão</option>
-                                            <option value="Entrada">Entrada</option>
-                                            <option value="Saída">Saída</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Additional Fields Start -->
-                                <div class="col-md-2">
-                                    <label for="idPZPagamentoDias">Prazo Pagamento (dias)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="number" class="form-control" id="idPZPagamentoDias" name="FornecedorNegociacao.PrazoPagamentoDias" asp-for="FornecedorNegociacao.PrazoPagamentoDias" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idPZEntregaMedio">Prazo médio Entrega (dias)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="number" class="form-control" id="idPZEntregaMedio" name="FornecedorNegociacao.PrazoEntregaMedioDias" asp-for="FornecedorNegociacao.PrazoEntregaMedioDias" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idPZMedioAtraso">Prazo médio Atraso (dias)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="number" class="form-control" id="idPZMedioAtraso" name="FornecedorNegociacao.PrazoMedioAtrasoDias" asp-for="FornecedorNegociacao.PrazoMedioAtrasoDias" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idPZMedioVisita">Prazo médio visita (dias)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="number" class="form-control" id="idPZMedioVisita" name="FornecedorNegociacao.PrazoMedioVisitaDias" asp-for="FornecedorNegociacao.PrazoMedioVisitaDias" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idVerbaCadastro">Verba de cadastro (R$)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control currency-input" id="idVerbaCadastro" name="FornecedorNegociacao.VerbaCadastro" asp-for="FornecedorNegociacao.VerbaCadastro" />
-                                    </div>
-                                </div>
-                                <!-- Additional Fields End -->
-                            </div>
-
-                            <!-- New Fields Start -->
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="idMotivoVerbaZerada">Motivo da Verba Zerada</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idMotivoVerbaZerada" name="FornecedorNegociacao.MotivoVerbaZerada" asp-for="FornecedorNegociacao.MotivoVerbaZerada">
-                                            <option value="">Escolher...</option>
-                                            <option value="Não Paga Verba">Não Paga Verba</option>
-                                            <option value="Verba na Apuração ou Desconto">Verba na Apuração ou Desconto</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="idJustificativaSemVerba">Justificativa (Sem Verba)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idJustificativaSemVerba" name="FornecedorNegociacao.JustificativaSemVerba" asp-for="FornecedorNegociacao.JustificativaSemVerba" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idDivisaoVerba">Divisão</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idDivisaoVerba" name="FornecedorNegociacao.DivisaoVerba" asp-for="FornecedorNegociacao.DivisaoVerba">
-                                            <option value="">Escolher...</option>
-                                            <option value="Atacado">Atacado</option>
-                                            <option value="Varejo">Varejo</option>
-                                            <option value="Atacado / Varejo">Atacado / Varejo</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idContratoFornecedor">Contrato</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idContratoFornecedor" name="FornecedorNegociacao.ContratoFornecedor" asp-for="FornecedorNegociacao.ContratoFornecedor">
-                                            <option value="">Escolher...</option>
-                                            <option value="Sim">Sim</option>
-                                            <option value="Sim, apenas Varejo">Sim, apenas Varejo</option>
-                                            <option value="Sim, apenas Atacado">Sim, apenas Atacado</option>
-                                            <option value="Sim, após o primeiro pedido">Sim, após o primeiro pedido</option>
-                                            <option value="Não">Não</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="idApuracaoContrato">Apuração</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idApuracaoContrato" name="FornecedorNegociacao.ApuracaoContrato" asp-for="FornecedorNegociacao.ApuracaoContrato">
-                                            <option value="">Escolher...</option>
-                                            <option value="Líquido">Líquido</option>
-                                            <option value="Bruto">Bruto</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idTipoContrato">Tipo de Contrato</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idTipoContrato" name="FornecedorNegociacao.TipoContrato" asp-for="FornecedorNegociacao.TipoContrato">
-                                            <option value="">Escolher...</option>
-                                            <option value="Desconto">Desconto</option>
-                                            <option value="Apuração">Apuração</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idMotivoSemContrato">Motivo Sem Contrato</label>
-                                    <div class="form-group mb-3">
-                                        <select class="form-control" id="idMotivoSemContrato" name="FornecedorNegociacao.MotivoSemContrato" asp-for="FornecedorNegociacao.MotivoSemContrato">
-                                            <option value="">Escolher...</option>
-                                            <option value="Rede Brasil">Rede Brasil</option>
-                                            <option value="Outros">Outros</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="idJustificativaSemContrato">Justificativa (Sem Contrato)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idJustificativaSemContrato" name="FornecedorNegociacao.JustificativaSemContrato" asp-for="FornecedorNegociacao.JustificativaSemContrato" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Percentuais do Contrato (Varejo) -->
-                            <div class="row">
-                                <div class="col-md-3" style="display: flex; align-items: center; justify-content: center; height: 70px;">
-                                    <span style="font-weight: bold; color: #718288;">Percentuais do Contrato ( Varejo )</span>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idTotalContratoVarejo">Total(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control readonly" id="idTotalContratoVarejo" name="FornecedorNegociacao.TotalPercentualVarejo" asp-for="FornecedorNegociacao.TotalPercentualVarejo" readonly="true" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idLogisticoVarejo">Logístico(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idLogisticoVarejo" name="FornecedorNegociacao.LogisticoVarejo" asp-for="FornecedorNegociacao.LogisticoVarejo" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idDevolucaoVarejo">Avaria(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idDevolucaoVarejo" name="FornecedorNegociacao.DevolucaoVarejo" asp-for="FornecedorNegociacao.DevolucaoVarejo" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idAniversarioVarejo">Aniversário(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idAniversarioVarejo" name="FornecedorNegociacao.AniversarioVarejo" asp-for="FornecedorNegociacao.AniversarioVarejo" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idReinauguracaoVarejo">Reinauguração(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idReinauguracaoVarejo" name="FornecedorNegociacao.ReinauguracaoVarejo" asp-for="FornecedorNegociacao.ReinauguracaoVarejo" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idCadastroVarejo">Cadastro(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idCadastroVarejo" name="FornecedorNegociacao.CadastroVarejo" asp-for="FornecedorNegociacao.CadastroVarejo" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idFinanceiroVarejo">Financeiro(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idFinanceiroVarejo" name="FornecedorNegociacao.FinanceiroVarejo" asp-for="FornecedorNegociacao.FinanceiroVarejo" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idMarketingVarejo">Marketing(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idMarketingVarejo" name="FornecedorNegociacao.MarketingVarejo" asp-for="FornecedorNegociacao.MarketingVarejo" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Percentuais do Contrato (Atacado) -->
-                            <div class="row">
-                                <div class="col-md-3" style="display: flex; align-items: center; justify-content: center; height: 70px;">
-                                    <span style="font-weight: bold; color: #718288;">Percentuais do Contrato ( Atacado )</span>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idTotalContratoAtacado">Total(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control readonly" id="idTotalContratoAtacado" name="FornecedorNegociacao.TotalPercentualAtacado" asp-for="FornecedorNegociacao.TotalPercentualAtacado" readonly="true" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idLogisticoAtacado">Logístico(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idLogisticoAtacado" name="FornecedorNegociacao.LogisticoAtacado" asp-for="FornecedorNegociacao.LogisticoAtacado" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idDevolucaoAtacado">Avaria(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idDevolucaoAtacado" name="FornecedorNegociacao.DevolucaoAtacado" asp-for="FornecedorNegociacao.DevolucaoAtacado" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idAniversarioAtacado">Aniversário(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idAniversarioAtacado" name="FornecedorNegociacao.AniversarioAtacado" asp-for="FornecedorNegociacao.AniversarioAtacado" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idReinauguracaoAtacado">Reinauguração(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idReinauguracaoAtacado" name="FornecedorNegociacao.ReinauguracaoAtacado" asp-for="FornecedorNegociacao.ReinauguracaoAtacado" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idCadastroAtacado">Cadastro(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idCadastroAtacado" name="FornecedorNegociacao.CadastroAtacado" asp-for="FornecedorNegociacao.CadastroAtacado" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idFinanceiroAtacado">Financeiro(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idFinanceiroAtacado" name="FornecedorNegociacao.FinanceiroAtacado" asp-for="FornecedorNegociacao.FinanceiroAtacado" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="idMarketingAtacado">Marketing(%)</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idMarketingAtacado" name="FornecedorNegociacao.MarketingAtacado" asp-for="FornecedorNegociacao.MarketingAtacado" />
+                                        <span asp-validation-for="Fornecedor.COMPRADORPRINCIPAL" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <br />
 
-                    <!-- Card Seguranca Alimentos-->
-                    <div class="card" id="SegurancaAlimentos">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h4 style="color: #1878BB; margin-bottom: 20px;">Segurança de Alimentos</h4>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col">
-                                    <hr>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="idParecerSegurancaAlimentos">Parecer</label>
-                                    <div class="form-group mb-3">
-                                        <select asp-for="SegurancaAlimentos.Parecer" class="form-control">
-                                            <option value="">Escolher...</option>
-                                            <option value="Aprovado">Aprovado</option>
-                                            <option value="Não Aprovado">Não Aprovado</option>
-                                            <option value="Pendência(s) Documentação">Pendência(s) Documentação</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-10">
-                                    <label for="idDescricaoAvaliacao">Descrição da Avaliação</label>
-                                    <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.DescricaoAvaliacao" class="form-control" />
-                                    </div>
-                                </div>
-                                <hr />
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="idAtividadeEmpresaForn">Atividade da Empresa:</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idAtividadeEmpresaForn" name="SegurancaAlimentos.AtividadeEmpresa" asp-for="SegurancaAlimentos.AtividadeEmpresa" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idOrgaoFiscalizacaoForn">Orgão de Fiscalização</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idOrgaoFiscalizacaoForn" name="SegurancaAlimentos.OrgaoFiscalizacao" asp-for="SegurancaAlimentos.OrgaoFiscalizacao" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="idNumRegistroForn">Nº Registro</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idNumRegistroForn" name="SegurancaAlimentos.NumeroRegistroOrgao" asp-for="SegurancaAlimentos.NumeroRegistroOrgao" />
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="idResponsavelTecnico">Responsavel Técnico</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idResponsavelTecnico" name="SegurancaAlimentos.ResponsavelTecnico" asp-for="SegurancaAlimentos.ResponsavelTecnico" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <label for="idTecnicoForn">DDD</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idDDDTecnicoForn" name="SegurancaAlimentos.DDDTecnico" asp-for="SegurancaAlimentos.DDDTecnico" />
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="idTelefoneTecnicoForn">Telefone</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idTelefoneTecnicoForn" name="SegurancaAlimentos.TelefoneTecnico" asp-for="SegurancaAlimentos.TelefoneTecnico" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="idEmailTecnicoForn">Email</label>
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="idEmailTecnicoForn" name="SegurancaAlimentos.EmailTecnico" asp-for="SegurancaAlimentos.EmailTecnico" />
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <div class="col text-center">
-                                    <p style="color: #ff0000; font-weight: bold;">** RESPONSÁVEL TÉCNICO DEVE RESPONDER À AVALIAÇÃO ABAIXO MARCANDO AS OPÇÕES QUE EXISTEM NA EMPRESA **</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.BPFImplantadoPraticado" />
-                                    <label asp-for="SegurancaAlimentos.BPFImplantadoPraticado">Boas Práticas de Fabricação Implantado e Praticado</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.SistemaTratamentoResiduos" />
-                                    <label asp-for="SegurancaAlimentos.SistemaTratamentoResiduos">Sistema de Tratamento dos Resíduos Gerados pelo Estabelecimento</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ControleSaudeColaboradores" />
-                                    <label asp-for="SegurancaAlimentos.ControleSaudeColaboradores">Controle de Saúde dos Colaboradores</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.CIPMIPImplementado" />
-                                    <label asp-for="SegurancaAlimentos.CIPMIPImplementado">CIP/MIP implementado e monitorado</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.SistemaIdentificacaoRastreabilidade" />
-                                    <label asp-for="SegurancaAlimentos.SistemaIdentificacaoRastreabilidade">Sistema de Identificação e Rastreabilidade do Processo</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ProcedimentoPadraoFabricacao" />
-                                    <label asp-for="SegurancaAlimentos.ProcedimentoPadraoFabricacao">Sistema de Procedimento Padrão de Fabricação e/ou Manipulação</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ControleQualidadeImplementado" />
-                                    <label asp-for="SegurancaAlimentos.ControleQualidadeImplementado">Controle de Qualidade implementado</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ProcedimentoPadraoRecebimento" />
-                                    <label asp-for="SegurancaAlimentos.ProcedimentoPadraoRecebimento">Sistema de Procedimento Padrão de Recebimento de Matéria Prima</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.SistemaTratamentoReclamacoes" />
-                                    <label asp-for="SegurancaAlimentos.SistemaTratamentoReclamacoes">Sistema de Tratamento das Reclamações dos Clientes</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.TransporteProprio" />
-                                    <label asp-for="SegurancaAlimentos.TransporteProprio">Transporte Próprio</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.FichaTecnicaProdutos" />
-                                    <label asp-for="SegurancaAlimentos.FichaTecnicaProdutos">Ficha Técnica dos Produtos Produzidos</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ControleProdutosNaoConforme" />
-                                    <label asp-for="SegurancaAlimentos.ControleProdutosNaoConforme">Sistema de Controle de Produtos Não Conforme</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ExigeHigienizacaoCIP" />
-                                    <label asp-for="SegurancaAlimentos.ExigeHigienizacaoCIP">Exige higienização e CIP em dia do Transporte Terceirizado</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.RegistrosComprovacaoSistemas" />
-                                    <label asp-for="SegurancaAlimentos.RegistrosComprovacaoSistemas">Registros de Comprovação desses sistemas?</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.LicencasPertinentes" />
-                                    <label asp-for="SegurancaAlimentos.LicencasPertinentes">Todas as Licenças Pertinente ao Processo</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.EnviaAmostrasCliente" />
-                                    <label asp-for="SegurancaAlimentos.EnviaAmostrasCliente">Envia Amostras para Cliente Quando Solicitado</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="checkbox" asp-for="SegurancaAlimentos.ControleAguaAbastecimento" />
-                                    <label asp-for="SegurancaAlimentos.ControleAguaAbastecimento">Sistema de Controle da Água de Abastecimento e Residual no Estabelecimento</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-
+                    <!-- Submit Button Row -->
                     <div class="row">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                         </div>
                     </div>
                     <br />
+                    <!-- Add other sections similarly with proper IDs and structure -->
                 </form>
             </div>
         </div>
     </div>
 }
-else
-{
-    <p>No data found for the provided CNPJ.</p>
-}
-
-<div data-success="@Model.IsSubmissionSuccessful" style="display:none;" id="successIndicator"></div>
 
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const inputs = document.querySelectorAll('.validate-required');
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        function showSuccessMessage() {
+            alert("Dados Enviados para Analise com Sucesso");
+            return true;
+        }
 
-            inputs.forEach(input => {
-                input.addEventListener('blur', function () {
-                    if (this.value.trim() === '') {
-                        let label = this.closest('.form-group').querySelector('label');
-                        if (!label) {
-                            label = this.closest('.form-group').previousElementSibling;
-                        }
-                        if (label) {
-                            alert(`O campo "${label.textContent}" não pode ficar em branco`);
-                            // Remove the blur event temporarily to avoid infinite loop
-                            this.removeEventListener('blur', arguments.callee);
-                            this.focus();
-                            // Re-add the blur event after refocus
-                            setTimeout(() => {
-                                this.addEventListener('blur', arguments.callee);
-                            }, 0);
-                        }
-                    }
-                });
-            });
-
-            var isSuccessful = document.getElementById('successIndicator').getAttribute('data-success');
-            if (isSuccessful === 'True') {
-                alert("Cadastro atualizado com sucesso");
+        function validateField(fieldId, validationType = 'default') {
+            var field = document.getElementById(fieldId);
+            if (field) {
+                if (validationType === 'default' && !field.value.trim()) {
+                    alert("Campo Precisa ser preenchido");
+                    setTimeout(function () { field.focus(); }, 10);
+                    return false;
+                } else if (validationType === '9digitos' && !/^\d{9}$/.test(field.value.trim())) {
+                    alert("Campo deve conter exatamente 9 dígitos");
+                    setTimeout(function () { field.focus(); }, 10);
+                    return false;
+                } else if (validationType === '7digitos' && !/^\d{7}$/.test(field.value.trim())) {
+                    alert("Campo deve conter exatamente 7 dígitos");
+                    setTimeout(function () { field.focus(); }, 10);
+                    return false;
+                } else if (validationType === '8digitos' && !/^\d{8}$/.test(field.value.trim())) {
+                    alert("Campo deve conter exatamente 8 dígitos");
+                    setTimeout(function () { field.focus(); }, 10);
+                    return false;
+                }
             }
-        });
+            return true;
+        }
 
-        // Function to fetch address from ViaCEP
+        function validateRazaoSocial() { return validateField("Fornecedor_RAZAOSOCIAL"); }
+        function validateFantasia() { return validateField("Fornecedor_FANTASIA"); }
+        function validateIE() { return validateField("Fornecedor_IE", '9digitos'); }
+        function validateCNAE() { return validateField("Fornecedor_CNAE", '7digitos'); }
+        function validateCEP() { return validateField("Fornecedor_CEP", '8digitos'); }
+        function validateBairro() { return validateField("Fornecedor_BAIRRO"); }
+        function validateCidade() { return validateField("Fornecedor_CIDADE"); }
+        function validateLogradouro() { return validateField("Fornecedor_LOGRADOURO"); }
+
+        function validateSelect(selectId) {
+            var select = document.getElementById(selectId);
+            if (select && select.value === "") {
+                alert("Esse campo não pode ficar em branco");
+                setTimeout(function () { select.focus(); }, 10);
+                return false;
+            }
+            return true;
+        }
+
         function fetchAddress() {
-            const cep = document.getElementById('CEP').value.replace(/\D/g, '');
+            var cep = document.getElementById("Fornecedor_CEP").value.replace(/\D/g, ''); // Remove non-digit characters
             if (cep.length === 8) {
-                const url = `https://viacep.com.br/ws/${cep}/json/`;
-
-                fetch(url)
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data.erro) {
-                            console.error('CEP não encontrado.');
-                            return;
+                        if (!data.erro) {
+                            document.getElementById("Fornecedor_LOGRADOURO").value = data.logradouro;
+                            document.getElementById("Fornecedor_BAIRRO").value = data.bairro;
+                            document.getElementById("Fornecedor_CIDADE").value = data.localidade;
+                            document.getElementById("Fornecedor_UF").value = data.uf;
                         }
-                        document.getElementById('Logradouro').value = data.logradouro;
-                        document.getElementById('Bairro').value = data.bairro;
-                        document.getElementById('Cidade').value = data.localidade;
-                        document.getElementById('UF').value = data.uf;
                     })
-                    .catch(error => console.error('Erro ao buscar o CEP:', error));
+                    .catch(error => {
+                        console.error('Error fetching address:', error);
+                        alert("Erro ao buscar endereço.");
+                    });
             }
         }
 
+        // Make Enter key act like Tab in the form
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent default Enter behavior
+                // Find the next focusable element
+                var currentElement = event.target;
+                var focusableElements = document.querySelectorAll('button, [href], input, select, textarea');
+                var currentIndex = Array.from(focusableElements).indexOf(currentElement);
+                var nextIndex = (currentIndex + 1) % focusableElements.length;
+                focusableElements[nextIndex].focus();
+            }
+        });
     </script>
 }

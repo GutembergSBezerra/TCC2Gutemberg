@@ -33,6 +33,9 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public string ConfirmPassword { get; set; } = string.Empty;
 
+        [BindProperty]
+        public string DeletePassword { get; set; } = string.Empty;
+
         public string ErrorMessage { get; set; } = string.Empty;
         public string SuccessMessage { get; set; } = string.Empty;
 
@@ -49,7 +52,7 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string action)
         {
             if (HttpContext.User.Identity == null || !HttpContext.User.Identity.IsAuthenticated)
             {
@@ -58,49 +61,77 @@ namespace PortalArcomix.Pages
 
             string userEmail = HttpContext.User.Identity.Name ?? string.Empty;
 
-            if (NewPassword != ConfirmPassword)
+            if (action == "Salvar")
             {
-                ErrorMessage = "As senhas digitadas são diferentes";
-                return Page();
-            }
-
-            if (!IsValidPassword(NewPassword))
-            {
-                ErrorMessage = "A Senha deve ter no minimo 8 caracteres, Letras Maiusculas, Minusculas e Numeros";
-                return Page();
-            }
-
-            try
-            {
-                var user = _context.Tbl_Usuario.FirstOrDefault(u => u.Email == userEmail);
-
-                if (user != null && user.Senha == OldPassword)
+                if (NewPassword != ConfirmPassword)
                 {
-                    user.Senha = NewPassword;
-                    _context.Tbl_Usuario.Update(user);
-                    await _context.SaveChangesAsync();
-
-                    SuccessMessage = "Senha Alterada com sucesso";
-                    HttpContext.Session.Remove(IncorrectPasswordAttemptsSessionKey); // Reset the attempt count on success
+                    ErrorMessage = "As senhas digitadas são diferentes";
+                    return Page();
                 }
-                else
-                {
-                    int incorrectAttempts = HttpContext.Session.GetInt32(IncorrectPasswordAttemptsSessionKey) ?? 0;
-                    incorrectAttempts++;
-                    HttpContext.Session.SetInt32(IncorrectPasswordAttemptsSessionKey, incorrectAttempts);
 
-                    if (incorrectAttempts >= 3)
+                if (!IsValidPassword(NewPassword))
+                {
+                    ErrorMessage = "A Senha deve ter no minimo 8 caracteres, Letras Maiusculas, Minusculas e Numeros";
+                    return Page();
+                }
+
+                try
+                {
+                    var user = _context.Tbl_Usuario.FirstOrDefault(u => u.Email == userEmail);
+
+                    if (user != null && user.Senha == OldPassword)
                     {
+                        user.Senha = NewPassword;
+                        _context.Tbl_Usuario.Update(user);
+                        await _context.SaveChangesAsync();
+
+                        SuccessMessage = "Senha Alterada com sucesso";
+                        HttpContext.Session.Remove(IncorrectPasswordAttemptsSessionKey); // Reset the attempt count on success
+                    }
+                    else
+                    {
+                        int incorrectAttempts = HttpContext.Session.GetInt32(IncorrectPasswordAttemptsSessionKey) ?? 0;
+                        incorrectAttempts++;
+                        HttpContext.Session.SetInt32(IncorrectPasswordAttemptsSessionKey, incorrectAttempts);
+
+                        if (incorrectAttempts >= 3)
+                        {
+                            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                            return RedirectToPage("/Login");
+                        }
+
+                        ErrorMessage = $"Senha Atual Incorreta. Tentativas restantes: {3 - incorrectAttempts}";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = $"Erro ao atualizar a senha: {ex.Message}";
+                }
+            }
+            else if (action == "Excluir")
+            {
+                try
+                {
+                    var user = _context.Tbl_Usuario.FirstOrDefault(u => u.Email == userEmail);
+
+                    if (user != null && user.Senha == DeletePassword)
+                    {
+                        _context.Tbl_Usuario.Remove(user);
+                        await _context.SaveChangesAsync();
+
+                        SuccessMessage = "Conta excluída com sucesso";
                         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                         return RedirectToPage("/Login");
                     }
-
-                    ErrorMessage = $"Senha Atual Incorreta. Tentativas restantes: {3 - incorrectAttempts}";
+                    else
+                    {
+                        ErrorMessage = "Senha Atual Incorreta";
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Erro ao atualizar a senha: {ex.Message}";
+                catch (Exception ex)
+                {
+                    ErrorMessage = $"Erro ao excluir a conta: {ex.Message}";
+                }
             }
 
             return Page();
