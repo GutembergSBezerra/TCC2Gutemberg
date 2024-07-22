@@ -258,7 +258,7 @@
                         </div>
                     </div>
 
-
+                    <br />
 
                     <!-- Submit Button Row -->
                     <div class="row">
@@ -281,25 +281,32 @@
             alert("Dados Enviados para Analise com Sucesso");
             return true;
         }
+        var isValidationInProgress = false;
 
         function validateField(fieldId, validationType = 'default') {
+            if (isValidationInProgress) return true; // Skip if validation is already in progress
+
             var field = document.getElementById(fieldId);
             if (field) {
                 if (validationType === 'default' && !field.value.trim()) {
+                    isValidationInProgress = true;
                     alert("Campo Precisa ser preenchido");
-                    setTimeout(function () { field.focus(); }, 10);
+                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
                     return false;
                 } else if (validationType === '9digitos' && !/^\d{9}$/.test(field.value.trim())) {
+                    isValidationInProgress = true;
                     alert("Campo deve conter exatamente 9 dígitos");
-                    setTimeout(function () { field.focus(); }, 10);
+                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
                     return false;
                 } else if (validationType === '7digitos' && !/^\d{7}$/.test(field.value.trim())) {
+                    isValidationInProgress = true;
                     alert("Campo deve conter exatamente 7 dígitos");
-                    setTimeout(function () { field.focus(); }, 10);
+                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
                     return false;
                 } else if (validationType === '8digitos' && !/^\d{8}$/.test(field.value.trim())) {
+                    isValidationInProgress = true;
                     alert("Campo deve conter exatamente 8 dígitos");
-                    setTimeout(function () { field.focus(); }, 10);
+                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
                     return false;
                 }
             }
@@ -316,10 +323,13 @@
         function validateLogradouro() { return validateField("Fornecedor_LOGRADOURO"); }
 
         function validateSelect(selectId) {
+            if (isValidationInProgress) return true; // Skip if validation is already in progress
+
             var select = document.getElementById(selectId);
             if (select && select.value === "") {
+                isValidationInProgress = true;
                 alert("Esse campo não pode ficar em branco");
-                setTimeout(function () { select.focus(); }, 10);
+                setTimeout(function () { select.focus(); isValidationInProgress = false; }, 10);
                 return false;
             }
             return true;

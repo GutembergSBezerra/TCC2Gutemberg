@@ -81,6 +81,12 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
+            if (TipoUsuario == "Fornecedor" && (CNPJ == null || CNPJ.Length != 14))
+            {
+                ErrorMessage = "O CNPJ deve conter exatamente 14 dígitos.";
+                return Page();
+            }
+
             try
             {
                 string senha = GenerateValidPassword();
@@ -178,4 +184,5 @@ namespace PortalArcomix.Pages
         }
     }
 }
+
 

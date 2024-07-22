@@ -46,7 +46,7 @@
                             <div class="col-md-3" id="idCNPJFornecedor" style="display: none;">
                                 <div class="form-group mb-3">
                                     <label for="CNPJ">CNPJ</label>
-                                    <input asp-for="CNPJ" class="form-control" type="text" />
+                                    <input asp-for="CNPJ" class="form-control" type="text" id="CNPJ" onblur="validateCNPJ()" />
                                     <span asp-validation-for="CNPJ" class="text-danger"></span>
                                 </div>
                             </div>
@@ -77,6 +77,16 @@
         document.addEventListener('DOMContentLoaded', function () {
             handleUserTypeChange();
         });
+
+        function validateCNPJ() {
+            var cnpjField = document.getElementById("CNPJ");
+            var cnpjValue = cnpjField.value.trim();
+
+            if (cnpjValue.length !== 14) {
+                alert("O CNPJ deve conter exatamente 14 dígitos.");
+                setTimeout(function () { cnpjField.focus(); }, 10);
+            }
+        }
     </script>
 
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
