@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PortalArcomix.Data;
@@ -19,6 +20,9 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public Tbl_Fornecedor Fornecedor { get; set; }
+
+        [BindProperty]
+        public Tbl_FornecedorDadosBancarios DadosBancarios { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -42,6 +46,16 @@ namespace PortalArcomix.Pages
             if (Fornecedor == null)
             {
                 return NotFound();
+            }
+
+            // Load the DadosBancarios data from the database
+            DadosBancarios = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
+
+            if (DadosBancarios == null)
+            {
+                DadosBancarios = new Tbl_FornecedorDadosBancarios { CNPJ = cnpjClaim };
+                _context.Tbl_FornecedorDadosBancarios.Add(DadosBancarios);
+                await _context.SaveChangesAsync();
             }
 
             return Page();
@@ -74,6 +88,12 @@ namespace PortalArcomix.Pages
                 return NotFound();
             }
 
+            var dadosBancariosToUpdate = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
+            if (dadosBancariosToUpdate == null)
+            {
+                return NotFound();
+            }
+
             // Update the Fornecedor properties
             fornecedorToUpdate.RAZAOSOCIAL = Fornecedor.RAZAOSOCIAL;
             fornecedorToUpdate.FANTASIA = Fornecedor.FANTASIA;
@@ -92,6 +112,13 @@ namespace PortalArcomix.Pages
             fornecedorToUpdate.TIPOFORNECEDOR = Fornecedor.TIPOFORNECEDOR;
             fornecedorToUpdate.FORNECEDORALIMENTOS = Fornecedor.FORNECEDORALIMENTOS;
             fornecedorToUpdate.COMPRADORPRINCIPAL = Fornecedor.COMPRADORPRINCIPAL;
+
+            // Update the DadosBancarios properties
+            dadosBancariosToUpdate.BANCO = DadosBancarios.BANCO;
+            dadosBancariosToUpdate.AGENCIA = DadosBancarios.AGENCIA;
+            dadosBancariosToUpdate.TIPOCONTA = DadosBancarios.TIPOCONTA;
+            dadosBancariosToUpdate.NUMEROCONTA = DadosBancarios.NUMEROCONTA;
+            dadosBancariosToUpdate.CNPJCONTATITULAR = DadosBancarios.CNPJCONTATITULAR;
 
             try
             {

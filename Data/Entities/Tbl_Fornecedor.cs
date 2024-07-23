@@ -26,4 +26,3 @@ namespace PortalArcomix.Data.Entities
         public string? COMPRADORPRINCIPAL { get; set; } // NVARCHAR2(30 CHAR)
     }
 }
-

@@ -7,29 +7,18 @@ namespace PortalArcomix.Data.Entities
     public class Tbl_FornecedorDadosBancarios
     {
         [Key]
-        [Required]
-        [StringLength(14)]
-        [Column("CNPJ")]
-        public string CNPJ { get; set; } = string.Empty;
+        public int ID { get; set; } // Primary Key, not nullable
 
-        [MaxLength(5)]
-        [Column("CODIGOBANCO")]
-        public string? CodigoBanco { get; set; }
+        public string? CNPJ { get; set; } // CHAR(14 BYTE), nullable
 
-        [MaxLength(5)]
-        [Column("CODIGOAGENCIA")]
-        public string? CodigoAgencia { get; set; }
+        public string? BANCO { get; set; } // NVARCHAR2(30 CHAR), nullable
 
-        [MaxLength(10)]
-        [Column("NUMEROCONTA")]
-        public string? NumeroConta { get; set; }
+        public string? AGENCIA { get; set; } // VARCHAR2(8 BYTE), nullable
 
-        [MaxLength(1)]
-        [Column("DIGITOCONTA")]
-        public string? DigitoConta { get; set; }
+        public string? TIPOCONTA { get; set; } // NVARCHAR2(20 CHAR), nullable
 
-        [MaxLength(30)]
-        [Column("NOMEFAVORECIDO")]
-        public string? NomeFavorecido { get; set; }
+        public string? NUMEROCONTA { get; set; } // VARCHAR2(10 BYTE), nullable
+
+        public string? CNPJCONTATITULAR { get; set; } // CHAR(14 BYTE), nullable
     }
 }
