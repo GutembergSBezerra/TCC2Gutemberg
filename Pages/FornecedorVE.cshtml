@@ -187,7 +187,7 @@
                                     <div class="form-group mb-3">
                                         <select asp-for="Fornecedor.CONTRIBUIICMS" class="form-control validate-required" id="Fornecedor_CONTRIBUIICMS" onblur="validateSelect('Fornecedor_CONTRIBUIICMS')">
                                             <option value="">Selecione</option>
-                                            <option value="SIM ">SIM </option>
+                                            <option value="SIM ">SIM</option>
                                             <option value="NÃO">NÃO</option>
                                         </select>
                                         <span asp-validation-for="Fornecedor.CONTRIBUIICMS" class="text-danger"></span>
@@ -199,7 +199,7 @@
                                     <div class="form-group mb-3">
                                         <select asp-for="Fornecedor.CONTRIBUIIPI" class="form-control validate-required" id="Fornecedor_CONTRIBUIIPI" onblur="validateSelect('Fornecedor_CONTRIBUIIPI')">
                                             <option value="">Selecione</option>
-                                            <option value="SIM ">SIM </option>
+                                            <option value="SIM ">SIM</option>
                                             <option value="NÃO">NÃO</option>
                                         </select>
                                         <span asp-validation-for="Fornecedor.CONTRIBUIIPI" class="text-danger"></span>
@@ -257,7 +257,6 @@
                             </div>
                         </div>
                     </div>
-
                     <br />
 
                     <!-- Dados Bancarios Card -->
@@ -270,12 +269,12 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <hr>
+                                    <hr />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="idBanco">Banco:</label>
+                                    <label for="Banco">Banco:</label>
                                     <div class="form-group mb-3">
                                         <select class="form-control validate-required" id="Banco" asp-for="DadosBancarios.BANCO" onblur="validateSelect('Banco')">
                                             <option value="">Selecione</option>
@@ -308,14 +307,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="idAgencia">Agencia</label>
+                                    <label for="Agencia">Agencia</label>
                                     <div class="form-group mb-3">
                                         <input type="text" class="form-control validate-required" id="Agencia" asp-for="DadosBancarios.AGENCIA" onblur="validateAgencia()" />
                                         <span asp-validation-for="DadosBancarios.AGENCIA" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="idTipoConta">Tipo de Conta</label>
+                                    <label for="TIPOCONTA">Tipo de Conta</label>
                                     <div class="form-group mb-3">
                                         <select class="form-control validate-required" id="TIPOCONTA" asp-for="DadosBancarios.TIPOCONTA" onblur="validateSelect('TIPOCONTA')">
                                             <option value="">Selecione</option>
@@ -328,14 +327,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="idNConta">Nº Conta:</label>
+                                    <label for="NumeroConta">Nº Conta:</label>
                                     <div class="form-group mb-3">
                                         <input type="text" class="form-control validate-required" id="NumeroConta" asp-for="DadosBancarios.NUMEROCONTA" onblur="validateNumeroConta()" />
                                         <span asp-validation-for="DadosBancarios.NUMEROCONTA" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="idCNPJConta">CNPJ Titular Conta:</label>
+                                    <label for="CNPJContaTitular">CNPJ Titular Conta:</label>
                                     <div class="form-group mb-3">
                                         <input type="text" class="form-control validate-required" id="CNPJContaTitular" asp-for="DadosBancarios.CNPJCONTATITULAR" onblur="validateCNPJContaTitular()" />
                                         <span asp-validation-for="DadosBancarios.CNPJCONTATITULAR" class="text-danger"></span>
@@ -344,13 +343,141 @@
                             </div>
                         </div>
                     </div>
-
                     <br />
+
+
+                    <!-- Contatos Card -->
+                    <div class="card" id="ContatosCadastro">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h4 style="color: #1878BB; margin-bottom: 20px;">Contatos</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="CONTATOVENDEDOR">Vendedor:</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="CONTATOVENDEDOR" asp-for="Contatos.CONTATOVENDEDOR" onblur="validateContatoVendedor()" />
+                                        <span asp-validation-for="Contatos.CONTATOVENDEDOR" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="DDDVENDEDOR">DDD</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="DDDVENDEDOR" asp-for="Contatos.DDDVENDEDOR" onblur="validateDDDVendedor()" />
+                                        <span asp-validation-for="Contatos.DDDVENDEDOR" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="TELEFONEVENDEDOR">Telefone</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="TELEFONEVENDEDOR" asp-for="Contatos.TELEFONEVENDEDOR" onblur="validateTelefoneVendedor()" />
+                                        <span asp-validation-for="Contatos.TELEFONEVENDEDOR" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="EMAILVENDEDOR">Email</label>
+                                    <div class="form-group mb-3">
+                                        <input type="email" class="form-control validate-required" id="EMAILVENDEDOR" asp-for="Contatos.EMAILVENDEDOR" onblur="validateEmailVendedor()" />
+                                        <span asp-validation-for="Contatos.EMAILVENDEDOR" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="CONTATOGERENTE">Gerente:</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="CONTATOGERENTE" asp-for="Contatos.CONTATOGERENTE" onblur="validateContatoGerente()" />
+                                        <span asp-validation-for="Contatos.CONTATOGERENTE" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="DDDGERENTE">DDD</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="DDDGERENTE" asp-for="Contatos.DDDGERENTE" onblur="validateDDDGereente()" />
+                                        <span asp-validation-for="Contatos.DDDGERENTE" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="TELEFONEGERENTE">Telefone</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="TELEFONEGERENTE" asp-for="Contatos.TELEFONEGERENTE" onblur="validateTelefoneGerente()" />
+                                        <span asp-validation-for="Contatos.TELEFONEGERENTE" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="EMAILGERENTE">Email</label>
+                                    <div class="form-group mb-3">
+                                        <input type="email" class="form-control validate-required" id="EMAILGERENTE" asp-for="Contatos.EMAILGERENTE" onblur="validateEmailGerente()" />
+                                        <span asp-validation-for="Contatos.EMAILGERENTE" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="RESPONSAVELFINANCEIRO">Responsável Financeiro:</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="RESPONSAVELFINANCEIRO" asp-for="Contatos.RESPONSAVELFINANCEIRO" onblur="validateResponsavelFinanceiro()" />
+                                        <span asp-validation-for="Contatos.RESPONSAVELFINANCEIRO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="DDDRESPFINANCEIRO">DDD</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="DDDRESPFINANCEIRO" asp-for="Contatos.DDDRESPFINANCEIRO" onblur="validateDDDRespFinanceiro()" />
+                                        <span asp-validation-for="Contatos.DDDRESPFINANCEIRO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="TELEFONERESPFINANCEIRO">Telefone</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="TELEFONERESPFINANCEIRO" asp-for="Contatos.TELEFONERESPFINANCEIRO" onblur="validateTelefoneRespFinanceiro()" />
+                                        <span asp-validation-for="Contatos.TELEFONERESPFINANCEIRO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="EMAILRESPFINANCEIRO">Email</label>
+                                    <div class="form-group mb-3">
+                                        <input type="email" class="form-control validate-required" id="EMAILRESPFINANCEIRO" asp-for="Contatos.EMAILRESPFINANCEIRO" onblur="validateEmailRespFinanceiro()" />
+                                        <span asp-validation-for="Contatos.EMAILRESPFINANCEIRO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6 style="color: #718288; margin-top: 30px; margin-left: 220px; font-weight: bold;">Telefone Fixo da Empresa:</h6>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="DDDTELEFONEFIXOEMPRESA">DDD</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="DDDTELEFONEFIXOEMPRESA" asp-for="Contatos.DDDTELEFONEFIXOEMPRESA" onblur="validateDDDTelefoneFixoEmpresa()" />
+                                        <span asp-validation-for="Contatos.DDDTELEFONEFIXOEMPRESA" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="TELEFONEFIXOEMPRESA">Telefone</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control validate-required" id="TELEFONEFIXOEMPRESA" asp-for="Contatos.TELEFONEFIXOEMPRESA" onblur="validateTelefoneFixoEmpresa()" />
+                                        <span asp-validation-for="Contatos.TELEFONEFIXOEMPRESA" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
 
                     <!-- Submit Button Row -->
                     <div class="row">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+
                         </div>
                     </div>
                     <br />
@@ -368,43 +495,53 @@
             alert("Dados Enviados para Analise com Sucesso");
             return true;
         }
-        var isValidationInProgress = false;
+
+        function setValidationMessage(fieldId, message) {
+            var field = document.getElementById(fieldId);
+            var validationSpan = field.nextElementSibling;
+            if (validationSpan && validationSpan.classList.contains('text-danger')) {
+                validationSpan.innerText = message;
+            }
+        }
 
         function validateField(fieldId, validationType = 'default') {
-            if (isValidationInProgress) return true; // Skip if validation is already in progress
-
             var field = document.getElementById(fieldId);
             if (field) {
-                if (validationType === 'default' && !field.value.trim()) {
-                    isValidationInProgress = true;
-                    alert("Campo Precisa ser preenchido");
-                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
+                var value = field.value.trim();
+                if (validationType === 'default' && !value) {
+                    setValidationMessage(fieldId, "Campo Precisa ser preenchido");
+                    field.focus();
                     return false;
-                } else if (validationType === '9digitos' && !/^\d{9}$/.test(field.value.trim())) {
-                    isValidationInProgress = true;
-                    alert("Campo deve conter exatamente 9 dígitos");
-                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
+               } else if (validationType === '9digitos' && !/^\d{9}$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter exatamente 9 dígitos");
+                    field.focus();
                     return false;
-                } else if (validationType === '7digitos' && !/^\d{7}$/.test(field.value.trim())) {
-                    isValidationInProgress = true;
-                    alert("Campo deve conter exatamente 7 dígitos");
-                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
+                } else if (validationType === '7digitos' && !/^\d{7}$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter exatamente 7 dígitos");
+                    field.focus();
                     return false;
-                } else if (validationType === '8digitos' && !/^\d{8}$/.test(field.value.trim())) {
-                    isValidationInProgress = true;
-                    alert("Campo deve conter exatamente 8 dígitos");
-                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
+                } else if (validationType === '8digitos' && !/^\d{8}$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter exatamente 8 dígitos");
+                    field.focus();
                     return false;
-                } else if (validationType === 'digits' && !/^\d+$/.test(field.value.trim())) {
-                    isValidationInProgress = true;
-                    alert("Campo deve conter apenas dígitos");
-                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
+                } else if (validationType === 'digits8or9' && !/^\d{8,9}$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter exatamente 8 ou 9 dígitos");
+                    field.focus();
                     return false;
-                } else if (validationType === '14digits' && !/^\d{14}$/.test(field.value.trim())) {
-                    isValidationInProgress = true;
-                    alert("Campo deve conter exatamente 14 dígitos");
-                    setTimeout(function () { field.focus(); isValidationInProgress = false; }, 10);
+                } else if (validationType === 'digits' && !/^\d+$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter apenas dígitos");
+                    field.focus();
                     return false;
+                } else if (validationType === '14digits' && !/^\d{14}$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter exatamente 14 dígitos");
+                    field.focus();
+                    return false;
+                } else if (validationType === '2digits' && !/^\d{2}$/.test(value)) {
+                    setValidationMessage(fieldId, "Campo deve conter exatamente 2 dígitos");
+                    field.focus();
+                    return false;
+                } else {
+                    setValidationMessage(fieldId, ""); // Clear validation message
                 }
             }
             return true;
@@ -421,16 +558,34 @@
         function validateAgencia() { return validateField("Agencia", 'digits'); }
         function validateNumeroConta() { return validateField("NumeroConta", 'digits'); }
         function validateCNPJContaTitular() { return validateField("CNPJContaTitular", '14digits'); }
+        function validateEmailVendedor() { return validateField("EMAILVENDEDOR", 'email'); }
+        function validateEmailGerente() { return validateField("EMAILGERENTE", 'email'); }
+        function validateEmailRespFinanceiro() { return validateField("EMAILRESPFINANCEIRO", 'email'); }
+
+        // Add the onblur event listeners for the Contatos fields
+        function validateContatoVendedor() { return validateField("CONTATOVENDEDOR"); }
+        function validateDDDVendedor() { return validateField("DDDVENDEDOR", '2digits'); }
+        function validateTelefoneVendedor() { return validateField("TELEFONEVENDEDOR", 'digits8or9'); }
+        function validateEmailVendedor() { return validateField("EMAILVENDEDOR"); }
+        function validateContatoGerente() { return validateField("CONTATOGERENTE"); }
+        function validateDDDGereente() { return validateField("DDDGERENTE", '2digits'); }
+        function validateTelefoneGerente() { return validateField("TELEFONEGERENTE", 'digits8or9'); }
+        function validateEmailGerente() { return validateField("EMAILGERENTE"); }
+        function validateResponsavelFinanceiro() { return validateField("RESPONSAVELFINANCEIRO"); }
+        function validateDDDRespFinanceiro() { return validateField("DDDRESPFINANCEIRO", '2digits'); }
+        function validateTelefoneRespFinanceiro() { return validateField("TELEFONERESPFINANCEIRO", 'digits8or9'); }
+        function validateEmailRespFinanceiro() { return validateField("EMAILRESPFINANCEIRO"); }
+        function validateDDDTelefoneFixoEmpresa() { return validateField("DDDTELEFONEFIXOEMPRESA", '2digits'); }
+        function validateTelefoneFixoEmpresa() { return validateField("TELEFONEFIXOEMPRESA", 'digits8or9'); }
 
         function validateSelect(selectId) {
-            if (isValidationInProgress) return true; // Skip if validation is already in progress
-
             var select = document.getElementById(selectId);
             if (select && select.value === "") {
-                isValidationInProgress = true;
-                alert("Esse campo não pode ficar em branco");
-                setTimeout(function () { select.focus(); isValidationInProgress = false; }, 10);
+                setValidationMessage(selectId, "Esse campo não pode ficar em branco");
+                select.focus();
                 return false;
+            } else {
+                setValidationMessage(selectId, ""); // Clear validation message
             }
             return true;
         }
@@ -467,5 +622,7 @@
                 focusableElements[nextIndex].focus();
             }
         });
+
+
     </script>
 }

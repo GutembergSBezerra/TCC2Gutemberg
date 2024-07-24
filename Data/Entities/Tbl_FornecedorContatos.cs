@@ -7,66 +7,51 @@ namespace PortalArcomix.Data.Entities
     public class Tbl_FornecedorContatos
     {
         [Key]
-        [Required]
-        [StringLength(14)]
-        [Column("CNPJ")]
-        public string CNPJ { get; set; } = string.Empty;
+        public int ID { get; set; } // Primary Key, not nullable
+
+        [MaxLength(14)]
+        public string? CNPJ { get; set; } // CHAR(14 BYTE), nullable, unique
 
         [MaxLength(30)]
-        [Column("CONTATOVENDEDOR")]
-        public string? ContatoVendedor { get; set; }
+        public string? CONTATOVENDEDOR { get; set; } // NVARCHAR2(30 CHAR), nullable
 
         [MaxLength(2)]
-        [Column("DDDVENDEDOR")]
-        public string? DDDVendedor { get; set; }
+        public string? DDDVENDEDOR { get; set; } // CHAR(2 BYTE), nullable
 
         [MaxLength(9)]
-        [Column("TELEFONEVENDEDOR")]
-        public string? TelefoneVendedor { get; set; }
+        public string? TELEFONEVENDEDOR { get; set; } // CHAR(9 BYTE), nullable
 
         [MaxLength(26)]
-        [Column("EMAILVENDEDOR")]
-        public string? EmailVendedor { get; set; }
+        public string? EMAILVENDEDOR { get; set; } // NVARCHAR2(26 CHAR), nullable
 
         [MaxLength(30)]
-        [Column("CONTATOGERENTE")]
-        public string? ContatoGerente { get; set; }
+        public string? CONTATOGERENTE { get; set; } // NVARCHAR2(30 CHAR), nullable
 
         [MaxLength(2)]
-        [Column("DDDGERENTE")]
-        public string? DDDGerente { get; set; }
+        public string? DDDGERENTE { get; set; } // CHAR(2 BYTE), nullable
 
         [MaxLength(9)]
-        [Column("TELEFONEGERENTE")]
-        public string? TelefoneGerente { get; set; }
+        public string? TELEFONEGERENTE { get; set; } // CHAR(9 BYTE), nullable
+
+        [MaxLength(26)]
+        public string? EMAILGERENTE { get; set; } // NVARCHAR2(26 CHAR), nullable
 
         [MaxLength(30)]
-        [Column("EMAILGERENTE")]
-        public string? EmailGerente { get; set; }
-
-        [MaxLength(30)]
-        [Column("RESPONSAVELFINANCEIRO")]
-        public string? ResponsavelFinanceiro { get; set; }
+        public string? RESPONSAVELFINANCEIRO { get; set; } // NVARCHAR2(30 CHAR), nullable
 
         [MaxLength(2)]
-        [Column("DDDFRESPFINANCEIRO")]
-        public string? DDDFRespFinanceiro { get; set; }
+        public string? DDDRESPFINANCEIRO { get; set; } // CHAR(2 BYTE), nullable
 
         [MaxLength(9)]
-        [Column("TELEFONERESPFINANCEIRO")]
-        public string? TelefoneRespFinanceiro { get; set; }
+        public string? TELEFONERESPFINANCEIRO { get; set; } // CHAR(9 BYTE), nullable
 
-        [MaxLength(30)]
-        [Column("EMAILRESPFINANCEIRO")]
-        public string? EmailRespFinanceiro { get; set; }
+        [MaxLength(26)]
+        public string? EMAILRESPFINANCEIRO { get; set; } // NVARCHAR2(26 CHAR), nullable
 
         [MaxLength(2)]
-        [Column("DDDFIXOEMPRRESA")]
-        public string? DDDFixoEmpresa { get; set; }
+        public string? DDDTELEFONEFIXOEMPRESA { get; set; } // CHAR(2 BYTE), nullable
 
         [MaxLength(9)]
-        [Column("TELEFONEFIXOEMPRRESA")]
-        public string? TelefoneFixoEmpresa { get; set; }
+        public string? TELEFONEFIXOEMPRESA { get; set; } // VARCHAR2(9 BYTE), nullable
     }
 }
-

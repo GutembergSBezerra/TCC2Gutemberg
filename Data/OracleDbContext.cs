@@ -13,20 +13,27 @@ namespace PortalArcomix.Data
         public DbSet<Tbl_Usuario> Tbl_Usuario { get; set; }
         public DbSet<Tbl_Fornecedor> Tbl_Fornecedor { get; set; }
         public DbSet<Tbl_FornecedorDadosBancarios> Tbl_FornecedorDadosBancarios { get; set; }
+        public DbSet<Tbl_FornecedorContatos> Tbl_FornecedorContatos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure the unique constraint on CNPJ
+            // Configure the unique constraint on CNPJ for Tbl_FornecedorDadosBancarios
             modelBuilder.Entity<Tbl_FornecedorDadosBancarios>()
                 .HasIndex(b => b.CNPJ)
+                .IsUnique();
+
+            // Configure the unique constraint on CNPJ for Tbl_FornecedorContatos
+            modelBuilder.Entity<Tbl_FornecedorContatos>()
+                .HasIndex(c => c.CNPJ)
                 .IsUnique();
 
             // Any other configurations can go here
         }
     }
 }
+
 
 
 

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace PortalArcomix.Pages
 {
@@ -23,6 +23,9 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public Tbl_FornecedorDadosBancarios DadosBancarios { get; set; }
+
+        [BindProperty]
+        public Tbl_FornecedorContatos Contatos { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -58,6 +61,16 @@ namespace PortalArcomix.Pages
                 await _context.SaveChangesAsync();
             }
 
+            // Load the Contatos data from the database
+            Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
+
+            if (Contatos == null)
+            {
+                Contatos = new Tbl_FornecedorContatos { CNPJ = cnpjClaim };
+                _context.Tbl_FornecedorContatos.Add(Contatos);
+                await _context.SaveChangesAsync();
+            }
+
             return Page();
         }
 
@@ -82,6 +95,16 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
+            // Email validation
+            ValidateEmailField(Contatos.EMAILVENDEDOR, nameof(Contatos.EMAILVENDEDOR));
+            ValidateEmailField(Contatos.EMAILGERENTE, nameof(Contatos.EMAILGERENTE));
+            ValidateEmailField(Contatos.EMAILRESPFINANCEIRO, nameof(Contatos.EMAILRESPFINANCEIRO));
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var fornecedorToUpdate = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
             if (fornecedorToUpdate == null)
             {
@@ -90,6 +113,12 @@ namespace PortalArcomix.Pages
 
             var dadosBancariosToUpdate = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
             if (dadosBancariosToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            var contatosToUpdate = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
+            if (contatosToUpdate == null)
             {
                 return NotFound();
             }
@@ -120,6 +149,22 @@ namespace PortalArcomix.Pages
             dadosBancariosToUpdate.NUMEROCONTA = DadosBancarios.NUMEROCONTA;
             dadosBancariosToUpdate.CNPJCONTATITULAR = DadosBancarios.CNPJCONTATITULAR;
 
+            // Update the Contatos properties
+            contatosToUpdate.CONTATOVENDEDOR = Contatos.CONTATOVENDEDOR;
+            contatosToUpdate.DDDVENDEDOR = Contatos.DDDVENDEDOR;
+            contatosToUpdate.TELEFONEVENDEDOR = Contatos.TELEFONEVENDEDOR;
+            contatosToUpdate.EMAILVENDEDOR = Contatos.EMAILVENDEDOR;
+            contatosToUpdate.CONTATOGERENTE = Contatos.CONTATOGERENTE;
+            contatosToUpdate.DDDGERENTE = Contatos.DDDGERENTE;
+            contatosToUpdate.TELEFONEGERENTE = Contatos.TELEFONEGERENTE;
+            contatosToUpdate.EMAILGERENTE = Contatos.EMAILGERENTE;
+            contatosToUpdate.RESPONSAVELFINANCEIRO = Contatos.RESPONSAVELFINANCEIRO;
+            contatosToUpdate.DDDRESPFINANCEIRO = Contatos.DDDRESPFINANCEIRO;
+            contatosToUpdate.TELEFONERESPFINANCEIRO = Contatos.TELEFONERESPFINANCEIRO;
+            contatosToUpdate.EMAILRESPFINANCEIRO = Contatos.EMAILRESPFINANCEIRO;
+            contatosToUpdate.DDDTELEFONEFIXOEMPRESA = Contatos.DDDTELEFONEFIXOEMPRESA;
+            contatosToUpdate.TELEFONEFIXOEMPRESA = Contatos.TELEFONEFIXOEMPRESA;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -139,9 +184,31 @@ namespace PortalArcomix.Pages
             return RedirectToPage("/Index");
         }
 
+        private void ValidateEmailField(string email, string fieldName)
+        {
+            if (!IsValidEmail(email))
+            {
+                ModelState.AddModelError(fieldName, "Email inválido.");
+            }
+        }
+
         private bool FornecedorExists(string cnpj)
         {
             return _context.Tbl_Fornecedor.Any(e => e.CNPJ == cnpj);
         }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
+
