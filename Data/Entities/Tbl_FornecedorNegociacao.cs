@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PortalArcomix.Data.Entities
@@ -8,107 +7,92 @@ namespace PortalArcomix.Data.Entities
     public class Tbl_FornecedorNegociacao
     {
         [Key]
-        [Required]
-        [StringLength(14, MinimumLength = 14)]
-        [RegularExpression(@"\d{14}")]
-        [Column("CNPJ")]
-        public string CNPJ { get; set; } = string.Empty;
+        public int ID { get; set; } // Primary Key, not nullable
 
-
-        [Column("DATAVENCIMENTO")]
-        public DateTime? DataVencimento { get; set; }
-
-        [Column("PRAZOAPAGAMENTODIAS")]
-        public decimal? PrazoPagamentoDias { get; set; }
-
-        [Column("PRAZOENTREGAMEDIADIAS")]
-        public decimal? PrazoEntregaMediaDias { get; set; }
-
-        [Column("PRAZOMEDIODIVISITADIAS")]
-        public decimal? PrazoMedioDivisitaDias { get; set; }
-
-        [Column("VERBACADASTRO")]
-        public decimal? VerbaCadastro { get; set; }
-
-        [MaxLength(30)]
-        [Column("MOTIVOVERBAZERADA")]
-        public string? MotivoVerbaZerada { get; set; }
-
-        [MaxLength(100)]
-        [Column("JUSTIFICATIVASEMVERBA")]
-        public string? JustificativaSemVerba { get; set; }
+        [MaxLength(14)]
+        public string CNPJ { get; set; } = string.Empty; // CHAR(14 BYTE), not nullable, unique
 
         [MaxLength(20)]
-        [Column("DIVISAOVERBA")]
-        public string? DivisaoVerba { get; set; }
+        public string? DATABASEVENCIMENTO { get; set; } // NVARCHAR2(20 CHAR), nullable
+
+        public int? PRAZOPAGAMENTODIAS { get; set; } // NUMBER(38,0), nullable
+        public int? PRAZOENTREGAMEDIODIAS { get; set; } // NUMBER(38,0), nullable
+        public int? PRAZOMEDIOATRASODIAS { get; set; } // NUMBER(38,0), nullable
+        public int? PRAZOMEDIOVISITADIAS { get; set; } // NUMBER(38,0), nullable
+
+        [Column(TypeName = "NUMBER(9,2)")]
+        public decimal? VERBACADASTRO { get; set; } // NUMBER(9,2), nullable
 
         [MaxLength(30)]
-        [Column("CONTRATOFORNECEDOR")]
-        public string? ContratoFornecedor { get; set; }
-
-        [MaxLength(30)]
-        [Column("APURACAOCONTRATO")]
-        public string? ApuracaoContrato { get; set; }
-
-        [MaxLength(10)]
-        [Column("TIPOCONTRATO")]
-        public string? TipoContrato { get; set; }
-
-        [MaxLength(30)]
-        [Column("MOTIVOSemCONTRATO")]
-        public string? MotivoSemContrato { get; set; }
+        public string? MOTIVOVERBAZERADA { get; set; } // NVARCHAR2(30 CHAR), nullable
 
         [MaxLength(100)]
-        [Column("JUSTIFICATIVASEMCONTRATO")]
-        public string? JustificativaSemContrato { get; set; }
+        public string? JUSTIFICATIVASEMVERBA { get; set; } // NVARCHAR2(100 CHAR), nullable
 
-        [Column("TOTALPERCENTUALVAREJO")]
-        public decimal? TotalPercentualVarejo { get; set; }
+        [MaxLength(20)]
+        public string? DIVISAOVERBA { get; set; } // NVARCHAR2(20 CHAR), nullable
 
-        [Column("TOTALPERCENTUALATACADO")]
-        public decimal? TotalPercentualAtacado { get; set; }
+        [MaxLength(30)]
+        public string? CONTRATOFORNECEDOR { get; set; } // NVARCHAR2(30 CHAR), nullable
 
-        [Column("LOGISTICOVAREJO")]
-        public decimal? LogisticoVarejo { get; set; }
+        [MaxLength(30)]
+        public string? APURACAOCONTRATO { get; set; } // NVARCHAR2(30 CHAR), nullable
 
-        [Column("DEVOLUCAOVAREJO")]
-        public decimal? DevolucaoVarejo { get; set; }
+        [MaxLength(10)]
+        public string? TIPOCONTRATO { get; set; } // NVARCHAR2(10 CHAR), nullable
 
-        [Column("ANIVERSARIOVAREJO")]
-        public decimal? AniversarioVarejo { get; set; }
+        [MaxLength(30)]
+        public string? MOTIVOSEMCONTRATO { get; set; } // NVARCHAR2(30 CHAR), nullable
 
-        [Column("REINAUGURACAOVAREJO")]
-        public decimal? ReinauguracaoVarejo { get; set; }
+        [MaxLength(100)]
+        public string? JUSTIFICATIVASEMCONTRATO { get; set; } // NVARCHAR2(100 CHAR), nullable
 
-        [Column("CADASTROVAREJO")]
-        public decimal? CadastroVarejo { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? TOTALPERCENTUALVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("FINANCEIROVAREJO")]
-        public decimal? FinanceiroVarejo { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? TOTALPERCENTUALATACADO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("MARKETINGVAREJO")]
-        public decimal? MarketingVarejo { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? LOGISTICOVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("LOGISTICOATACADO")]
-        public decimal? LogisticoAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? DEVOLUCAOVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("DEVOLUCAOATACADO")]
-        public decimal? DevolucaoAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? ANIVERSARIOVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("ANIVERSARIOATACADO")]
-        public decimal? AniversarioAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? REINAUGURACAOVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("REINAUGURACAOATACADO")]
-        public decimal? ReinauguracaoAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? CADASTROVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("CADASTROATACADO")]
-        public decimal? CadastroAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? FINANCEIROVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("FINANCEIROATACADO")]
-        public decimal? FinanceiroAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? MARKETINGVAREJO { get; set; } // NUMBER(5,2), nullable
 
-        [Column("MARKETINGATACADO")]
-        public decimal? MarketingAtacado { get; set; }
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? LOGISTICOATACADO { get; set; } // NUMBER(5,2), nullable
+
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? DEVOLUCAOATACADO { get; set; } // NUMBER(5,2), nullable
+
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? ANIVERSARIOATACADO { get; set; } // NUMBER(5,2), nullable
+
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? REINAUGURACAOATACADO { get; set; } // NUMBER(5,2), nullable
+
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? CADASTROATACADO { get; set; } // NUMBER(5,2), nullable
+
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? FINANCEIROATACADO { get; set; } // NUMBER(5,2), nullable
+
+        [Column(TypeName = "NUMBER(5,2)")]
+        public decimal? MARKETINGATACADO { get; set; } // NUMBER(5,2), nullable
     }
 }
-

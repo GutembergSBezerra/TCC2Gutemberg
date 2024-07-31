@@ -5,7 +5,6 @@ using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace PortalArcomix.Pages
 {
@@ -27,15 +26,16 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public Tbl_FornecedorContatos Contatos { get; set; }
 
+        [BindProperty]
+        public Tbl_FornecedorSegurancaAlimentos SegurancaAlimentos { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
-            // Check if the user is authenticated
             if (User?.Identity?.IsAuthenticated != true)
             {
                 return RedirectToPage("/Login");
             }
 
-            // Retrieve the CNPJ claim from the authenticated user
             var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
 
             if (cnpjClaim == null)
@@ -43,7 +43,6 @@ namespace PortalArcomix.Pages
                 return NotFound();
             }
 
-            // Load the Fornecedor data from the database
             Fornecedor = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
 
             if (Fornecedor == null)
@@ -51,23 +50,14 @@ namespace PortalArcomix.Pages
                 return NotFound();
             }
 
-            // Load the DadosBancarios data from the database
-            DadosBancarios = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
+            DadosBancarios = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim) ?? new Tbl_FornecedorDadosBancarios { CNPJ = cnpjClaim };
+            Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim) ?? new Tbl_FornecedorContatos { CNPJ = cnpjClaim };
+            SegurancaAlimentos = await _context.Tbl_FornecedorSegurancaAlimentos.FirstOrDefaultAsync(sa => sa.CNPJ == cnpjClaim) ?? new Tbl_FornecedorSegurancaAlimentos { CNPJ = cnpjClaim };
 
-            if (DadosBancarios == null)
+            if (SegurancaAlimentos == null)
             {
-                DadosBancarios = new Tbl_FornecedorDadosBancarios { CNPJ = cnpjClaim };
-                _context.Tbl_FornecedorDadosBancarios.Add(DadosBancarios);
-                await _context.SaveChangesAsync();
-            }
-
-            // Load the Contatos data from the database
-            Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
-
-            if (Contatos == null)
-            {
-                Contatos = new Tbl_FornecedorContatos { CNPJ = cnpjClaim };
-                _context.Tbl_FornecedorContatos.Add(Contatos);
+                SegurancaAlimentos = new Tbl_FornecedorSegurancaAlimentos { CNPJ = cnpjClaim };
+                _context.Tbl_FornecedorSegurancaAlimentos.Add(SegurancaAlimentos);
                 await _context.SaveChangesAsync();
             }
 
@@ -76,13 +66,11 @@ namespace PortalArcomix.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Check if the user is authenticated
             if (User?.Identity?.IsAuthenticated != true)
             {
                 return RedirectToPage("/Login");
             }
 
-            // Retrieve the CNPJ claim from the authenticated user
             var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
 
             if (cnpjClaim == null || cnpjClaim != Fornecedor.CNPJ)
@@ -95,35 +83,16 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
-            // Email validation
-            ValidateEmailField(Contatos.EMAILVENDEDOR, nameof(Contatos.EMAILVENDEDOR));
-            ValidateEmailField(Contatos.EMAILGERENTE, nameof(Contatos.EMAILGERENTE));
-            ValidateEmailField(Contatos.EMAILRESPFINANCEIRO, nameof(Contatos.EMAILRESPFINANCEIRO));
-
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             var fornecedorToUpdate = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
-            if (fornecedorToUpdate == null)
-            {
-                return NotFound();
-            }
-
             var dadosBancariosToUpdate = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
-            if (dadosBancariosToUpdate == null)
-            {
-                return NotFound();
-            }
-
             var contatosToUpdate = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
-            if (contatosToUpdate == null)
+            var segurancaAlimentosToUpdate = await _context.Tbl_FornecedorSegurancaAlimentos.FirstOrDefaultAsync(sa => sa.CNPJ == cnpjClaim);
+
+            if (fornecedorToUpdate == null || dadosBancariosToUpdate == null || contatosToUpdate == null || segurancaAlimentosToUpdate == null)
             {
                 return NotFound();
             }
 
-            // Update the Fornecedor properties
             fornecedorToUpdate.RAZAOSOCIAL = Fornecedor.RAZAOSOCIAL;
             fornecedorToUpdate.FANTASIA = Fornecedor.FANTASIA;
             fornecedorToUpdate.IE = Fornecedor.IE;
@@ -142,14 +111,12 @@ namespace PortalArcomix.Pages
             fornecedorToUpdate.FORNECEDORALIMENTOS = Fornecedor.FORNECEDORALIMENTOS;
             fornecedorToUpdate.COMPRADORPRINCIPAL = Fornecedor.COMPRADORPRINCIPAL;
 
-            // Update the DadosBancarios properties
             dadosBancariosToUpdate.BANCO = DadosBancarios.BANCO;
             dadosBancariosToUpdate.AGENCIA = DadosBancarios.AGENCIA;
             dadosBancariosToUpdate.TIPOCONTA = DadosBancarios.TIPOCONTA;
             dadosBancariosToUpdate.NUMEROCONTA = DadosBancarios.NUMEROCONTA;
             dadosBancariosToUpdate.CNPJCONTATITULAR = DadosBancarios.CNPJCONTATITULAR;
 
-            // Update the Contatos properties
             contatosToUpdate.CONTATOVENDEDOR = Contatos.CONTATOVENDEDOR;
             contatosToUpdate.DDDVENDEDOR = Contatos.DDDVENDEDOR;
             contatosToUpdate.TELEFONEVENDEDOR = Contatos.TELEFONEVENDEDOR;
@@ -164,6 +131,36 @@ namespace PortalArcomix.Pages
             contatosToUpdate.EMAILRESPFINANCEIRO = Contatos.EMAILRESPFINANCEIRO;
             contatosToUpdate.DDDTELEFONEFIXOEMPRESA = Contatos.DDDTELEFONEFIXOEMPRESA;
             contatosToUpdate.TELEFONEFIXOEMPRESA = Contatos.TELEFONEFIXOEMPRESA;
+
+            segurancaAlimentosToUpdate.PARECER = SegurancaAlimentos.PARECER;
+            segurancaAlimentosToUpdate.DESCRICAOAVALIACAO = SegurancaAlimentos.DESCRICAOAVALIACAO;
+            segurancaAlimentosToUpdate.ATIVIDADEEMPRESA = SegurancaAlimentos.ATIVIDADEEMPRESA;
+            segurancaAlimentosToUpdate.ORGAOFISCALIZACAO = SegurancaAlimentos.ORGAOFISCALIZACAO;
+            segurancaAlimentosToUpdate.NUMEROREGISTROORGAO = SegurancaAlimentos.NUMEROREGISTROORGAO;
+            segurancaAlimentosToUpdate.RESPONSAVELTECNICO = SegurancaAlimentos.RESPONSAVELTECNICO;
+            segurancaAlimentosToUpdate.DDDTECNICO = SegurancaAlimentos.DDDTECNICO;
+            segurancaAlimentosToUpdate.TELEFONETECNICO = SegurancaAlimentos.TELEFONETECNICO;
+            segurancaAlimentosToUpdate.EMAILTECNICO = SegurancaAlimentos.EMAILTECNICO;
+            segurancaAlimentosToUpdate.REGRESPTECNICO = SegurancaAlimentos.REGRESPTECNICO;
+
+            segurancaAlimentosToUpdate.BPFIMPLANTADOPRATICADO = SegurancaAlimentos.BPFIMPLANTADOPRATICADO;
+            segurancaAlimentosToUpdate.SISTEMATRATAMENTORESIDUOS = SegurancaAlimentos.SISTEMATRATAMENTORESIDUOS;
+            segurancaAlimentosToUpdate.CONTROLESAUDECOLABORADORES = SegurancaAlimentos.CONTROLESAUDECOLABORADORES;
+            segurancaAlimentosToUpdate.CIPMIPIMPLEMENTADO = SegurancaAlimentos.CIPMIPIMPLEMENTADO;
+            segurancaAlimentosToUpdate.SISTEMAIDENTIFICACAORASTREABILIDADE = SegurancaAlimentos.SISTEMAIDENTIFICACAORASTREABILIDADE;
+            segurancaAlimentosToUpdate.PROCEDIMENTOPADRAOFABRICACAO = SegurancaAlimentos.PROCEDIMENTOPADRAOFABRICACAO;
+            segurancaAlimentosToUpdate.CONTROLEQUALIDADEIMPLEMENTADO = SegurancaAlimentos.CONTROLEQUALIDADEIMPLEMENTADO;
+            segurancaAlimentosToUpdate.PROCEDIMENTOPADRAORECEBIMENTO = SegurancaAlimentos.PROCEDIMENTOPADRAORECEBIMENTO;
+            segurancaAlimentosToUpdate.SISTEMATRATAMENTORECLAMACOES = SegurancaAlimentos.SISTEMATRATAMENTORECLAMACOES;
+            segurancaAlimentosToUpdate.TRANSPORTEPROPRIO = SegurancaAlimentos.TRANSPORTEPROPRIO;
+            segurancaAlimentosToUpdate.FICHATECNICAPRODUTOS = SegurancaAlimentos.FICHATECNICAPRODUTOS;
+            segurancaAlimentosToUpdate.CONTROLEPRODUTOSNAOCONFORME = SegurancaAlimentos.CONTROLEPRODUTOSNAOCONFORME;
+            segurancaAlimentosToUpdate.EXIGEHIGIENIZACAOCIP = SegurancaAlimentos.EXIGEHIGIENIZACAOCIP;
+            segurancaAlimentosToUpdate.REGISTROSCOMPROVACAOSISTEMAS = SegurancaAlimentos.REGISTROSCOMPROVACAOSISTEMAS;
+            segurancaAlimentosToUpdate.LICENCASPERTINENTES = SegurancaAlimentos.LICENCASPERTINENTES;
+            segurancaAlimentosToUpdate.ENVIAAMOSTRASCLIENTE = SegurancaAlimentos.ENVIAAMOSTRASCLIENTE;
+            segurancaAlimentosToUpdate.CONTROLEAGUAABASTECIMENTO = SegurancaAlimentos.CONTROLEAGUAABASTECIMENTO;
+
 
             try
             {
@@ -184,31 +181,11 @@ namespace PortalArcomix.Pages
             return RedirectToPage("/Index");
         }
 
-        private void ValidateEmailField(string email, string fieldName)
-        {
-            if (!IsValidEmail(email))
-            {
-                ModelState.AddModelError(fieldName, "Email inválido.");
-            }
-        }
-
         private bool FornecedorExists(string cnpj)
         {
             return _context.Tbl_Fornecedor.Any(e => e.CNPJ == cnpj);
         }
-
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
-        }
     }
 }
+
 

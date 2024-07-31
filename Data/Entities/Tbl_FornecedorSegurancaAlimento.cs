@@ -1,102 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PortalArcomix.Data.Entities
 {
-    [Table("TBL_FORNECEDORSEGURANCAALIMENTO")]
-    public class Tbl_FornecedorSegurancaAlimento
+    [Table("TBL_FORNECEDORSEGURANCAALIMENTOS")]
+    public class Tbl_FornecedorSegurancaAlimentos
     {
-        [Key]
-        [Required]
-        [StringLength(14)]
-        [Column("CNPJ")]
-        public string CNPJ { get; set; } = string.Empty;
+        public int ID { get; set; } // Primary Key
+        public int? ID_SEGURANCAALIMENTO { get; set; }
+        public string CNPJ { get; set; } = string.Empty; // CHAR(14 BYTE), not nullable, unique
+        public string? PARECER { get; set; } // NVARCHAR2(40 CHAR)
+        public string? DESCRICAOAVALIACAO { get; set; } // NVARCHAR2(255 CHAR)
+        public string? ATIVIDADEEMPRESA { get; set; } // NVARCHAR2(50 CHAR)
+        public string? ORGAOFISCALIZACAO { get; set; } // NVARCHAR2(50 CHAR)
+        public string? NUMEROREGISTROORGAO { get; set; } // VARCHAR2(50 BYTE)
+        public string? RESPONSAVELTECNICO { get; set; } // NVARCHAR2(30 CHAR)
+        public string? DDDTECNICO { get; set; } // CHAR(2 BYTE)
+        public string? TELEFONETECNICO { get; set; } // CHAR(9 BYTE)
+        public string? EMAILTECNICO { get; set; } // NVARCHAR2(30 CHAR)
+        public bool BPFIMPLANTADOPRATICADO { get; set; } // NUMBER(1,0)
+        public bool SISTEMATRATAMENTORESIDUOS { get; set; } // NUMBER(1,0)
+        public bool CONTROLESAUDECOLABORADORES { get; set; } // NUMBER(1,0)
+        public bool CIPMIPIMPLEMENTADO { get; set; } // NUMBER(1,0)
+        public bool SISTEMAIDENTIFICACAORASTREABILIDADE { get; set; } // NUMBER(1,0)
+        public bool PROCEDIMENTOPADRAOFABRICACAO { get; set; } // NUMBER(1,0)
+        public bool CONTROLEQUALIDADEIMPLEMENTADO { get; set; } // NUMBER(1,0)
+        public bool PROCEDIMENTOPADRAORECEBIMENTO { get; set; } // NUMBER(1,0)
+        public bool SISTEMATRATAMENTORECLAMACOES { get; set; } // NUMBER(1,0)
+        public bool TRANSPORTEPROPRIO { get; set; } // NUMBER(1,0)
+        public bool FICHATECNICAPRODUTOS { get; set; } // NUMBER(1,0)
+        public bool CONTROLEPRODUTOSNAOCONFORME { get; set; } // NUMBER(1,0)
+        public bool EXIGEHIGIENIZACAOCIP { get; set; } // NUMBER(1,0)
+        public bool REGISTROSCOMPROVACAOSISTEMAS { get; set; } // NUMBER(1,0)
+        public bool LICENCASPERTINENTES { get; set; } // NUMBER(1,0)
+        public bool ENVIAAMOSTRASCLIENTE { get; set; } // NUMBER(1,0)
+        public bool CONTROLEAGUAABASTECIMENTO { get; set; } // NUMBER(1,0)
+        public string? REGRESPTECNICO { get; set; } // NVARCHAR2(30 CHAR)
 
-        [MaxLength(50)]
-        [Column("ATIVIDADEEMPRESA")]
-        public string? AtividadeEmpresa { get; set; }
 
-        [MaxLength(50)]
-        [Column("ORGAOFISCALIZACAO")]
-        public string? OrgaoFiscalizacao { get; set; }
-
-        [MaxLength(50)]
-        [Column("NUMEROREGISTROORGAO")]
-        public string? NumeroRegistroOrgao { get; set; }
-
-        [MaxLength(30)]
-        [Column("RESPONSAVELTECNICO")]
-        public string? ResponsavelTecnico { get; set; }
-
-        [MaxLength(2)]
-        [Column("DDDTECNICO")]
-        public string? DDDTecnico { get; set; }
-
-        [MaxLength(9)]
-        [Column("TELEFONETECNICO")]
-        public string? TelefoneTecnico { get; set; }
-
-        [MaxLength(30)]
-        [Column("EMAILTECNICO")]
-        public string? EmailTecnico { get; set; }
-
-        [Column("BPFIMPLANTADOPRATICADO")]
-        public bool? BPFImplantadoPraticado { get; set; }
-
-        [Column("SISTEMATRATAMENTORESIDUOS")]
-        public bool? SistemaTratamentoResiduos { get; set; }
-
-        [Column("CONTROLESAUDECOLABORADORES")]
-        public bool? ControleSaudeColaboradores { get; set; }
-
-        [Column("CIPMIPIMPLEMENTADO")]
-        public bool? CIPMIPImplementado { get; set; }
-
-        [Column("SISTEMAIDENTIFICACAORASTREABILIDADE")]
-        public bool? SistemaIdentificacaoRastreabilidade { get; set; }
-
-        [Column("PROCEDIMENTOPADRAOFABRICACAO")]
-        public bool? ProcedimentoPadraoFabricacao { get; set; }
-
-        [Column("CONTROLEQUALIDADEIMPLEMENTADO")]
-        public bool? ControleQualidadeImplementado { get; set; }
-
-        [Column("PROCEDIMENTOPADRAORECEBIMENTO")]
-        public bool? ProcedimentoPadraoRecebimento { get; set; }
-
-        [Column("SISTEMATRATAMENTORECLAMACOES")]
-        public bool? SistemaTratamentoReclamacoes { get; set; }
-
-        [Column("TRANSPORTEPROPRIO")]
-        public bool? TransporteProprio { get; set; }
-
-        [Column("FICHATECNICAPRODUTOS")]
-        public bool? FichaTecnicaProdutos { get; set; }
-
-        [Column("CONTROLEPRODUTOSNAOCONFORME")]
-        public bool? ControleProdutosNaoConforme { get; set; }
-
-        [Column("EXIGEHIGIENIZACAOCIP")]
-        public bool? ExigeHigienizacaoCIP { get; set; }
-
-        [Column("REGISTROSCOMPROVACAOSISTEMAS")]
-        public bool? RegistrosComprovacaoSistemas { get; set; }
-
-        [Column("LICENCASPERTINENTES")]
-        public bool? LicencasPertinentes { get; set; }
-
-        [Column("ENVIAAMOSTRASCLIENTE")]
-        public bool? EnviaAmostrasCliente { get; set; }
-
-        [Column("CONTROLEAGUAABASTECIMENTO")]
-        public bool? ControleAguaAbastecimento { get; set; }
-
-        [MaxLength(40)]
-        [Column("PARECER")]
-        public string? Parecer { get; set; }
-
-        [MaxLength(255)]
-        [Column("DESCRICAOAVALIACAO")]
-        public string? DescricaoAvaliacao { get; set; }
     }
 }

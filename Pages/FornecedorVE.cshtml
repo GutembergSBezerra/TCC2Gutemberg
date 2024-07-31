@@ -224,7 +224,7 @@
                                 <div class="col-md-6">
                                     <label class="control-label">Fornecedor de Alimentos</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="Fornecedor.FORNECEDORALIMENTOS" class="form-control validate-required" id="Fornecedor_FORNECEDORALIMENTOS" onblur="validateSelect('Fornecedor_FORNECEDORALIMENTOS')">
+                                        <select asp-for="Fornecedor.FORNECEDORALIMENTOS" class="form-control validate-required" id="Fornecedor_FORNECEDORALIMENTOS" onblur="validateSelect('Fornecedor_FORNECEDORALIMENTOS')" onchange="toggleSegurancaAlimentosCard()">
                                             <option value="">Selecione</option>
                                             <option value="Alimentos Industrializados">Alimentos Industrializados</option>
                                             <option value="Alimentos Não Industrializados">Alimentos Não Industrializados</option>
@@ -472,7 +472,225 @@
                     </div>
                     <br />
 
+                    <!-- Card Seguranca Alimentos -->
+                    <div class="card" id="SegurancaAlimentos" style="display: none;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h4 style="color: #1878BB; margin-bottom: 20px;">Segurança de Alimentos</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <hr>
+                                </div>
+                            </div>
+@*                             <div class="row">
+                                <div class="col-md-2">
+                                    <label for="idParecerSegurancaAlimentos">Parecer</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="SegurancaAlimentos.PARECER" class="form-control" id="ParecerSegurancaAlimentos">
+                                            <option value="">Escolher...</option>
+                                            <option value="Aprovado">Aprovado</option>
+                                            <option value="Não Aprovado">Não Aprovado</option>
+                                            <option value="Pendência(s) Documentação">Pendência(s) Documentação</option>
+                                        </select>
+                                        <span asp-validation-for="SegurancaAlimentos.PARECER" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    <label for="idDescricaoAvaliacao">Descrição da Avaliação</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.DESCRICAOAVALIACAO" class="form-control" id="DescricaoAvaliacao" onblur="validateField('DescricaoAvaliacao')" />
+                                        <span asp-validation-for="SegurancaAlimentos.DESCRICAOAVALIACAO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr /> *@
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="idAtividadeEmpresaForn">Atividade da Empresa:</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.ATIVIDADEEMPRESA" class="form-control" id="AtividadeEmpresaForn" />
+                                        <span asp-validation-for="SegurancaAlimentos.ATIVIDADEEMPRESA" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="idOrgaoFiscalizacaoForn">Orgão de Fiscalização</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="SegurancaAlimentos.ORGAOFISCALIZACAO" class="form-control" id="OrgaoFiscalizacaoForn">
+                                            <option value="">Selecione</option>
+                                            <option value="ADAGRO/SIE">ADAGRO/SIE</option>
+                                            <option value="MAPA/SIF">MAPA/SIF</option>
+                                            <option value="VISA SIM">VISA SIM</option>
+                                            <option value="VISA Licença">VISA Licença</option>
+                                        </select>
+                                        <span asp-validation-for="SegurancaAlimentos.ORGAOFISCALIZACAO" class="text-danger"></span>
+                                    </div>
+                                </div>
 
+                                <div class="col-md-2">
+                                    <label for="idNumRegistroForn">Nº Registro</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.NUMEROREGISTROORGAO" class="form-control" id="NumRegistroForn" readonly/>
+                                        <span asp-validation-for="SegurancaAlimentos.NUMEROREGISTROORGAO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="idResponsavelTecnico">Responsavel Técnico</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.RESPONSAVELTECNICO" class="form-control" id="ResponsavelTecnico" />
+                                        <span asp-validation-for="SegurancaAlimentos.RESPONSAVELTECNICO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="idRegRespTecnico">Registro Resp.Técnico</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.REGRESPTECNICO" class="form-control" id="RegRespTecnico"/>
+                                        <span asp-validation-for="SegurancaAlimentos.REGRESPTECNICO" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1">
+                                    <label for="idTecnicoForn">DDD</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.DDDTECNICO" class="form-control" id="DDDTECNICO" />
+                                        <span asp-validation-for="SegurancaAlimentos.DDDTECNICO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="idTelefoneTecnicoForn">Telefone</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.TELEFONETECNICO" class="form-control" id="TELEFONETECNICO"/>
+                                        <span asp-validation-for="SegurancaAlimentos.TELEFONETECNICO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="idEmailTecnicoForn">Email</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="SegurancaAlimentos.EMAILTECNICO" class="form-control" id="EMAILTECNICO" />
+                                        <span asp-validation-for="SegurancaAlimentos.EMAILTECNICO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col text-center">
+                                    <p style="color: #ff0000; font-weight: bold;">** RESPONSÁVEL TÉCNICO DEVE RESPONDER À AVALIAÇÃO ABAIXO MARCANDO AS OPÇÕES QUE EXISTEM NA EMPRESA **</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.BPFIMPLANTADOPRATICADO" />
+                                    <label asp-for="SegurancaAlimentos.BPFIMPLANTADOPRATICADO">Boas Práticas de Fabricação Implantado e Praticado</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.SISTEMATRATAMENTORESIDUOS" />
+                                    <label asp-for="SegurancaAlimentos.SISTEMATRATAMENTORESIDUOS">Sistema de Tratamento dos Resíduos Gerados pelo Estabelecimento</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.CONTROLESAUDECOLABORADORES" />
+                                    <label asp-for="SegurancaAlimentos.CONTROLESAUDECOLABORADORES">Controle de Saúde dos Colaboradores</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.CIPMIPIMPLEMENTADO" />
+                                    <label asp-for="SegurancaAlimentos.CIPMIPIMPLEMENTADO">CIP/MIP implementado e monitorado</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.SISTEMAIDENTIFICACAORASTREABILIDADE" />
+                                    <label asp-for="SegurancaAlimentos.SISTEMAIDENTIFICACAORASTREABILIDADE">Sistema de Identificação e Rastreabilidade do Processo</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.PROCEDIMENTOPADRAOFABRICACAO" />
+                                    <label asp-for="SegurancaAlimentos.PROCEDIMENTOPADRAOFABRICACAO">Sistema de Procedimento Padrão de Fabricação e/ou Manipulação</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.CONTROLEQUALIDADEIMPLEMENTADO" />
+                                    <label asp-for="SegurancaAlimentos.CONTROLEQUALIDADEIMPLEMENTADO">Controle de Qualidade implementado</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.PROCEDIMENTOPADRAORECEBIMENTO" />
+                                    <label asp-for="SegurancaAlimentos.PROCEDIMENTOPADRAORECEBIMENTO">Sistema de Procedimento Padrão de Recebimento de Matéria Prima</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.SISTEMATRATAMENTORECLAMACOES" />
+                                    <label asp-for="SegurancaAlimentos.SISTEMATRATAMENTORECLAMACOES">Sistema de Tratamento das Reclamações dos Clientes</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.TRANSPORTEPROPRIO" />
+                                    <label asp-for="SegurancaAlimentos.TRANSPORTEPROPRIO">Transporte Próprio</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.FICHATECNICAPRODUTOS" />
+                                    <label asp-for="SegurancaAlimentos.FICHATECNICAPRODUTOS">Ficha Técnica dos Produtos Produzidos</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.CONTROLEPRODUTOSNAOCONFORME" />
+                                    <label asp-for="SegurancaAlimentos.CONTROLEPRODUTOSNAOCONFORME">Sistema de Controle de Produtos Não Conforme</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.EXIGEHIGIENIZACAOCIP" />
+                                    <label asp-for="SegurancaAlimentos.EXIGEHIGIENIZACAOCIP">Exige higienização e CIP em dia do Transporte Terceirizado</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.REGISTROSCOMPROVACAOSISTEMAS" />
+                                    <label asp-for="SegurancaAlimentos.REGISTROSCOMPROVACAOSISTEMAS">Registros de Comprovação desses sistemas?</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.LICENCASPERTINENTES" />
+                                    <label asp-for="SegurancaAlimentos.LICENCASPERTINENTES">Todas as Licenças Pertinente ao Processo</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.ENVIAAMOSTRASCLIENTE" />
+                                    <label asp-for="SegurancaAlimentos.ENVIAAMOSTRASCLIENTE">Envia Amostras para Cliente Quando Solicitado</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="checkbox" asp-for="SegurancaAlimentos.CONTROLEAGUAABASTECIMENTO" />
+                                    <label asp-for="SegurancaAlimentos.CONTROLEAGUAABASTECIMENTO">Sistema de Controle da Água de Abastecimento e Residual no Estabelecimento</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br />
                     <!-- Submit Button Row -->
                     <div class="row">
                         <div class="col">
@@ -578,6 +796,17 @@
         function validateDDDTelefoneFixoEmpresa() { return validateField("DDDTELEFONEFIXOEMPRESA", '2digits'); }
         function validateTelefoneFixoEmpresa() { return validateField("TELEFONEFIXOEMPRESA", 'digits8or9'); }
 
+       // function validateDescricaoAvaliacao() { return validateField("DescricaoAvaliacao"); }
+       // function validateAtividadeEmpresaForn() { return validateField("AtividadeEmpresaForn"); }
+       // function validateOrgaoFiscalizacaoForn() { return validateField("OrgaoFiscalizacaoForn"); }
+       // function validateNumRegistroForn() { return validateField("NumRegistroForn"); }
+       // function validateResponsavelTecnico() { return validateField("ResponsavelTecnico"); }
+        //function validateDDDTECNICO() { return validateField("DDDTECNICO", '2digits'); }
+        //function validateTELEFONETECNICO() { return validateField("TELEFONETECNICO", 'digits8or9'); }
+        //function validateEMAILTECNICO() { return validateField("EMAILTECNICO", 'email'); }
+
+
+
         function validateSelect(selectId) {
             var select = document.getElementById(selectId);
             if (select && select.value === "") {
@@ -607,6 +836,22 @@
                         console.error('Error fetching address:', error);
                         alert("Erro ao buscar endereço.");
                     });
+            }
+        }
+
+        // Initialize card visibility on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleSegurancaAlimentosCard();
+        });
+
+        function toggleSegurancaAlimentosCard() {
+            var fornecedorAlimentos = document.getElementById("Fornecedor_FORNECEDORALIMENTOS").value;
+            var segurancaAlimentosCard = document.getElementById("SegurancaAlimentos");
+
+            if (fornecedorAlimentos === "Alimentos Não Industrializados") {
+                segurancaAlimentosCard.style.display = "block";
+            } else {
+                segurancaAlimentosCard.style.display = "none";
             }
         }
 
