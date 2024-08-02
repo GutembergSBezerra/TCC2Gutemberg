@@ -50,19 +50,41 @@ namespace PortalArcomix.Pages
                 return NotFound();
             }
 
-            DadosBancarios = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim) ?? new Tbl_FornecedorDadosBancarios { CNPJ = cnpjClaim };
-            Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim) ?? new Tbl_FornecedorContatos { CNPJ = cnpjClaim };
-            SegurancaAlimentos = await _context.Tbl_FornecedorSegurancaAlimentos.FirstOrDefaultAsync(sa => sa.CNPJ == cnpjClaim) ?? new Tbl_FornecedorSegurancaAlimentos { CNPJ = cnpjClaim };
+            DadosBancarios = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
+            Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
+            SegurancaAlimentos = await _context.Tbl_FornecedorSegurancaAlimentos.FirstOrDefaultAsync(sa => sa.CNPJ == cnpjClaim);
+
+            bool isNew = false;
+
+            if (DadosBancarios == null)
+            {
+                DadosBancarios = new Tbl_FornecedorDadosBancarios { CNPJ = cnpjClaim };
+                _context.Tbl_FornecedorDadosBancarios.Add(DadosBancarios);
+                isNew = true;
+            }
+
+            if (Contatos == null)
+            {
+                Contatos = new Tbl_FornecedorContatos { CNPJ = cnpjClaim };
+                _context.Tbl_FornecedorContatos.Add(Contatos);
+                isNew = true;
+            }
 
             if (SegurancaAlimentos == null)
             {
                 SegurancaAlimentos = new Tbl_FornecedorSegurancaAlimentos { CNPJ = cnpjClaim };
                 _context.Tbl_FornecedorSegurancaAlimentos.Add(SegurancaAlimentos);
+                isNew = true;
+            }
+
+            if (isNew)
+            {
                 await _context.SaveChangesAsync();
             }
 
             return Page();
         }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
