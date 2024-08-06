@@ -1,10 +1,97 @@
-﻿@* @page
+﻿@page
 @model PortalArcomix.Pages.TempModel
 @{
+    ViewData["Title"] = "Upload Documents";
+    Layout = "_Layout";
 }
 
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-primary">Documentos</h4>
+                    <p class="card-text text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
+                    <form method="post" enctype="multipart/form-data" class="row" onsubmit="return validateFile()">
+                        <div class="col-md-8 mb-2">
+                            <label for="fileUpload" class="sr-only">Escolher</label>
+                            <input asp-for="UploadedFile" class="form-control" type="file" id="fileUpload" accept="application/pdf" placeholder="Escolher" />
+                            <span asp-validation-for="UploadedFile" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                        </div>
+                    </form>
+                    <div class="mt-4">
+                        <h5 class="text-primary">Documentos Enviados</h5>
+                        <table class="table table-bordered">
+                            <thead>
 
+                            </thead>
+                            <tbody>
+                                @if (Model.UploadedFiles.Any())
+                                {
+                                    @foreach (var file in Model.UploadedFiles)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-page-handler="Download" asp-route-filePath="@file.CAMINHOARQUIVO" class="text-primary">
+                                                    @file.NOMEARQUIVO
+                                                </a>
+                                            </td>
+                                            <td>@file.HORARIOUPLOAD</td>
+                                            <td>
+                                                <form method="post" asp-page-handler="Delete" asp-route-id="@file.ID" style="display:inline;">
+                                                    <button type="submit" class="btn btn-link p-0">
+                                                        <i class="fa-solid fa-delete-left" style="color: #d60505;"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center text-danger">Nenhum Documento Enviado</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section Scripts {
+    <script>
+        function validateFile() {
+            const fileInput = document.getElementById('fileUpload');
+            const file = fileInput.files[0];
+            const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
 
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    alert('Only PDF files are allowed.');
+                    return false;
+                }
+                if (file.size > maxSizeInBytes) {
+                    alert('File size must be less than 5MB.');
+                    return false;
+                }
+            }
+            return true;
+        }
 
-} *@
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <text>alert('@Html.Raw(Model.ErrorMessage)'); </text>
+        }
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <text>alert('@Html.Raw(Model.SuccessMessage)'); </text>
+        }
+    </script>
+}

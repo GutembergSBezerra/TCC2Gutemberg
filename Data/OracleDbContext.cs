@@ -16,6 +16,8 @@ namespace PortalArcomix.Data
         public DbSet<Tbl_FornecedorContatos> Tbl_FornecedorContatos { get; set; }
         public DbSet<Tbl_FornecedorNegociacao> Tbl_FornecedorNegociacao { get; set; }
         public DbSet<Tbl_FornecedorSegurancaAlimentos> Tbl_FornecedorSegurancaAlimentos { get; set; }
+        public DbSet<Tbl_FornecedorDocumentos> Tbl_FornecedorDocumentos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +43,8 @@ namespace PortalArcomix.Data
                 .HasIndex(sa => sa.CNPJ)
                 .IsUnique();
 
+            // Map Tbl_FornecedorDocumentos to the database table
+            modelBuilder.Entity<Tbl_FornecedorDocumentos>().ToTable("TBL_FORNECEDORDOCUMENTOS");
         }
     }
 }
