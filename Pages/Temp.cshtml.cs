@@ -24,8 +24,12 @@ namespace PortalArcomix.Pages
         }
 
         [BindProperty]
-        [Required(ErrorMessage = "Please select a file.")]
+        [Required(ErrorMessage = "Por Favor Escolha o Arquivo")]
         public IFormFile UploadedFile { get; set; }
+
+        [BindProperty]
+        [Required(ErrorMessage = "Por favor Escolha o tipo do Documento")]
+        public string TIPODOCUMENTO { get; set; }
 
         public string ErrorMessage { get; set; } = string.Empty;
         public string SuccessMessage { get; set; } = string.Empty;
@@ -68,21 +72,21 @@ namespace PortalArcomix.Pages
 
             if (UploadedFile == null)
             {
-                ErrorMessage = "No file selected.";
+                ErrorMessage = "Nenhum arquivo selecionado.";
                 FetchUploadedFiles();
                 return Page();
             }
 
             if (UploadedFile.ContentType != "application/pdf")
             {
-                ErrorMessage = "Only PDF files are allowed.";
+                ErrorMessage = "O arquivo deve ser em .PDF";
                 FetchUploadedFiles();
                 return Page();
             }
 
             if (UploadedFile.Length > 5 * 1024 * 1024)
             {
-                ErrorMessage = "File size must be less than 5MB.";
+                ErrorMessage = "O Arquivo deve ser menor que 5MB.";
                 FetchUploadedFiles();
                 return Page();
             }
@@ -115,14 +119,14 @@ namespace PortalArcomix.Pages
                     CNPJ = cnpjClaim,
                     NOMEARQUIVO = UploadedFile.FileName,
                     CAMINHOARQUIVO = filePath,
-                    TIPODOCUMENTO = null,
+                    TIPODOCUMENTO = TIPODOCUMENTO,
                     HORARIOUPLOAD = DateTimeOffset.UtcNow
                 };
 
                 _context.Tbl_FornecedorDocumentos.Add(documento);
                 await _context.SaveChangesAsync();
 
-                SuccessMessage = "File uploaded and saved successfully!";
+                SuccessMessage = "Arquivo Salvo com Sucesso!";
             }
             catch (DbUpdateException ex)
             {
@@ -174,7 +178,7 @@ namespace PortalArcomix.Pages
             _context.Tbl_FornecedorDocumentos.Remove(documento);
             await _context.SaveChangesAsync();
 
-            SuccessMessage = "File deleted successfully!";
+            SuccessMessage = "Arquivo Excluido com Sucesso!";
             FetchUploadedFiles();
             return Page();
         }

@@ -5,65 +5,85 @@
     Layout = "_Layout";
 }
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title text-primary">Documentos</h4>
                     <p class="card-text text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
-                    <form method="post" enctype="multipart/form-data" class="row" onsubmit="return validateFile()">
-                        <div class="col-md-8 mb-2">
+                    <form method="post" enctype="multipart/form-data" class="row align-items-center" onsubmit="return validateFile()">
+                        <div class="col-md-4 mb-2">
+                            <label class="control-label">Documento</label>
+                            <div class="form-group mb-3">
+                                <select asp-for="TIPODOCUMENTO" class="form-control" id="TIPODOCUMENTO">
+                                    <option value="">Escolher...</option>
+                                    <option value="SINTEGRA">SINTEGRA</option>
+                                    <option value="Documentação Sanitária">Documentação Sanitária</option>
+                                    <option value="Documentação Ambiental ou Operacional">Documentação Ambiental ou Operacional</option>
+                                    <option value="Documentação Controle de Pragas">Documentação Controle de Pragas</option>
+                                    <option value="Documentação Controle de Água">Documentação Controle de Água</option>
+                                    <option value="Documentação Manual Boas Práticas">Documentação Manual Boas Práticas</option>
+                                    <option value="Documentação Segurança de Alimentos">Documentação Segurança de Alimentos</option>
+                                    <option value="Documentação PAC">Documentação PAC</option>
+                                    <option value="Documentação APPCC">Documentação APPCC</option>
+                                </select>
+                                <span asp-validation-for="TIPODOCUMENTO" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-2">
                             <label for="fileUpload" class="sr-only">Escolher</label>
                             <input asp-for="UploadedFile" class="form-control" type="file" id="fileUpload" accept="application/pdf" placeholder="Escolher" />
                             <span asp-validation-for="UploadedFile" class="text-danger"></span>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-2 mb-2 d-flex align-items-end">
                             <button type="submit" class="btn btn-primary w-100">Enviar</button>
                         </div>
                     </form>
+
+                    <hr />
+
                     <div class="mt-4">
                         <h5 class="text-primary">Documentos Enviados</h5>
-                        <table class="table table-bordered">
-                            <thead>
-
-                            </thead>
-                            <tbody>
+                        <div class="row">
+                            <div class="col-md-8">
                                 @if (Model.UploadedFiles.Any())
                                 {
                                     @foreach (var file in Model.UploadedFiles)
                                     {
-                                        <tr>
-                                            <td>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="col-5">
+                                                <span>@file.TIPODOCUMENTO</span>
+                                            </div>
+                                            <div class="col-6">
                                                 <a asp-page-handler="Download" asp-route-filePath="@file.CAMINHOARQUIVO" class="text-primary">
                                                     @file.NOMEARQUIVO
                                                 </a>
-                                            </td>
-                                            <td>@file.HORARIOUPLOAD</td>
-                                            <td>
+                                            </div>
+                                            <div class="col-1">
                                                 <form method="post" asp-page-handler="Delete" asp-route-id="@file.ID" style="display:inline;">
                                                     <button type="submit" class="btn btn-link p-0">
                                                         <i class="fa-solid fa-delete-left" style="color: #d60505;"></i>
                                                     </button>
                                                 </form>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </div>
                                     }
                                 }
                                 else
                                 {
-                                    <tr>
-                                        <td colspan="3" class="text-center text-danger">Nenhum Documento Enviado</td>
-                                    </tr>
+                                    <div class="text-center text-danger">Nenhum Documento Enviado</div>
                                 }
-                            </tbody>
-                        </table>
+                            </div>
+                            <div class="col-md-4"></div> <!-- Empty column for spacing -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     <script>
@@ -74,11 +94,11 @@
 
             if (file) {
                 if (file.type !== 'application/pdf') {
-                    alert('Only PDF files are allowed.');
+                    alert('O arquivo deve ser em .PDF');
                     return false;
                 }
                 if (file.size > maxSizeInBytes) {
-                    alert('File size must be less than 5MB.');
+                    alert('O Arquivo deve ser menor que 5MB.');
                     return false;
                 }
             }
@@ -87,11 +107,15 @@
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
-            <text>alert('@Html.Raw(Model.ErrorMessage)'); </text>
+            <text>
+                alert('@Html.Raw(Model.ErrorMessage)');
+            </text>
         }
         @if (!string.IsNullOrEmpty(Model.SuccessMessage))
         {
-            <text>alert('@Html.Raw(Model.SuccessMessage)'); </text>
+            <text>
+                alert('@Html.Raw(Model.SuccessMessage)');
+            </text>
         }
     </script>
 }
