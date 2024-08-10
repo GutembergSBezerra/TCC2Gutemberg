@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,18 +29,15 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public Tbl_FornecedorSegurancaAlimentos SegurancaAlimentos { get; set; }
 
-        // Properties for handling document uploads
         [BindProperty]
-        [Required(ErrorMessage = "Por Favor Escolha o Arquivo")]
-        public IFormFile UploadedFile { get; set; }
+        public IFormFile? UploadedFile { get; set; }  // Make the UploadedFile nullable
 
         [BindProperty]
-        [Required(ErrorMessage = "Por favor Escolha o tipo do Documento")]
-        public string TIPODOCUMENTO { get; set; }
+        public string? TIPODOCUMENTO { get; set; }  // Make TIPODOCUMENTO nullable
 
-        public string ErrorMessage { get; set; } = string.Empty;
-        public string SuccessMessage { get; set; } = string.Empty;
+
         public List<Tbl_FornecedorDocumentos> UploadedFiles { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -70,8 +64,9 @@ namespace PortalArcomix.Pages
             Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
             SegurancaAlimentos = await _context.Tbl_FornecedorSegurancaAlimentos.FirstOrDefaultAsync(sa => sa.CNPJ == cnpjClaim);
 
-            // Fetch uploaded files
-            FetchUploadedFiles(cnpjClaim);
+            // Load uploaded files
+            UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
+
 
             bool isNew = false;
 
@@ -104,125 +99,6 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-        // Method to fetch uploaded files
-        private void FetchUploadedFiles(string cnpj)
-        {
-            UploadedFiles = _context.Tbl_FornecedorDocumentos
-                .Where(d => d.CNPJ == cnpj)
-                .ToList();
-        }
-
-        // Handler for uploading files
-        public async Task<IActionResult> OnPostUploadAsync()
-        {
-            var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
-
-            if (cnpjClaim == null || !ModelState.IsValid || UploadedFile == null)
-            {
-                ErrorMessage = "Por favor preencha todos os campos corretamente.";
-                FetchUploadedFiles(cnpjClaim);
-                return Page();
-            }
-
-            if (UploadedFile.ContentType != "application/pdf")
-            {
-                ErrorMessage = "O arquivo deve ser em .PDF";
-                FetchUploadedFiles(cnpjClaim);
-                return Page();
-            }
-
-            if (UploadedFile.Length > 5 * 1024 * 1024)
-            {
-                ErrorMessage = "O Arquivo deve ser menor que 5MB.";
-                FetchUploadedFiles(cnpjClaim);
-                return Page();
-            }
-
-            try
-            {
-                var uploadsFolder = Path.Combine("wwwroot", "uploads");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
-
-                var filePath = Path.Combine(uploadsFolder, UploadedFile.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await UploadedFile.CopyToAsync(stream);
-                }
-
-                var documento = new Tbl_FornecedorDocumentos
-                {
-                    CNPJ = cnpjClaim,
-                    NOMEARQUIVO = UploadedFile.FileName,
-                    CAMINHOARQUIVO = filePath,
-                    TIPODOCUMENTO = TIPODOCUMENTO,
-                    HORARIOUPLOAD = DateTimeOffset.UtcNow
-                };
-
-                _context.Tbl_FornecedorDocumentos.Add(documento);
-                await _context.SaveChangesAsync();
-
-                SuccessMessage = "Arquivo Salvo com Sucesso!";
-            }
-            catch (DbUpdateException ex)
-            {
-                ErrorMessage = $"Error uploading file: {ex.Message}";
-                if (ex.InnerException != null)
-                {
-                    ErrorMessage += $" Inner exception: {ex.InnerException.Message}";
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Error uploading file: {ex.Message}";
-            }
-
-            FetchUploadedFiles(cnpjClaim);
-            return Page();
-        }
-
-        // Handler for downloading files
-        public IActionResult OnGetDownload(string filePath)
-        {
-            if (System.IO.File.Exists(filePath))
-            {
-                var bytes = System.IO.File.ReadAllBytes(filePath);
-                return File(bytes, "application/pdf", Path.GetFileName(filePath));
-            }
-
-            ErrorMessage = "File not found.";
-            FetchUploadedFiles(User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value);
-            return Page();
-        }
-
-        // Handler for deleting files
-        public async Task<IActionResult> OnPostDeleteAsync(int id)
-        {
-            var documento = await _context.Tbl_FornecedorDocumentos.FindAsync(id);
-            if (documento == null)
-            {
-                ErrorMessage = "File not found.";
-                FetchUploadedFiles(User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value);
-                return Page();
-            }
-
-            // Delete the file from the file system
-            if (System.IO.File.Exists(documento.CAMINHOARQUIVO))
-            {
-                System.IO.File.Delete(documento.CAMINHOARQUIVO);
-            }
-
-            // Remove the entry from the database
-            _context.Tbl_FornecedorDocumentos.Remove(documento);
-            await _context.SaveChangesAsync();
-
-            SuccessMessage = "Arquivo Excluido com Sucesso!";
-            FetchUploadedFiles(User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value);
-            return Page();
-        }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -240,7 +116,14 @@ namespace PortalArcomix.Pages
 
             if (!ModelState.IsValid)
             {
-                return Page();
+                // Remove the validation errors related to TIPODOCUMENTO and UploadedFile
+                ModelState.Remove("TIPODOCUMENTO");
+                ModelState.Remove("UploadedFile");
+
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
             }
 
             var fornecedorToUpdate = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
@@ -341,11 +224,75 @@ namespace PortalArcomix.Pages
             return RedirectToPage("/Index");
         }
 
+        public async Task<IActionResult> OnPostUploadAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
+
+            if (cnpjClaim == null)
+            {
+                return BadRequest();
+            }
+
+            if (UploadedFile != null)
+            {
+                var fileName = Path.GetFileName(UploadedFile.FileName);
+                var uploadPath = Path.Combine("uploads", cnpjClaim, fileName);
+
+                // Ensure the directory exists
+                Directory.CreateDirectory(Path.GetDirectoryName(uploadPath));
+
+                using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await UploadedFile.CopyToAsync(fileStream);
+                }
+
+                var document = new Tbl_FornecedorDocumentos
+                {
+                    CNPJ = cnpjClaim,
+                    NOMEARQUIVO = fileName,
+                    TIPODOCUMENTO = TIPODOCUMENTO,
+                    CAMINHOARQUIVO = uploadPath,
+                    HORARIOUPLOAD = DateTimeOffset.Now
+                };
+
+                _context.Tbl_FornecedorDocumentos.Add(document);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var document = await _context.Tbl_FornecedorDocumentos.FindAsync(id);
+
+            if (document == null)
+            {
+                return NotFound();
+            }
+
+            var filePath = document.CAMINHOARQUIVO;
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+
+            _context.Tbl_FornecedorDocumentos.Remove(document);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
+
+
         private bool FornecedorExists(string cnpj)
         {
             return _context.Tbl_Fornecedor.Any(e => e.CNPJ == cnpj);
         }
     }
 }
-
-
