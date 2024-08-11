@@ -99,6 +99,20 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
+        public IActionResult OnGetDownload(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath) || !System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var fileName = Path.GetFileName(filePath);
+            var mimeType = "application/pdf"; // Assuming all files are PDFs; adjust as needed
+
+            return PhysicalFile(filePath, mimeType, fileName);
+        }
+
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -241,12 +255,18 @@ namespace PortalArcomix.Pages
             if (UploadedFile != null)
             {
                 var fileName = Path.GetFileName(UploadedFile.FileName);
-                var uploadPath = Path.Combine("uploads", cnpjClaim, fileName);
+
+                // Define the path to the upload directory
+                var baseUploadPath = Path.Combine("C:\\Users\\Gutemberg\\source\\repos\\PortalArcomix\\wwwroot\\uploads", cnpjClaim);
 
                 // Ensure the directory exists
-                Directory.CreateDirectory(Path.GetDirectoryName(uploadPath));
+                Directory.CreateDirectory(baseUploadPath);
 
-                using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                // Create the full file path including the file name
+                var filePath = Path.Combine(baseUploadPath, fileName);
+
+                // Save the uploaded file to the specified path
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await UploadedFile.CopyToAsync(fileStream);
                 }
@@ -256,7 +276,7 @@ namespace PortalArcomix.Pages
                     CNPJ = cnpjClaim,
                     NOMEARQUIVO = fileName,
                     TIPODOCUMENTO = TIPODOCUMENTO,
-                    CAMINHOARQUIVO = uploadPath,
+                    CAMINHOARQUIVO = filePath,  // Save the absolute path to the database
                     HORARIOUPLOAD = DateTimeOffset.Now
                 };
 
@@ -266,6 +286,7 @@ namespace PortalArcomix.Pages
 
             return RedirectToPage();
         }
+
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {

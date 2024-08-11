@@ -689,94 +689,87 @@
 
                         </div>
                     </div>
-                    <br />
                     <!-- Add other sections similarly with proper IDs and structure -->
                 </form>
 
-                <div class="container mt-5 mb-5">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title text-primary">Documentos</h4>
-                                    <p class="card-text text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
-                                    <form method="post" enctype="multipart/form-data" class="row" asp-page-handler="Upload">
-                                        <div class="col-md-4 mb-2">
-                                            <label class="control-label">Documento</label>
-                                            <div class="form-group mb-3">
-                                                <select asp-for="TIPODOCUMENTO" class="form-control" id="TIPODOCUMENTO">
-                                                    <option value="">Escolher...</option>
-                                                    <option value="SINTEGRA">SINTEGRA</option>
-                                                    <option value="Documentação Sanitária">Documentação Sanitária</option>
-                                                    <option value="Documentação Ambiental ou Operacional">Documentação Ambiental ou Operacional</option>
-                                                    <option value="Documentação Controle de Pragas">Documentação Controle de Pragas</option>
-                                                    <option value="Documentação Controle de Água">Documentação Controle de Água</option>
-                                                    <option value="Documentação Manual Boas Práticas">Documentação Manual Boas Práticas</option>
-                                                    <option value="Documentação Segurança de Alimentos">Documentação Segurança de Alimentos</option>
-                                                    <option value="Documentação PAC">Documentação PAC</option>
-                                                    <option value="Documentação APPCC">Documentação APPCC</option>
-                                                </select>
-                                                <span asp-validation-for="TIPODOCUMENTO" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-2">
-                                            <label for="fileUpload" class="sr-only">Escolher</label>
-                                            <input asp-for="UploadedFile" class="form-control" type="file" id="fileUpload" accept="application/pdf" placeholder="Escolher" />
-                                            <span asp-validation-for="UploadedFile" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-4 mb-2 d-flex align-items-end">
-                                            <button type="submit" class="btn btn-primary w-100">Enviar</button>
-                                        </div>
-                                    </form>
-
-                                    <hr />
-
-                                    <div class="mt-4">
-                                        <h5 class="text-primary">Documentos Enviados</h5>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                @if (Model.UploadedFiles?.Count > 0)
-                                                {
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nome do Arquivo</th>
-                                                                <th>Tipo do Documento</th>
-                                                                <th>Data de Upload</th>
-                                                                <th>Ações</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach (var file in Model.UploadedFiles)
-                                                            {
-                                                                <tr>
-                                                                    <td>@file.NOMEARQUIVO</td>
-                                                                    <td>@file.TIPODOCUMENTO</td>
-                                                                    <td>@file.HORARIOUPLOAD.ToString("dd/MM/yyyy HH:mm")</td>
-                                                                    <td>
-                                                                        <a asp-page-handler="Download" asp-route-filePath="@file.CAMINHOARQUIVO" class="btn btn-success btn-sm">Download</a>
-                                                                        <form method="post" asp-page-handler="Delete" asp-route-id="@file.ID" class="d-inline">
-                                                                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                                                                        </form>
-                                                                    </td>
-                                                                </tr>
-                                                            }
-                                                        </tbody>
-                                                    </table>
-                                                }
-                                                else
-                                                {
-                                                    <div class="text-center text-danger">Nenhum Documento Enviado</div>
-                                                }
-                                            </div>
-                                            <div class="col-md-4"></div> <!-- Empty column for spacing -->
-                                        </div>
+                <!-- New Form for Documentos -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">Documentos</h4>
+                        <p class="card-text text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
+                        <form method="post" enctype="multipart/form-data" asp-page-handler="Upload">
+                            <div class="row align-items-end">
+                                <div class="col-md-3 mb-2">
+                                    <label class="control-label">Documento</label>
+                                    <div class="form-group">
+                                        <select asp-for="TIPODOCUMENTO" class="form-control" id="TIPODOCUMENTO">
+                                            <option value="">Escolher...</option>
+                                            <option value="SINTEGRA">SINTEGRA</option>
+                                            <option value="Documentação Sanitária">Documentação Sanitária</option>
+                                            <option value="Documentação Ambiental ou Operacional">Documentação Ambiental ou Operacional</option>
+                                            <option value="Documentação Controle de Pragas">Documentação Controle de Pragas</option>
+                                            <option value="Documentação Controle de Água">Documentação Controle de Água</option>
+                                            <option value="Documentação Manual Boas Práticas">Documentação Manual Boas Práticas</option>
+                                            <option value="Documentação Segurança de Alimentos">Documentação Segurança de Alimentos</option>
+                                            <option value="Documentação PAC">Documentação PAC</option>
+                                            <option value="Documentação APPCC">Documentação APPCC</option>
+                                        </select>
+                                        <span asp-validation-for="TIPODOCUMENTO" class="text-danger"></span>
                                     </div>
                                 </div>
+                                <div class="col-md-4 mb-2">
+                                    <label for="fileUpload" class="sr-only">Escolher</label>
+                                    <input asp-for="UploadedFile" class="form-control" type="file" id="fileUpload" accept="application/pdf" placeholder="Escolher" />
+                                    <span asp-validation-for="UploadedFile" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-1 mb-2">
+                                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <hr />
+
+                        <div class="mt-4">
+                            <h5 class="text-primary">Documentos Enviados</h5>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    @if (Model.UploadedFiles?.Count > 0)
+                                    {
+                                        <table class="table">
+                                            <tbody>
+                                                @foreach (var file in Model.UploadedFiles)
+                                                {
+                                                    <tr>
+                                                        <td class="col-md-3">
+                                                            <a asp-page-handler="Download" asp-route-filePath="@file.CAMINHOARQUIVO" class="text-primary">
+                                                                @file.TIPODOCUMENTO
+                                                            </a>
+                                                        </td>
+                                                        <td class="col-md-1">
+                                                            <form method="post" asp-page-handler="Delete" asp-route-id="@file.ID" class="d-inline">
+                                                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center text-danger">Nenhum Documento Enviado</div>
+                                    }
+                                </div>
+                                <div class="col-md-8"></div> <!-- Empty column for spacing -->
                             </div>
                         </div>
+
                     </div>
                 </div>
+
+                <br />
 
             </div>
         </div>
