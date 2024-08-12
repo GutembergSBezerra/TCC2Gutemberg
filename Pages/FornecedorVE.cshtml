@@ -685,14 +685,15 @@
                     <!-- Submit Button Row -->
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                            <button type="submit" class="btn btn-primary" onclick="return validateSintegraBeforeSubmit()">Salvar Alterações</button>
+                            <span id="sintegraWarning" class="text-danger" style="display:none;">O documento SINTEGRA deve ser anexado.</span>
 
                         </div>
                     </div>
                     <!-- Add other sections similarly with proper IDs and structure -->
                 </form>
 
-                <!-- New Form for Documentos -->
+                <!-- Documentos Card -->
                 <div class="card mt-4">
                     <div class="card-body">
                         <h4 class="card-title text-primary">Documentos</h4>
@@ -726,7 +727,6 @@
                                     <button type="submit" class="btn btn-primary w-100">Enviar</button>
                                 </div>
                             </div>
-
                         </form>
 
                         <hr />
@@ -762,10 +762,8 @@
                                         <div class="text-center text-danger">Nenhum Documento Enviado</div>
                                     }
                                 </div>
-                                <div class="col-md-8"></div> <!-- Empty column for spacing -->
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -782,6 +780,20 @@
         function showSuccessMessage() {
             alert("Dados Enviados para Analise com Sucesso");
             return true;
+        }
+
+        function validateSintegraBeforeSubmit() {
+            var uploadedFiles = @Html.Raw(Json.Serialize(Model.UploadedFiles.Select(f => f.TIPODOCUMENTO).ToList()));
+            var sintegraWarning = document.getElementById("sintegraWarning");
+
+            // Check if SINTEGRA has been uploaded
+            if (!uploadedFiles.includes("SINTEGRA")) {
+                sintegraWarning.style.display = "block";
+                return false; // Prevent form submission
+            }
+
+            sintegraWarning.style.display = "none"; // Hide the warning if SINTEGRA is uploaded
+            return true; // Allow form submission
         }
 
         function setValidationMessage(fieldId, message) {
