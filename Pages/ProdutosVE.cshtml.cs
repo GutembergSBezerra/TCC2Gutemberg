@@ -69,13 +69,20 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
+            // Handle MARCA field based on the "Nova Marca" selection
+            if (Request.Form["Produto.MARCA"] == "Nova Marca")
+            {
+                Produto.MARCA = Request.Form["novaMarcaInput"];
+            }
+
             if (Produto.ID == 0)  // If ID is 0, it's a new product
             {
+                Produto.CNPJ = cnpjClaim;  // Set the CNPJ to the claimed CNPJ
                 _context.Tbl_Produto.Add(Produto);
             }
             else  // Otherwise, update the existing product
             {
-                var produtoToUpdate = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == Produto.ID);
+                var produtoToUpdate = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == Produto.ID && p.CNPJ == cnpjClaim);
 
                 if (produtoToUpdate == null)
                 {
@@ -84,10 +91,9 @@ namespace PortalArcomix.Pages
 
                 // Update the product fields
                 produtoToUpdate.GESTORCOMPRAS = Produto.GESTORCOMPRAS;
-                produtoToUpdate.MARCA = Produto.MARCA;
-                produtoToUpdate.NOVAMARCA = Produto.NOVAMARCA;
                 produtoToUpdate.DESCRICAOPRODUTO = Produto.DESCRICAOPRODUTO;
-                produtoToUpdate.CNPJ = Produto.CNPJ;
+                produtoToUpdate.IMPORTADO = Produto.IMPORTADO;
+                produtoToUpdate.MARCA = Produto.MARCA;
 
                 _context.Attach(produtoToUpdate).State = EntityState.Modified;
             }

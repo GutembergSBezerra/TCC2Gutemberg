@@ -9,7 +9,6 @@ namespace PortalArcomix.Data.Entities
 
         public string? GESTORCOMPRAS { get; set; } // NVARCHAR2(30 CHAR), nullable
         public string? MARCA { get; set; } // NVARCHAR2(20 CHAR), nullable
-        public string? NOVAMARCA { get; set; } // NVARCHAR2(20 CHAR), nullable
         public bool? IMPORTADO { get; set; } // NUMBER(1,0), nullable (assuming 1/0 for true/false)
         public string? DESCRICAOPRODUTO { get; set; } // NVARCHAR2(30 CHAR), nullable
         public string? NCM { get; set; } // CHAR(8 BYTE), nullable

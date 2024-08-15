@@ -892,7 +892,7 @@
         function validateSelect(selectId) {
             var select = document.getElementById(selectId);
             if (select && select.value === "") {
-                setValidationMessage(selectId, "Esse campo não pode ficar em branco");
+                setValidationMessage(selectId, "Selecione uma Opção");
                 select.focus();
                 return false;
             } else {

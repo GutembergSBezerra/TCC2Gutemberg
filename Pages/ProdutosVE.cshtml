@@ -50,21 +50,23 @@
 
                         <div class="row">
                             <!-- Descrição -->
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label asp-for="Produto.DESCRICAOPRODUTO">Descrição</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="Produto.DESCRICAOPRODUTO" class="form-control" />
+                                        <input asp-for="Produto.DESCRICAOPRODUTO" class="form-control" id="DescricaoProduto" maxlength="35" onblur="validateDescricaoProduto()" />
                                         <span asp-validation-for="Produto.DESCRICAOPRODUTO" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
 
+
+
                             <!-- Importado -->
                             <div class="col-md-1">
                                 <label asp-for="Produto.IMPORTADO">Importado</label>
                                 <div class="form-group mb-3">
-                                    <select asp-for="Produto.IMPORTADO" class="form-control">
+                                    <select asp-for="Produto.IMPORTADO" class="form-control" id="Importado" onblur="validateSelect('Importado')">
                                         <option value="">Escolher</option>
                                         <option value="true">Sim</option>
                                         <option value="false">Não</option>
@@ -74,10 +76,10 @@
                             </div>
 
                             <!-- Gestor de Compras -->
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label asp-for="Produto.GESTORCOMPRAS">Gestor de Compras</label>
                                 <div class="form-group mb-3">
-                                    <select asp-for="Produto.GESTORCOMPRAS" class="form-control">
+                                    <select asp-for="Produto.GESTORCOMPRAS" class="form-control" id="GestorCompras" onblur="validateSelect('GestorCompras')">
                                         <option value="">Escolher</option>
                                         <option value="Ana Sales">Ana Sales</option>
                                         <option value="Bruno Santos">Bruno Santos</option>
@@ -94,6 +96,34 @@
                                     <span asp-validation-for="Produto.GESTORCOMPRAS" class="text-danger"></span>
                                 </div>
                             </div>
+                            <!-- Marca -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.MARCA">Marca</label>
+                                    <div class="form-group mb-3">
+                                        <select asp-for="Produto.MARCA" class="form-control" id="marcaSelect" onchange="toggleNovaMarca()">
+                                            <option value="">Escolher</option>
+                                            <option value="Nova Marca">Nova Marca</option>
+                                            <option value="Sadia">Sadia</option>
+                                            <option value="Perdigão">Perdigão</option>
+                                            <option value="Seara">Seara</option>
+                                        </select>
+                                        <span asp-validation-for="Produto.MARCA" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Nova Marca (this uses the same MARCA property) -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label for="novaMarcaInput">Nova Marca</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control" id="novaMarcaInput" disabled="disabled" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -109,3 +139,80 @@
         </div>
     </div>
 </form>
+
+
+<script>
+
+    function validateSelect(selectId) {
+        var select = document.getElementById(selectId);
+        if (select && select.value === "") {
+            setValidationMessage(selectId, "Selecione uma Opção");
+            select.focus();
+            return false;
+        } else {
+            setValidationMessage(selectId, ""); // Clear validation message
+        }
+        return true;
+    }
+
+    function setValidationMessage(fieldId, message) {
+        var field = document.getElementById(fieldId);
+        var validationSpan = field.nextElementSibling;
+        if (validationSpan && validationSpan.classList.contains('text-danger')) {
+            validationSpan.innerText = message;
+        }
+    }
+
+    function validateField(fieldId, validationType = 'default') {
+        var field = document.getElementById(fieldId);
+        if (field) {
+            var value = field.value.trim();
+            if (validationType === 'default' && !value) {
+                setValidationMessage(fieldId, "Campo Precisa ser preenchido");
+                field.focus();
+                return false;
+            } else if (validationType === 'max35chars' && value.length > 35) {
+                setValidationMessage(fieldId, "Campo deve conter no máximo 35 caracteres");
+                field.focus();
+                return false;
+            } else {
+                setValidationMessage(fieldId, ""); // Clear validation message
+            }
+        }
+        return true;
+    }
+
+    function validateDescricaoProduto() {return validateField("DescricaoProduto", "default") && validateField("DescricaoProduto", "max35chars");}
+
+
+    function toggleNovaMarca() {
+        var marcaSelect = document.getElementById('marcaSelect');
+        var novaMarcaInput = document.getElementById('novaMarcaInput');
+
+        if (marcaSelect.value === 'Nova Marca') {
+            novaMarcaInput.disabled = false;
+            novaMarcaInput.name = "Produto.MARCA";  // Use the MARCA property when Nova Marca is selected
+            marcaSelect.name = "";  // Clear the name to avoid binding
+        } else {
+            novaMarcaInput.disabled = true;
+            novaMarcaInput.value = '';  // Clear the Nova Marca input if disabled
+            novaMarcaInput.name = "";  // Remove the name attribute to avoid binding
+            marcaSelect.name = "Produto.MARCA";  // Ensure the dropdown is bound to MARCA
+        }
+    }
+
+    // Make Enter key act like Tab in the form
+    document.addEventListener('keydown', function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent default Enter behavior
+            // Find the next focusable element
+            var currentElement = event.target;
+            var focusableElements = document.querySelectorAll('button, [href], input, select, textarea');
+            var currentIndex = Array.from(focusableElements).indexOf(currentElement);
+            var nextIndex = (currentIndex + 1) % focusableElements.length;
+            focusableElements[nextIndex].focus();
+        }
+    });
+
+
+</script>
