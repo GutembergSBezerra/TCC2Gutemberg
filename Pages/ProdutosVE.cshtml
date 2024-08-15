@@ -1,0 +1,111 @@
+﻿@page
+@model PortalArcomix.Pages.ProdutosVEModel
+@{
+    ViewData["Title"] = "ProdutosVE";
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Column -->
+            <div class="col-md-1 sidebar">
+                @* Sidebar items *@
+                @{
+                    var sidebarItems = new List<(string Link, string Icon, string Text)>
+                {
+                ("#idDadosdoProduto", "fa-table", "Dados do Produto"),
+                ("#idGC", "fa-list", "Gerenciamento de Categoria"),
+                ("#idDadosTributarios", "fa-square-root-variable", "Dados Tributários"),
+                ("#idDadosLogísticos", "fa-truck", "Dados Logísticos"),
+                ("#idCadastro", "fa-address-card", "Cadastro"),
+                ("#idComentarios", "fa-comments", "Comentários")
+                };
+                }
+                @foreach (var item in sidebarItems)
+                {
+                    <div class="sidebar-item">
+                        <a href="@item.Link" class="sidebar-link">
+                            <i class="sidebar-icon fa @item.Icon"></i>
+                            <span class="sidebar-text">@item.Text</span>
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <!-- Main Content Column -->
+            <div class="col-md-11">
+                <p style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; font-weight: bold;">Solicitação de Produto: @Model.Produto?.ID</p>
+                <hr />
+
+                <!-- Card Dados do Produto -->
+                <div class="card" id="idDadosdoProduto">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h4 style="color: #1878BB;">Dados do Produto</h4>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Descrição -->
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.DESCRICAOPRODUTO">Descrição</label>
+                                    <div class="form-group mb-3">
+                                        <input asp-for="Produto.DESCRICAOPRODUTO" class="form-control" />
+                                        <span asp-validation-for="Produto.DESCRICAOPRODUTO" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Importado -->
+                            <div class="col-md-1">
+                                <label asp-for="Produto.IMPORTADO">Importado</label>
+                                <div class="form-group mb-3">
+                                    <select asp-for="Produto.IMPORTADO" class="form-control">
+                                        <option value="">Escolher</option>
+                                        <option value="true">Sim</option>
+                                        <option value="false">Não</option>
+                                    </select>
+                                    <span asp-validation-for="Produto.IMPORTADO" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Gestor de Compras -->
+                            <div class="col-md-2">
+                                <label asp-for="Produto.GESTORCOMPRAS">Gestor de Compras</label>
+                                <div class="form-group mb-3">
+                                    <select asp-for="Produto.GESTORCOMPRAS" class="form-control">
+                                        <option value="">Escolher</option>
+                                        <option value="Ana Sales">Ana Sales</option>
+                                        <option value="Bruno Santos">Bruno Santos</option>
+                                        <option value="Carlos Costa">Carlos Costa</option>
+                                        <option value="DoCarmo">DoCarmo</option>
+                                        <option value="Hugo Souza">Hugo Souza</option>
+                                        <option value="João Vieira">João Vieira</option>
+                                        <option value="Juliana Maria">Juliana Maria</option>
+                                        <option value="Juliana Medeiros">Juliana Medeiros</option>
+                                        <option value="Melque">Melque</option>
+                                        <option value="Raphael Mendes">Raphael Mendes</option>
+                                        <option value="Gilberto">Gilberto</option>
+                                    </select>
+                                    <span asp-validation-for="Produto.GESTORCOMPRAS" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row mt-4">
+                    <div class="col-md-12 text-right">
+                        <a id="idvoltar" class="btn btn-danger" href="/Index" role="button">Voltar</a>
+                        <button id="idAtivacaoProduto" type="submit" class="btn btn-primary">Ativação Produto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

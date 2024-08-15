@@ -10,6 +10,7 @@ namespace PortalArcomix.Data
         {
         }
 
+        // DbSet for Fornecedor
         public DbSet<Tbl_Usuario> Tbl_Usuario { get; set; }
         public DbSet<Tbl_Fornecedor> Tbl_Fornecedor { get; set; }
         public DbSet<Tbl_FornecedorDadosBancarios> Tbl_FornecedorDadosBancarios { get; set; }
@@ -17,6 +18,10 @@ namespace PortalArcomix.Data
         public DbSet<Tbl_FornecedorNegociacao> Tbl_FornecedorNegociacao { get; set; }
         public DbSet<Tbl_FornecedorSegurancaAlimentos> Tbl_FornecedorSegurancaAlimentos { get; set; }
         public DbSet<Tbl_FornecedorDocumentos> Tbl_FornecedorDocumentos { get; set; }
+
+
+        // DbSet for Produto
+        public DbSet<Tbl_Produto> Tbl_Produto { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,6 +50,7 @@ namespace PortalArcomix.Data
 
             // Map Tbl_FornecedorDocumentos to the database table
             modelBuilder.Entity<Tbl_FornecedorDocumentos>().ToTable("TBL_FORNECEDORDOCUMENTOS");
+
         }
     }
 }
