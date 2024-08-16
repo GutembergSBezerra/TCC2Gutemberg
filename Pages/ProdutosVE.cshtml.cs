@@ -102,6 +102,10 @@ namespace PortalArcomix.Pages
                 produtoToUpdate.COFINS = Produto.COFINS;
                 produtoToUpdate.CUSTOUNIDADE = Produto.CUSTOUNIDADE;
                 produtoToUpdate.CUSTOCAIXA = Produto.CUSTOCAIXA;
+                produtoToUpdate.CODXML = Produto.CODXML;
+                produtoToUpdate.EMBALAGEMFAT = Produto.EMBALAGEMFAT;
+                produtoToUpdate.VERBACADASTRO = Produto.VERBACADASTRO;
+                produtoToUpdate.MOTIVOVERBAZERADA = Produto.MOTIVOVERBAZERADA;
 
                 _context.Attach(produtoToUpdate).State = EntityState.Modified;
             }
