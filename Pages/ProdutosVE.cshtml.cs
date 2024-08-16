@@ -94,6 +94,14 @@ namespace PortalArcomix.Pages
                 produtoToUpdate.DESCRICAOPRODUTO = Produto.DESCRICAOPRODUTO;
                 produtoToUpdate.IMPORTADO = Produto.IMPORTADO;
                 produtoToUpdate.MARCA = Produto.MARCA;
+                produtoToUpdate.NCM = Produto.NCM;
+                produtoToUpdate.CEST = Produto.CEST;
+                produtoToUpdate.ICMS = Produto.ICMS;
+                produtoToUpdate.IPI = Produto.IPI;
+                produtoToUpdate.PIS = Produto.PIS;
+                produtoToUpdate.COFINS = Produto.COFINS;
+                produtoToUpdate.CUSTOUNIDADE = Produto.CUSTOUNIDADE;
+                produtoToUpdate.CUSTOCAIXA = Produto.CUSTOCAIXA;
 
                 _context.Attach(produtoToUpdate).State = EntityState.Modified;
             }

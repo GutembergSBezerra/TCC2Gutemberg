@@ -50,7 +50,7 @@
 
                         <div class="row">
                             <!-- Descrição -->
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group mb-3">
                                     <label asp-for="Produto.DESCRICAOPRODUTO">Descrição</label>
                                     <div class="form-group mb-3">
@@ -59,8 +59,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
 
                             <!-- Importado -->
                             <div class="col-md-1">
@@ -76,7 +74,7 @@
                             </div>
 
                             <!-- Gestor de Compras -->
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label asp-for="Produto.GESTORCOMPRAS">Gestor de Compras</label>
                                 <div class="form-group mb-3">
                                     <select asp-for="Produto.GESTORCOMPRAS" class="form-control" id="GestorCompras" onblur="validateSelect('GestorCompras')">
@@ -96,6 +94,7 @@
                                     <span asp-validation-for="Produto.GESTORCOMPRAS" class="text-danger"></span>
                                 </div>
                             </div>
+
                             <!-- Marca -->
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
@@ -123,8 +122,83 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
+                        <div class="row">
+                            <!-- NCM/SH -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.NCM">NCM/SH</label>
+                                    <input asp-for="Produto.NCM" class="form-control" id="NCM" onblur="validateNCM()" maxlength="8" />
+                                    <span asp-validation-for="Produto.NCM" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- CEST -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.CEST">CEST</label>
+                                    <input asp-for="Produto.CEST" class="form-control" id="CEST" onblur="validateCEST()" maxlength="7" />
+                                    <span asp-validation-for="Produto.CEST" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- ICMS % -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.ICMS">ICMS%</label>
+                                    <input asp-for="Produto.ICMS" class="form-control" id="ICMS" onblur="validateICMS()" maxlength="6" />
+                                    <span asp-validation-for="Produto.ICMS" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- IPI % -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.IPI">IPI%</label>
+                                    <input asp-for="Produto.IPI" class="form-control" id="IPI" onblur="validateIPI()" maxlength="6" />
+                                    <span asp-validation-for="Produto.IPI" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- PIS % -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.PIS">PIS%</label>
+                                    <input asp-for="Produto.PIS" class="form-control" id="PIS" onblur="validatePIS()" maxlength="6" />
+                                    <span asp-validation-for="Produto.PIS" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- COFINS % -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.COFINS">COFINS%</label>
+                                    <input asp-for="Produto.COFINS" class="form-control" id="COFINS" onblur="validateCOFINS()" maxlength="6" />
+                                    <span asp-validation-for="Produto.COFINS" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Custo Unidade (R$) -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.CUSTOUNIDADE">Custo Unidade (R$)</label>
+                                    <input asp-for="Produto.CUSTOUNIDADE" class="form-control" id="CUSTOUNIDADE" onblur="validateCustoUnidade()" maxlength="9" />
+                                    <span asp-validation-for="Produto.CUSTOUNIDADE" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Custo Caixa (R$) -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Produto.CUSTOCAIXA">Custo Caixa (R$)</label>
+                                    <input asp-for="Produto.CUSTOCAIXA" class="form-control" id="CUSTOCAIXA" onblur="validateCustoCaixa()" maxlength="9" />
+                                    <span asp-validation-for="Produto.CUSTOCAIXA" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -167,22 +241,100 @@
         var field = document.getElementById(fieldId);
         if (field) {
             var value = field.value.trim();
-            if (validationType === 'default' && !value) {
-                setValidationMessage(fieldId, "Campo Precisa ser preenchido");
-                field.focus();
+
+            switch (validationType) {
+                case 'default':
+                    if (!value) {
+                        setValidationMessage(fieldId, "Campo Precisa ser preenchido");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case 'max35chars':
+                    if (value.length > 35) {
+                        setValidationMessage(fieldId, "Máximo 35 caracteres");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case '8digitos':
+                    if (!/^\d{8}$/.test(value)) {
+                        setValidationMessage(fieldId, "Apenas 8 dígitos");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case '7digitos':
+                    if (!/^\d{7}$/.test(value)) {
+                        setValidationMessage(fieldId, "Apenas 7 dígitos");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case 'percent':
+                    if (!/^\d{1,3}(\,\d{1,2})?$/.test(value)) {
+                        setValidationMessage(fieldId, "Campo Percentual");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case 'currency':
+                    if (!/^\d+(\,\d{1,2})?$/.test(value)) {
+                        setValidationMessage(fieldId, "Valor deve ser Monetário");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case 'repeatedDigits':
+                    if (/^(\d)\1+$/.test(value)) {
+                        setValidationMessage(fieldId, "Dígitos Iguais");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case 'sequentialDigits':
+                    if (isSequential(value)) {
+                        setValidationMessage(fieldId, "Digitos Sequenciais");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            setValidationMessage(fieldId, ""); // Clear validation message
+        }
+        return true;
+    }
+
+    // Helper function to detect sequential digits
+    function isSequential(value) {
+        for (let i = 0; i < value.length - 1; i++) {
+            if (parseInt(value[i]) + 1 !== parseInt(value[i + 1])) {
                 return false;
-            } else if (validationType === 'max35chars' && value.length > 35) {
-                setValidationMessage(fieldId, "Campo deve conter no máximo 35 caracteres");
-                field.focus();
-                return false;
-            } else {
-                setValidationMessage(fieldId, ""); // Clear validation message
             }
         }
         return true;
     }
 
     function validateDescricaoProduto() {return validateField("DescricaoProduto", "default") && validateField("DescricaoProduto", "max35chars");}
+    function validateNCM() {return validateField("NCM", "8digitos") && validateField("NCM", "repeatedDigits") && validateField("NCM", "sequentialDigits");}
+    function validateCEST() {return validateField("CEST", "7digitos") && validateField("CEST", "repeatedDigits") && validateField("CEST", "sequentialDigits");}
+    function validateICMS() {return validateField("ICMS", "percent");}
+    function validateIPI() {return validateField("IPI", "percent");}
+    function validatePIS() {return validateField("PIS", "percent");}
+    function validateCOFINS() {return validateField("COFINS", "percent");}
+    function validateCustoUnidade() {return validateField("CUSTOUNIDADE", "currency");}
+    function validateCustoCaixa() {return validateField("CUSTOCAIXA", "currency");}
 
 
     function toggleNovaMarca() {
