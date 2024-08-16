@@ -255,6 +255,32 @@
                     </div>
                 </div>
 
+                <!--Card Unidade de Venda e Compra-->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" id="idUnidVendaCompra">
+                            <div class="col">
+                                <h4 style="color: #1878BB;">Unidade de Venda e Compra</h4>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- EAN 13 Field -->
+                            <div class="col-md-2">
+                                <label>EAN 13 (se pesável, ean inexistente)</label>
+                                <div class="form-group mb-3">
+                                    <input asp-for="ProdutoVendaCompra.EAN13" class="form-control" maxlength="13" />
+                                    <span asp-validation-for="ProdutoVendaCompra.EAN13" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
                 <!-- Action Buttons -->
                 <div class="row mt-4">
                     <div class="col-md-12 text-right">

@@ -22,6 +22,7 @@ namespace PortalArcomix.Data
 
         // DbSet for Produto
         public DbSet<Tbl_Produto> Tbl_Produto { get; set; }
+        public DbSet<Tbl_ProdutoVendaCompra> Tbl_ProdutoVendaCompra { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,6 +51,8 @@ namespace PortalArcomix.Data
 
             // Map Tbl_FornecedorDocumentos to the database table
             modelBuilder.Entity<Tbl_FornecedorDocumentos>().ToTable("TBL_FORNECEDORDOCUMENTOS");
+
+
 
         }
     }
