@@ -20,7 +20,7 @@ namespace PortalArcomix.Pages
         public Tbl_Produto Produto { get; set; }
 
         [BindProperty]
-        public Tbl_ProdutoVendaCompra ProdutoVendaCompra { get; set; }  // Add this property
+        public Tbl_ProdutoVendaCompra ProdutoVendaCompra { get; set; }  // Binding for ProdutoVendaCompra entity
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -127,6 +127,21 @@ namespace PortalArcomix.Pages
 
                 // Update the Tbl_ProdutoVendaCompra fields
                 produtoVendaCompraToUpdate.EAN13 = ProdutoVendaCompra.EAN13;
+                produtoVendaCompraToUpdate.REFERENCIA = ProdutoVendaCompra.REFERENCIA;
+                produtoVendaCompraToUpdate.PESOBRUTOKG = ProdutoVendaCompra.PESOBRUTOKG;
+                produtoVendaCompraToUpdate.PESOLIQUIDOKG = ProdutoVendaCompra.PESOLIQUIDOKG;
+                produtoVendaCompraToUpdate.ALTURACM = ProdutoVendaCompra.ALTURACM;
+                produtoVendaCompraToUpdate.LARGURACM = ProdutoVendaCompra.LARGURACM;
+                produtoVendaCompraToUpdate.PROFUNDIDADECM = ProdutoVendaCompra.PROFUNDIDADECM;
+                produtoVendaCompraToUpdate.DUN14 = ProdutoVendaCompra.DUN14;
+                produtoVendaCompraToUpdate.REFERENCIADUN14 = ProdutoVendaCompra.REFERENCIADUN14;
+                produtoVendaCompraToUpdate.PESOBRUTODUN14KG = ProdutoVendaCompra.PESOBRUTODUN14KG;
+                produtoVendaCompraToUpdate.PESOLIQUIDODUN14KG = ProdutoVendaCompra.PESOLIQUIDODUN14KG;
+                produtoVendaCompraToUpdate.ALTURADUN14CM = ProdutoVendaCompra.ALTURADUN14CM;
+                produtoVendaCompraToUpdate.LARGURADUN14CM = ProdutoVendaCompra.LARGURADUN14CM;
+                produtoVendaCompraToUpdate.PROFUNDIDADEDUN14CM = ProdutoVendaCompra.PROFUNDIDADEDUN14CM;
+                produtoVendaCompraToUpdate.EMBALAGEM = ProdutoVendaCompra.EMBALAGEM;
+                produtoVendaCompraToUpdate.QUANTIDADEUNIDADES = ProdutoVendaCompra.QUANTIDADEUNIDADES;
 
                 _context.Attach(produtoVendaCompraToUpdate).State = EntityState.Modified;
             }
@@ -150,7 +165,6 @@ namespace PortalArcomix.Pages
             // Redirect to the Index page after successful save
             return RedirectToPage("/Index");
         }
-
 
         private bool ProdutoExists(int id)
         {

@@ -255,6 +255,7 @@
 
                     </div>
                 </div>
+                <br />
 
                 <!--Card Unidade de Venda e Compra-->
                 <div class="card">
@@ -290,7 +291,7 @@
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.PESOBRUTOKG">P. Bruto (Kg)</label>
-                                    <input asp-for="ProdutoVendaCompra.PESOBRUTOKG" id="pesoBruto" class="form-control" onblur="validatePesoBruto()" />
+                                    <input asp-for="ProdutoVendaCompra.PESOBRUTOKG" id="pesoBruto" class="form-control" onblur="validatePesoFields('pesoBruto', 'pesoLiquido')" />
                                     <span asp-validation-for="ProdutoVendaCompra.PESOBRUTOKG" class="text-danger"></span>
                                 </div>
                             </div>
@@ -299,7 +300,7 @@
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.PESOLIQUIDOKG">P. Líquido (Kg)</label>
-                                    <input asp-for="ProdutoVendaCompra.PESOLIQUIDOKG" id="pesoLiquido" class="form-control" onblur="validatePesoLiquido()" />
+                                    <input asp-for="ProdutoVendaCompra.PESOLIQUIDOKG" id="pesoLiquido" class="form-control" onblur="validatePesoFields('pesoBruto', 'pesoLiquido')" />
                                     <span asp-validation-for="ProdutoVendaCompra.PESOLIQUIDOKG" class="text-danger"></span>
                                 </div>
                             </div>
@@ -329,6 +330,101 @@
                                     <span asp-validation-for="ProdutoVendaCompra.PROFUNDIDADECM" class="text-danger"></span>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- DUN 14 -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.DUN14">DUN 14</label>
+                                    <input asp-for="ProdutoVendaCompra.DUN14" id="dun14" class="form-control" maxlength="14" onblur="validateDun14()" />
+                                    <span asp-validation-for="ProdutoVendaCompra.DUN14" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Referencia DUN 14 -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.REFERENCIADUN14">Referencia DUN 14</label>
+                                    <input asp-for="ProdutoVendaCompra.REFERENCIADUN14" id="referenciaDun14" class="form-control" maxlength="50" onblur="validateField('referenciaDun14', 'default')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.REFERENCIADUN14" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Peso Bruto DUN 14 (Kg) -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.PESOBRUTODUN14KG">P. Bruto DUN 14 (Kg)</label>
+                                    <input asp-for="ProdutoVendaCompra.PESOBRUTODUN14KG" id="pesoBrutoDun14" class="form-control" onblur="validatePesoFields('pesoBrutoDun14', 'pesoLiquidoDun14')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.PESOBRUTODUN14KG" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Peso Liquido DUN 14 (Kg) -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG">P. Liquido DUN 14 (Kg)</label>
+                                    <input asp-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG" id="pesoLiquidoDun14" class="form-control" onblur="validatePesoFields('pesoBrutoDun14', 'pesoLiquidoDun14')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Altura DUN 14 (cm) -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.ALTURADUN14CM">Altura(cm)</label>
+                                    <input asp-for="ProdutoVendaCompra.ALTURADUN14CM" id="alturaDun14Cm" class="form-control" onblur="validateField('alturaDun14Cm', 'digitsOnly') && validateField('alturaDun14Cm', 'maxValue100')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.ALTURADUN14CM" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Largura DUN 14 (cm) -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.LARGURADUN14CM">Largura(cm)</label>
+                                    <input asp-for="ProdutoVendaCompra.LARGURADUN14CM" id="larguraDun14Cm" class="form-control" onblur="validateField('larguraDun14Cm', 'digitsOnly') && validateField('larguraDun14Cm', 'maxValue100')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.LARGURADUN14CM" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Profundidade DUN 14 (cm) -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM">Profundidade(cm)</label>
+                                    <input asp-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM" id="profundidadeDun14Cm" class="form-control" onblur="validateField('profundidadeDun14Cm', 'digitsOnly') && validateField('profundidadeDun14Cm', 'maxValue100')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Embalagem -->
+                            <div class="col-md-2">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.EMBALAGEM">Embalagem</label>
+                                    <select asp-for="ProdutoVendaCompra.EMBALAGEM" class="form-control">
+                                        <option value="">Escolher...</option>
+                                        <option value="Caixa">Caixa</option>
+                                        <option value="Fardo">Fardo</option>
+                                        <option value="Display">Display</option>
+                                        <option value="Unidade">Unidade</option>
+                                        <option value="Kilo">Kilo</option>
+                                    </select>
+                                    <span asp-validation-for="ProdutoVendaCompra.EMBALAGEM" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Quantidade -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.QUANTIDADEUNIDADES">Quantidade</label>
+                                    <input asp-for="ProdutoVendaCompra.QUANTIDADEUNIDADES" id="quantidadeUnidades" class="form-control" onblur="validateField('quantidadeUnidades', 'digitsOnly')" />
+                                    <span asp-validation-for="ProdutoVendaCompra.QUANTIDADEUNIDADES" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
 
                         </div>
                     </div>
@@ -452,7 +548,15 @@
 
                 case '13digitos':
                     if (value && !/^\d{13}$/.test(value)) {
-                        setValidationMessage(fieldId, "Deve conter exatamente 13 dígitos");
+                        setValidationMessage(fieldId, "Apenas 13 dígitos");
+                        field.focus();
+                        return false;
+                    }
+                    break;
+
+                case '14digitos':
+                    if (!/^\d{14}$/.test(value)) {
+                        setValidationMessage(fieldId, "Apenas 14 dígitos");
                         field.focus();
                         return false;
                     }
@@ -501,56 +605,62 @@
     function validateAlturaCm() {return validateField("alturaCm", "digitsOnly") && validateField("alturaCm", "maxValue100");}
     function validateLarguraCm() {return validateField("larguraCm", "digitsOnly") && validateField("larguraCm", "maxValue100");}
     function validateProfundidadeCm() {return validateField("profundidadeCm", "digitsOnly") && validateField("profundidadeCm", "maxValue100");}
+    function validateDun14() { return validateField("dun14", "14digitos"); }
+    //function validateReferenciaDun14() { return validateField("referenciaDun14", "default"); }
+    function validateAlturaDun14() { return validateField("alturaDun14Cm", "digitsOnly") && validateField("alturaDun14Cm", "maxValue100"); }
+    function validateLarguraDun14() { return validateField("larguraDun14Cm", "digitsOnly") && validateField("larguraDun14Cm", "maxValue100"); }
+    function validateProfundidadeDun14() { return validateField("profundidadeDun14Cm", "digitsOnly") && validateField("profundidadeDun14Cm", "maxValue100"); }
 
-    // Validation for Peso Bruto (Kg) and Peso Líquido (Kg)
-    function validatePesoFields() {
-        var pesoBruto = document.getElementById("pesoBruto").value.trim();
-        var pesoLiquido = document.getElementById("pesoLiquido").value.trim();
+
+    // Generalized validation for Peso Bruto and Peso Líquido fields
+    function validatePesoFields(pesoBrutoId, pesoLiquidoId) {
+        var pesoBruto = document.getElementById(pesoBrutoId).value.trim();
+        var pesoLiquido = document.getElementById(pesoLiquidoId).value.trim();
 
         // Both fields are empty, no validation error
         if (!pesoBruto && !pesoLiquido) {
-            clearValidationMessages();
+            clearValidationMessages(pesoBrutoId, pesoLiquidoId);
             return true;
         }
 
         // If one of the fields is filled, both must be filled and valid
         if (pesoBruto && !pesoLiquido) {
-            setValidationMessage("pesoLiquido", "Campo precisa ser preenchido");
-            document.getElementById("pesoLiquido").focus();
+            setValidationMessage(pesoLiquidoId, "Campo precisa ser preenchido");
+            document.getElementById(pesoLiquidoId).focus();
             return false;
         } else if (!pesoBruto && pesoLiquido) {
-            setValidationMessage("pesoBruto", "Campo precisa ser preenchido");
-            document.getElementById("pesoBruto").focus();
+            setValidationMessage(pesoBrutoId, "Campo precisa ser preenchido");
+            document.getElementById(pesoBrutoId).focus();
             return false;
         }
 
         // If both fields are filled, check if they contain only digits or are valid currency values
-        if (validateField("pesoBruto", "currency") && validateField("pesoLiquido", "currency")) {
+        if (validateField(pesoBrutoId, "currency") && validateField(pesoLiquidoId, "currency")) {
             // Convert the values to numbers for comparison
             var brutoValue = parseFloat(pesoBruto.replace(',', '.'));
             var liquidoValue = parseFloat(pesoLiquido.replace(',', '.'));
 
             // Check if P. Líquido is greater than P. Bruto
             if (liquidoValue > brutoValue) {
-                setValidationMessage("pesoLiquido", "P. Líquido não pode ser maior que P. Bruto");
-                document.getElementById("pesoLiquido").focus();
+                setValidationMessage(pesoLiquidoId, "P. Líquido não pode ser maior que P. Bruto");
+                document.getElementById(pesoLiquidoId).focus();
                 return false;
             }
 
             // Check if P. Bruto or P. Líquido is greater than 30
             if (brutoValue > 30) {
-                setValidationMessage("pesoBruto", "Peso Máximo 30Kg");
-                document.getElementById("pesoBruto").focus();
+                setValidationMessage(pesoBrutoId, "Peso Máximo 30Kg");
+                document.getElementById(pesoBrutoId).focus();
                 return false;
             }
             if (liquidoValue > 30) {
-                setValidationMessage("pesoLiquido", "Peso Máximo 30Kg");
-                document.getElementById("pesoLiquido").focus();
+                setValidationMessage(pesoLiquidoId, "Peso Máximo 30Kg");
+                document.getElementById(pesoLiquidoId).focus();
                 return false;
             }
 
             // Clear any previous validation messages if everything is valid
-            clearValidationMessages();
+            clearValidationMessages(pesoBrutoId, pesoLiquidoId);
             return true;
         }
 
@@ -558,16 +668,10 @@
     }
 
     // Clear validation messages for both fields
-    function clearValidationMessages() {
-        setValidationMessage("pesoBruto", "");
-        setValidationMessage("pesoLiquido", "");
+    function clearValidationMessages(pesoBrutoId, pesoLiquidoId) {
+        setValidationMessage(pesoBrutoId, "");
+        setValidationMessage(pesoLiquidoId, "");
     }
-
-    // Attach the validation to onblur events
-    document.getElementById("pesoBruto").onblur = validatePesoFields;
-    document.getElementById("pesoLiquido").onblur = validatePesoFields;
-
-
     
     // Helper function to detect sequential digits
     function isSequential(value) {
