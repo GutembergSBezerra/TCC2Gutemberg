@@ -356,7 +356,7 @@
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.REFERENCIADUN14">Referencia</label>
-                                    <input asp-for="ProdutoVendaCompra.REFERENCIADUN14" id="referenciaDun14" class="form-control" maxlength="50" onblur="validateField('referenciaDun14', 'default')" />
+                                    <input asp-for="ProdutoVendaCompra.REFERENCIADUN14" id="referenciaDun14" class="form-control" maxlength="50"/>
                                     <span asp-validation-for="ProdutoVendaCompra.REFERENCIADUN14" class="text-danger"></span>
                                 </div>
                             </div>
@@ -412,7 +412,7 @@
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.EMBALAGEM">Embalagem</label>
-                                    <select asp-for="ProdutoVendaCompra.EMBALAGEM" class="form-control">
+                                    <select asp-for="ProdutoVendaCompra.EMBALAGEM" id="embalagemSelect" class="form-control" onblur="validateSelect('embalagemSelect')">
                                         <option value="">Escolher...</option>
                                         <option value="Caixa">Caixa</option>
                                         <option value="Fardo">Fardo</option>
@@ -424,10 +424,11 @@
                                 </div>
                             </div>
 
+
                             <!-- Quantidade -->
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ProdutoVendaCompra.QUANTIDADEUNIDADES">Quantidade</label>
+                                    <label asp-for="ProdutoVendaCompra.QUANTIDADEUNIDADES">Quantidade (UND)</label>
                                     <input asp-for="ProdutoVendaCompra.QUANTIDADEUNIDADES" id="quantidadeUnidades" class="form-control" onblur="validateField('quantidadeUnidades', 'digitsOnly')" />
                                     <span asp-validation-for="ProdutoVendaCompra.QUANTIDADEUNIDADES" class="text-danger"></span>
                                 </div>
@@ -446,7 +447,8 @@
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.ALTURACAIXAS">Altura(caixa)</label>
-                                    <input asp-for="ProdutoVendaCompra.ALTURACAIXAS" id="alturaCaixas" class="form-control" onblur="validateAlturaCaixasAndAlturaDun14()" />
+                                    <input asp-for="ProdutoVendaCompra.ALTURACAIXAS" id="alturaCaixas" class="form-control"
+                                           onblur="validateAlturaCaixas(); validateAlturaCaixasAndAlturaDun14();" />
                                     <span asp-validation-for="ProdutoVendaCompra.ALTURACAIXAS" class="text-danger"></span>
                                 </div>
                             </div>
@@ -465,10 +467,8 @@
                             </div>
 
 
-
-
                             <!-- Validation Message Space -->
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-group mt-4">
                                     <span id="caixasUnidadesValidationMessage" class="text-danger" style="font-weight: bold;"></span>
                                 </div>
@@ -543,7 +543,7 @@
                     break;
 
                 case '7digitos':
-                    if (!/^\d{7}$/.test(value)) {
+                    if (value && !/^\d{7}$/.test(value)) {
                         setValidationMessage(fieldId, "Apenas 7 dígitos");
                         field.focus();
                         return false;
@@ -568,7 +568,7 @@
                     break;
 
                 case 'repeatedDigits':
-                    if (/^(\d)\1+$/.test(value)) {
+                    if (value && /^(\d)\1+$/.test(value)) {
                         setValidationMessage(fieldId, "Inválido");
                         field.focus();
                         return false;
@@ -584,7 +584,7 @@
                     break;
 
                 case 'sequentialDigits':
-                    if (isSequential(value)) {
+                    if (value && isSequential(value)) {
                         setValidationMessage(fieldId, "Inválido");
                         field.focus();
                         return false;
@@ -656,32 +656,22 @@
     function validateLarguraDun14() { return validateField("larguraDun14Cm", "digitsOnly") && validateField("larguraDun14Cm", "maxValue100"); }
     function validateProfundidadeDun14() { return validateField("profundidadeDun14Cm", "digitsOnly") && validateField("profundidadeDun14Cm", "maxValue100"); }
     function validateShelfLifeDias() {return validateField("shelfLifeDias", "default") && validateField("shelfLifeDias", "digitsOnly");}
+    function validateAlturaCaixas() {return validateField("alturaCaixas", "default") && validateField("alturaCaixas", "digitsOnly");}
+
 
 
 
     // Generalized validation for Peso Bruto and Peso Líquido fields
     function validatePesoFields(pesoBrutoId, pesoLiquidoId) {
+        // Validate that both fields are not empty
+        if (!validateField(pesoBrutoId, "default") || !validateField(pesoLiquidoId, "default")) {
+            return false;
+        }
+
         var pesoBruto = document.getElementById(pesoBrutoId).value.trim();
         var pesoLiquido = document.getElementById(pesoLiquidoId).value.trim();
 
-        // Both fields are empty, no validation error
-        if (!pesoBruto && !pesoLiquido) {
-            clearValidationMessages(pesoBrutoId, pesoLiquidoId);
-            return true;
-        }
-
-        // If one of the fields is filled, both must be filled and valid
-        if (pesoBruto && !pesoLiquido) {
-            setValidationMessage(pesoLiquidoId, "Campo precisa ser preenchido");
-            document.getElementById(pesoLiquidoId).focus();
-            return false;
-        } else if (!pesoBruto && pesoLiquido) {
-            setValidationMessage(pesoBrutoId, "Campo precisa ser preenchido");
-            document.getElementById(pesoBrutoId).focus();
-            return false;
-        }
-
-        // If both fields are filled, check if they contain only digits or are valid currency values
+        // If both fields are filled, check if they are valid currency values
         if (validateField(pesoBrutoId, "currency") && validateField(pesoLiquidoId, "currency")) {
             // Convert the values to numbers for comparison
             var brutoValue = parseFloat(pesoBruto.replace(',', '.'));
