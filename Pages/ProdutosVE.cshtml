@@ -270,12 +270,18 @@
                         <div class="row">
                             <!-- EAN 13 Field -->
                             <div class="col-md-2">
-                                <label>EAN 13</label>
+                                <label>
+                                    EAN 13
+                                    <input type="checkbox" id="ean13Checkbox" style="margin-left: 5px;"
+                                           onchange="toggleInputField('ean13Checkbox', 'ean13', '13digitos')"> Não Possui
+                                </label>
                                 <div class="form-group mb-3">
-                                    <input asp-for="ProdutoVendaCompra.EAN13" class="form-control" maxlength="13" onblur="validateField('ProdutoVendaCompra_EAN13', '13digitos')" />
+                                    <input asp-for="ProdutoVendaCompra.EAN13" id="ean13" class="form-control" maxlength="13" onblur="validateField('ean13', '13digitos')" />
                                     <span asp-validation-for="ProdutoVendaCompra.EAN13" class="text-danger"></span>
                                 </div>
                             </div>
+
+
 
 
                             <!-- Referência -->
@@ -336,8 +342,12 @@
                             <!-- DUN 14 -->
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ProdutoVendaCompra.DUN14">DUN 14</label>
-                                    <input asp-for="ProdutoVendaCompra.DUN14" id="dun14" class="form-control" maxlength="14" onblur="validateDun14()" />
+                                    <label asp-for="ProdutoVendaCompra.DUN14">
+                                        DUN 14
+                                        <input type="checkbox" id="dun14Checkbox" style="margin-left: 5px;"
+                                               onchange="toggleInputField('dun14Checkbox', 'dun14', '14digitos')"> Não Possui
+                                    </label>
+                                    <input asp-for="ProdutoVendaCompra.DUN14" id="dun14" class="form-control" maxlength="14" onblur="validateField('dun14', '14digitos')" />
                                     <span asp-validation-for="ProdutoVendaCompra.DUN14" class="text-danger"></span>
                                 </div>
                             </div>
@@ -345,7 +355,7 @@
                             <!-- Referencia DUN 14 -->
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ProdutoVendaCompra.REFERENCIADUN14">Referencia DUN 14</label>
+                                    <label asp-for="ProdutoVendaCompra.REFERENCIADUN14">Referencia</label>
                                     <input asp-for="ProdutoVendaCompra.REFERENCIADUN14" id="referenciaDun14" class="form-control" maxlength="50" onblur="validateField('referenciaDun14', 'default')" />
                                     <span asp-validation-for="ProdutoVendaCompra.REFERENCIADUN14" class="text-danger"></span>
                                 </div>
@@ -354,7 +364,7 @@
                             <!-- Peso Bruto DUN 14 (Kg) -->
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ProdutoVendaCompra.PESOBRUTODUN14KG">P. Bruto DUN 14 (Kg)</label>
+                                    <label asp-for="ProdutoVendaCompra.PESOBRUTODUN14KG">P. Bruto(Kg)</label>
                                     <input asp-for="ProdutoVendaCompra.PESOBRUTODUN14KG" id="pesoBrutoDun14" class="form-control" onblur="validatePesoFields('pesoBrutoDun14', 'pesoLiquidoDun14')" />
                                     <span asp-validation-for="ProdutoVendaCompra.PESOBRUTODUN14KG" class="text-danger"></span>
                                 </div>
@@ -363,7 +373,7 @@
                             <!-- Peso Liquido DUN 14 (Kg) -->
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
-                                    <label asp-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG">P. Liquido DUN 14 (Kg)</label>
+                                    <label asp-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG">P. Liquido(Kg)</label>
                                     <input asp-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG" id="pesoLiquidoDun14" class="form-control" onblur="validatePesoFields('pesoBrutoDun14', 'pesoLiquidoDun14')" />
                                     <span asp-validation-for="ProdutoVendaCompra.PESOLIQUIDODUN14KG" class="text-danger"></span>
                                 </div>
@@ -373,7 +383,7 @@
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.ALTURADUN14CM">Altura(cm)</label>
-                                    <input asp-for="ProdutoVendaCompra.ALTURADUN14CM" id="alturaDun14Cm" class="form-control" onblur="validateField('alturaDun14Cm', 'digitsOnly') && validateField('alturaDun14Cm', 'maxValue100')" />
+                                    <input asp-for="ProdutoVendaCompra.ALTURADUN14CM" id="alturaDun14Cm" class="form-control" onblur="validateField('alturaDun14Cm', 'digitsOnly') && validateField('alturaDun14Cm', 'maxValue100') && validateAlturaCaixasAndAlturaDun14()" />
                                     <span asp-validation-for="ProdutoVendaCompra.ALTURADUN14CM" class="text-danger"></span>
                                 </div>
                             </div>
@@ -382,7 +392,7 @@
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.LARGURADUN14CM">Largura(cm)</label>
-                                    <input asp-for="ProdutoVendaCompra.LARGURADUN14CM" id="larguraDun14Cm" class="form-control" onblur="validateField('larguraDun14Cm', 'digitsOnly') && validateField('larguraDun14Cm', 'maxValue100')" />
+                                    <input asp-for="ProdutoVendaCompra.LARGURADUN14CM" id="larguraDun14Cm" class="form-control" onblur="validateField('larguraDun14Cm', 'digitsOnly') && validateField('larguraDun14Cm', 'maxValue100') && validateMesaLarguraProfundidade()" />
                                     <span asp-validation-for="ProdutoVendaCompra.LARGURADUN14CM" class="text-danger"></span>
                                 </div>
                             </div>
@@ -391,13 +401,15 @@
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM">Profundidade(cm)</label>
-                                    <input asp-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM" id="profundidadeDun14Cm" class="form-control" onblur="validateField('profundidadeDun14Cm', 'digitsOnly') && validateField('profundidadeDun14Cm', 'maxValue100')" />
+                                    <input asp-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM" id="profundidadeDun14Cm" class="form-control" onblur="validateField('profundidadeDun14Cm', 'digitsOnly') && validateField('profundidadeDun14Cm', 'maxValue100') && validateMesaLarguraProfundidade()" />
                                     <span asp-validation-for="ProdutoVendaCompra.PROFUNDIDADEDUN14CM" class="text-danger"></span>
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="row">
                             <!-- Embalagem -->
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label asp-for="ProdutoVendaCompra.EMBALAGEM">Embalagem</label>
                                     <select asp-for="ProdutoVendaCompra.EMBALAGEM" class="form-control">
@@ -420,17 +432,50 @@
                                     <span asp-validation-for="ProdutoVendaCompra.QUANTIDADEUNIDADES" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
+                            <!-- Mesa (caixas) -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.MESACAIXAS">Mesa(caixa)</label>
+                                    <input asp-for="ProdutoVendaCompra.MESACAIXAS" id="mesaCaixas" class="form-control" onblur="validateField('mesaCaixas', 'digitsOnly') && validateMesaLarguraProfundidade()" />
+                                    <span asp-validation-for="ProdutoVendaCompra.MESACAIXAS" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Altura (caixas) -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.ALTURACAIXAS">Altura(caixa)</label>
+                                    <input asp-for="ProdutoVendaCompra.ALTURACAIXAS" id="alturaCaixas" class="form-control" onblur="validateAlturaCaixasAndAlturaDun14()" />
+                                    <span asp-validation-for="ProdutoVendaCompra.ALTURACAIXAS" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Shelf Life (dias) -->
+                            <div class="col-md-3">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProdutoVendaCompra.SHELFLIFEDIAS">
+                                        ShelfLife(dias)
+                                        <input type="checkbox" id="shelfLifeDiasCheckbox" style="margin-left: 5px;"
+                                               onchange="toggleInputField('shelfLifeDiasCheckbox', 'shelfLifeDias', 'digitsOnly')"> Não Possui
+                                    </label>
+                                    <input asp-for="ProdutoVendaCompra.SHELFLIFEDIAS" id="shelfLifeDias" class="form-control" onblur="validateShelfLifeDias()" />
+                                    <span asp-validation-for="ProdutoVendaCompra.SHELFLIFEDIAS" class="text-danger"></span>
+                                </div>
+                            </div>
 
 
 
+
+                            <!-- Validation Message Space -->
+                            <div class="col-md-5">
+                                <div class="form-group mt-4">
+                                    <span id="caixasUnidadesValidationMessage" class="text-danger" style="font-weight: bold;"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
 
                 <!-- Action Buttons -->
                 <div class="row mt-4">
@@ -547,7 +592,7 @@
                     break;
 
                 case '13digitos':
-                    if (value && !/^\d{13}$/.test(value)) {
+                    if (!/^\d{13}$/.test(value)) {
                         setValidationMessage(fieldId, "Apenas 13 dígitos");
                         field.focus();
                         return false;
@@ -601,8 +646,8 @@
     //function validateVerbaCadastro() { return validateField("VerbaCadastro", "currency"); }
     //function validateMotivoVerbaZerada() { return validateField("MotivoVerbaZerada", "default"); }
 
-    function validateEAN13() {return validateField("ProdutoVendaCompra_EAN13", "13digitos");}
-    function validateAlturaCm() {return validateField("alturaCm", "digitsOnly") && validateField("alturaCm", "maxValue100");}
+    function validateEAN13() {return validateField("ean13", "13digitos");} 
+    function validateAlturaCm() { return validateField("alturaCm", "digitsOnly") && validateField("alturaCm", "maxValue100"); }
     function validateLarguraCm() {return validateField("larguraCm", "digitsOnly") && validateField("larguraCm", "maxValue100");}
     function validateProfundidadeCm() {return validateField("profundidadeCm", "digitsOnly") && validateField("profundidadeCm", "maxValue100");}
     function validateDun14() { return validateField("dun14", "14digitos"); }
@@ -610,6 +655,8 @@
     function validateAlturaDun14() { return validateField("alturaDun14Cm", "digitsOnly") && validateField("alturaDun14Cm", "maxValue100"); }
     function validateLarguraDun14() { return validateField("larguraDun14Cm", "digitsOnly") && validateField("larguraDun14Cm", "maxValue100"); }
     function validateProfundidadeDun14() { return validateField("profundidadeDun14Cm", "digitsOnly") && validateField("profundidadeDun14Cm", "maxValue100"); }
+    function validateShelfLifeDias() {return validateField("shelfLifeDias", "default") && validateField("shelfLifeDias", "digitsOnly");}
+
 
 
     // Generalized validation for Peso Bruto and Peso Líquido fields
@@ -671,6 +718,74 @@
     function clearValidationMessages(pesoBrutoId, pesoLiquidoId) {
         setValidationMessage(pesoBrutoId, "");
         setValidationMessage(pesoLiquidoId, "");
+    }
+
+    // Validation for AlturaCaixas * AlturaDun14Cm <= 160
+    function validateAlturaCaixasAndAlturaDun14() {
+        var alturaCaixas = parseFloat(document.getElementById("alturaCaixas").value.trim());
+        var alturaDun14Cm = parseFloat(document.getElementById("alturaDun14Cm").value.trim());
+        var validationMessageElement = document.getElementById("caixasUnidadesValidationMessage");
+
+        // Clear any previous validation messages
+        validationMessageElement.innerText = "";
+
+        // Check if both fields have values
+        if (!isNaN(alturaCaixas) && !isNaN(alturaDun14Cm)) {
+            if (alturaCaixas * alturaDun14Cm > 160) {
+                validationMessageElement.innerText = "Altura (caixas) x Altura (cm) DUN deve ser <= 160";
+                document.getElementById("alturaCaixas").focus(); // Focus the field to force user correction
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Validation for MesaCaixas * LarguraDun14Cm * ProfundidadeDun14Cm <= 12000
+    function validateMesaLarguraProfundidade() {
+        var mesaCaixas = parseFloat(document.getElementById("mesaCaixas").value.trim());
+        var larguraDun14Cm = parseFloat(document.getElementById("larguraDun14Cm").value.trim());
+        var profundidadeDun14Cm = parseFloat(document.getElementById("profundidadeDun14Cm").value.trim());
+        var validationMessageElement = document.getElementById("caixasUnidadesValidationMessage");
+
+        // Clear any previous validation messages
+        validationMessageElement.innerText = "";
+
+        // Check if all fields have values
+        if (!isNaN(mesaCaixas) && !isNaN(larguraDun14Cm) && !isNaN(profundidadeDun14Cm)) {
+            if (mesaCaixas * larguraDun14Cm * profundidadeDun14Cm > 12000) {
+                validationMessageElement.innerText = "Mesa(caixa)*Largura(cm) DUN*Profundidade(cm) DUN deve ser <= 12000";
+                document.getElementById("mesaCaixas").focus(); // Focus the first field to force user correction
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function toggleInputField(checkboxId, inputId, validationType = null) {
+        var checkbox = document.getElementById(checkboxId);
+        var inputField = document.getElementById(inputId);
+
+        if (checkbox.checked) {
+            // Clear the input value
+            inputField.value = '';
+            // Disable the input field
+            inputField.disabled = true;
+            // Disable the validation script
+            inputField.onblur = null;
+            // Clear any validation message
+            setValidationMessage(inputId, '');
+        } else {
+            // Enable the input field
+            inputField.disabled = false;
+            // Re-enable the validation script if validationType is provided
+            if (validationType) {
+                inputField.onblur = function () {
+                    validateField(inputId, validationType);
+                };
+            }
+        }
     }
     
     // Helper function to detect sequential digits

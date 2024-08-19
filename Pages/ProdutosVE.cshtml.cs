@@ -142,6 +142,9 @@ namespace PortalArcomix.Pages
                 produtoVendaCompraToUpdate.PROFUNDIDADEDUN14CM = ProdutoVendaCompra.PROFUNDIDADEDUN14CM;
                 produtoVendaCompraToUpdate.EMBALAGEM = ProdutoVendaCompra.EMBALAGEM;
                 produtoVendaCompraToUpdate.QUANTIDADEUNIDADES = ProdutoVendaCompra.QUANTIDADEUNIDADES;
+                produtoVendaCompraToUpdate.MESACAIXAS = ProdutoVendaCompra.MESACAIXAS;  
+                produtoVendaCompraToUpdate.ALTURACAIXAS = ProdutoVendaCompra.ALTURACAIXAS;
+                produtoVendaCompraToUpdate.SHELFLIFEDIAS = ProdutoVendaCompra.SHELFLIFEDIAS;
 
                 _context.Attach(produtoVendaCompraToUpdate).State = EntityState.Modified;
             }
