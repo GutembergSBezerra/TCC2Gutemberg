@@ -22,6 +22,9 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public Tbl_ProdutoVendaCompra ProdutoVendaCompra { get; set; }  // Binding for ProdutoVendaCompra entity
 
+        [BindProperty]
+        public Tbl_ProdutoSubEmbalagem ProdutoSubEmbalagem { get; set; }  // Binding for ProdutoSubEmbalagem entity
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (User?.Identity?.IsAuthenticated != true)
@@ -40,11 +43,13 @@ namespace PortalArcomix.Pages
             {
                 Produto = new Tbl_Produto();  // Initialize a new product
                 ProdutoVendaCompra = new Tbl_ProdutoVendaCompra();  // Initialize a new ProdutoVendaCompra
+                ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem();  // Initialize a new ProdutoSubEmbalagem
             }
             else  // If an id is provided, load the existing product for editing
             {
                 Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
                 ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(pvc => pvc.PRODUTOID == id);
+                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(pse => pse.PRODUTOID == id);
 
                 if (Produto == null)
                 {
@@ -54,6 +59,11 @@ namespace PortalArcomix.Pages
                 if (ProdutoVendaCompra == null)
                 {
                     ProdutoVendaCompra = new Tbl_ProdutoVendaCompra { PRODUTOID = Produto.ID };  // Initialize if not found
+                }
+
+                if (ProdutoSubEmbalagem == null)
+                {
+                    ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem { PRODUTOID = Produto.ID };  // Initialize if not found
                 }
             }
 
@@ -91,16 +101,20 @@ namespace PortalArcomix.Pages
                 _context.Tbl_Produto.Add(Produto);
                 await _context.SaveChangesAsync();
 
-                // Now create the corresponding ProdutoVendaCompra record
+                // Now create the corresponding ProdutoVendaCompra and ProdutoSubEmbalagem records
                 ProdutoVendaCompra.ID = Produto.ID;  // Set ID to match the product ID
+                ProdutoSubEmbalagem.ID = Produto.ID;  // Set ID to match the product ID
+
                 _context.Tbl_ProdutoVendaCompra.Add(ProdutoVendaCompra);
+                _context.Tbl_ProdutoSubEmbalagem.Add(ProdutoSubEmbalagem);
             }
             else  // Otherwise, update the existing product
             {
                 var produtoToUpdate = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == Produto.ID && p.CNPJ == cnpjClaim);
                 var produtoVendaCompraToUpdate = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(pvc => pvc.ID == Produto.ID);
+                var produtoSubEmbalagemToUpdate = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(pse => pse.ID == Produto.ID);
 
-                if (produtoToUpdate == null || produtoVendaCompraToUpdate == null)
+                if (produtoToUpdate == null || produtoVendaCompraToUpdate == null || produtoSubEmbalagemToUpdate == null)
                 {
                     return NotFound();
                 }
@@ -142,11 +156,24 @@ namespace PortalArcomix.Pages
                 produtoVendaCompraToUpdate.PROFUNDIDADEDUN14CM = ProdutoVendaCompra.PROFUNDIDADEDUN14CM;
                 produtoVendaCompraToUpdate.EMBALAGEM = ProdutoVendaCompra.EMBALAGEM;
                 produtoVendaCompraToUpdate.QUANTIDADEUNIDADES = ProdutoVendaCompra.QUANTIDADEUNIDADES;
-                produtoVendaCompraToUpdate.MESACAIXAS = ProdutoVendaCompra.MESACAIXAS;  
+                produtoVendaCompraToUpdate.MESACAIXAS = ProdutoVendaCompra.MESACAIXAS;
                 produtoVendaCompraToUpdate.ALTURACAIXAS = ProdutoVendaCompra.ALTURACAIXAS;
                 produtoVendaCompraToUpdate.SHELFLIFEDIAS = ProdutoVendaCompra.SHELFLIFEDIAS;
 
                 _context.Attach(produtoVendaCompraToUpdate).State = EntityState.Modified;
+
+                // Update the Tbl_ProdutoSubEmbalagem fields
+                produtoSubEmbalagemToUpdate.EAN13 = ProdutoSubEmbalagem.EAN13;
+                produtoSubEmbalagemToUpdate.REFERENCIA = ProdutoSubEmbalagem.REFERENCIA;
+                produtoSubEmbalagemToUpdate.PESOBRUTOKG = ProdutoSubEmbalagem.PESOBRUTOKG;
+                produtoSubEmbalagemToUpdate.PESOLIQUIDOKG = ProdutoSubEmbalagem.PESOLIQUIDOKG;
+                produtoSubEmbalagemToUpdate.ALTURACM = ProdutoSubEmbalagem.ALTURACM;
+                produtoSubEmbalagemToUpdate.LARGURACM = ProdutoSubEmbalagem.LARGURACM;
+                produtoSubEmbalagemToUpdate.PROFUNDIDADECM = ProdutoSubEmbalagem.PROFUNDIDADECM;
+                produtoSubEmbalagemToUpdate.EMBALAGEM = ProdutoSubEmbalagem.EMBALAGEM;
+                produtoSubEmbalagemToUpdate.QUANTIDADEUNIDADES = ProdutoSubEmbalagem.QUANTIDADEUNIDADES;
+
+                _context.Attach(produtoSubEmbalagemToUpdate).State = EntityState.Modified;
             }
 
             try
