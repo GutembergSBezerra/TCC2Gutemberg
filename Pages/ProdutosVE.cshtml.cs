@@ -53,8 +53,8 @@ namespace PortalArcomix.Pages
             else
             {
                 Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
-                ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(pvc => pvc.PRODUTOID == id);
-                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(pse => pse.PRODUTOID == id);
+                ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
+                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
 
                 if (Produto == null)
                 {
