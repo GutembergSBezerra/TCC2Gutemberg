@@ -792,9 +792,9 @@
     function validatePesoLiquido() { if (validateField('pesoLiquido', 'default')) { return validatePesoFields('pesoBruto', 'pesoLiquido'); } return false; }
     function validatePesoBrutoDun14() { if (validateField('pesoBrutoDun14', 'default')) { return validatePesoFields('pesoBrutoDun14', 'pesoLiquidoDun14'); } return false; }
     function validatePesoLiquidoDun14() { if (validateField('pesoLiquidoDun14', 'default')) { return validatePesoFields('pesoBrutoDun14', 'pesoLiquidoDun14'); } return false; }
-    function validateAlturaCmSUB() { return validateField("subEmbalagemAlturaCm", "digitsOnly") && validateField("subEmbalagemAlturaCm", "maxValue100") && validateField("subEmbalagemAlturaCm", "default"); }
-    function validateLarguraCmSUB() { return validateField("subEmbalagemLarguraCm", "digitsOnly") && validateField("subEmbalagemLarguraCm", "maxValue100") && validateField("subEmbalagemLarguraCm", "default"); }
-    function validateProfundidadeCmSUB() { return validateField("subEmbalagemProfundidadeCm", "digitsOnly") && validateField("subEmbalagemProfundidadeCm", "maxValue100") && validateField("subEmbalagemProfundidadeCm", "default"); }
+    function validateAlturaCmSUB() { return validateField("subEmbalagemAlturaCm", "digitsOnly") && validateField("subEmbalagemAlturaCm", "maxValue100"); }
+    function validateLarguraCmSUB() { return validateField("subEmbalagemLarguraCm", "digitsOnly") && validateField("subEmbalagemLarguraCm", "maxValue100"); }
+    function validateProfundidadeCmSUB() { return validateField("subEmbalagemProfundidadeCm", "digitsOnly") && validateField("subEmbalagemProfundidadeCm", "maxValue100"); }
 
     // Generalized validation for Peso Bruto and Peso Líquido fields
     function validatePesoFields(pesoBrutoId, pesoLiquidoId) {

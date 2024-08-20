@@ -47,11 +47,19 @@ namespace PortalArcomix.Pages
                 foreach (var part in filterParts)
                 {
                     string trimmedPart = part.Trim().ToUpper();
+                    int idValue;
+                    bool isIdFilter = int.TryParse(trimmedPart, out idValue);
 
-                    // Attempt to match against MARCA
-                    query = query.Where(p => EF.Functions.Like(p.MARCA.ToUpper(), $"%{trimmedPart}%") ||
-                                             EF.Functions.Like(p.DESCRICAOPRODUTO.ToUpper(), $"%{trimmedPart}%") ||
-                                             EF.Functions.Like(p.GESTORCOMPRAS.ToUpper(), $"%{trimmedPart}%"));
+                    if (isIdFilter)
+                    {
+                        query = query.Where(p => p.ID == idValue);
+                    }
+                    else
+                    {
+                        query = query.Where(p => EF.Functions.Like(p.MARCA.ToUpper(), $"%{trimmedPart}%") ||
+                                                 EF.Functions.Like(p.DESCRICAOPRODUTO.ToUpper(), $"%{trimmedPart}%") ||
+                                                 EF.Functions.Like(p.GESTORCOMPRAS.ToUpper(), $"%{trimmedPart}%"));
+                    }
                 }
             }
 
@@ -84,11 +92,19 @@ namespace PortalArcomix.Pages
                 foreach (var part in filterParts)
                 {
                     string trimmedPart = part.Trim().ToUpper();
+                    int idValue;
+                    bool isIdFilter = int.TryParse(trimmedPart, out idValue);
 
-                    // Attempt to match against MARCA, DESCRICAOPRODUTO, or GESTORCOMPRAS
-                    query = query.Where(p => EF.Functions.Like(p.MARCA.ToUpper(), $"%{trimmedPart}%") ||
-                                             EF.Functions.Like(p.DESCRICAOPRODUTO.ToUpper(), $"%{trimmedPart}%") ||
-                                             EF.Functions.Like(p.GESTORCOMPRAS.ToUpper(), $"%{trimmedPart}%"));
+                    if (isIdFilter)
+                    {
+                        query = query.Where(p => p.ID == idValue);
+                    }
+                    else
+                    {
+                        query = query.Where(p => EF.Functions.Like(p.MARCA.ToUpper(), $"%{trimmedPart}%") ||
+                                                 EF.Functions.Like(p.DESCRICAOPRODUTO.ToUpper(), $"%{trimmedPart}%") ||
+                                                 EF.Functions.Like(p.GESTORCOMPRAS.ToUpper(), $"%{trimmedPart}%"));
+                    }
                 }
             }
 
@@ -96,7 +112,5 @@ namespace PortalArcomix.Pages
 
             return Page();
         }
-
-
     }
 }
