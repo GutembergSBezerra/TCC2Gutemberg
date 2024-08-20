@@ -582,7 +582,28 @@
                         </div>
                     </div>
                 </div>
+                <br />
 
+                <!-- Card Comentários -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" id="idComentarios">
+                            <div class="col">
+                                <h4 style="color: #1878BB;">Comentários</h4>
+                                <p>Para incluir um comentário, preencher o campo abaixo:</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <textarea asp-for="ProdutoComentario.COMENTARIO" class="form-control" rows="5" placeholder="Digite seu comentário aqui..."></textarea>
+                                    <span asp-validation-for="ProdutoComentario.COMENTARIO" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 

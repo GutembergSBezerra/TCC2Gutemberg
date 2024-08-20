@@ -23,7 +23,9 @@ namespace PortalArcomix.Data
         // DbSet for Produto
         public DbSet<Tbl_Produto> Tbl_Produto { get; set; }
         public DbSet<Tbl_ProdutoVendaCompra> Tbl_ProdutoVendaCompra { get; set; }
-        public DbSet<Tbl_ProdutoSubEmbalagem> Tbl_ProdutoSubEmbalagem { get; set; } 
+        public DbSet<Tbl_ProdutoSubEmbalagem> Tbl_ProdutoSubEmbalagem { get; set; }
+        public DbSet<Tbl_ProdutoComentarios> Tbl_ProdutoComentarios { get; set; }
+
 
 
 

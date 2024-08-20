@@ -45,11 +45,12 @@ namespace PortalArcomix.Pages
 
             if (user != null)
             {
-                // Create claims including the role
+                // Create claims including the role and ID_Usuario
                 var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, Email),
-            new Claim(ClaimTypes.Role, user.TipoUsuario)
+            new Claim(ClaimTypes.Role, user.TipoUsuario),
+            new Claim("ID_Usuario", user.ID_Usuario.ToString())  // Corrected property name
         };
 
                 // Add CNPJ claim if it exists
@@ -73,6 +74,8 @@ namespace PortalArcomix.Pages
             ErrorMessage = "Email ou Senha Incorretos";
             return Page();
         }
+
+
 
         private async Task<Tbl_Usuario?> AuthenticateUserAsync(string email, string password)
         {
