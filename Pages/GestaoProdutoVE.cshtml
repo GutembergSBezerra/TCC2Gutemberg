@@ -27,8 +27,8 @@
                     <div class="container-fluid">
                         <form method="post">
                             <div class="row">
-                                <div class="ms-auto col-md-2">
-                                    <input type="text" name="Filter" class="form-control" value="@Model.Filter" placeholder="Enter filters separated by comma" />
+                                <div class="ms-auto col-md-3">
+                                    <input type="text" name="Filter" class="form-control" value="@Model.Filter" placeholder="Filtre campos separando por %" />
                                 </div>
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-success">Filtrar</button>
@@ -48,7 +48,6 @@
                                         <th>Marca</th>
                                         <th>Descrição do Produto</th>
                                         <th>Gestor de Compras</th>
-                                        <th>EAN 13</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
@@ -57,10 +56,9 @@
                                     {
                                         <tr>
                                             <td>@produto.ID</td>
-                                            <td>@produto.Marca</td>
-                                            <td>@produto.DescricaoProduto</td>
-                                            <td>@produto.GestorCompras</td>
-                                            <td>@produto.EAN13</td>
+                                            <td>@produto.MARCA</td>
+                                            <td>@produto.DESCRICAOPRODUTO</td>
+                                            <td>@produto.GESTORCOMPRAS</td>
                                             <td>
                                                 <a href="/ProdutoVE?id=@produto.ID" role="button">
                                                     <i class="fa fa-edit"></i>
