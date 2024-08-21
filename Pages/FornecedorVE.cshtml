@@ -36,7 +36,7 @@
 
             <!-- Main Content Column -->
             <div class="col-md-11">
-                <form method="post" onsubmit="return showSuccessMessage()">
+                <form method="post">
                     <br />
                     <!-- Dados Fornecedor Card -->
                     <div class="card" id="DadosFornecedorCadastro">
@@ -78,21 +78,21 @@
                                 <div class="col-md-1">
                                     <label class="control-label">IE</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="Fornecedor.IE" id="Fornecedor_IE" class="form-control validate-required" onblur="validateIE()" />
+                                        <input asp-for="Fornecedor.IE" id="Fornecedor_IE" class="form-control validate-required" maxlength="9" onblur="validateIE()" />
                                         <span asp-validation-for="Fornecedor.IE" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-1">
                                     <label class="control-label">CNAE</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="Fornecedor.CNAE" id="Fornecedor_CNAE" class="form-control validate-required" onblur="validateCNAE()" />
+                                        <input asp-for="Fornecedor.CNAE" id="Fornecedor_CNAE" class="form-control validate-required" maxlength="7" onblur="validateCNAE()" />
                                         <span asp-validation-for="Fornecedor.CNAE" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="control-label">CEP</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="Fornecedor.CEP" class="form-control validate-required" id="Fornecedor_CEP" onblur="fetchAddress(); validateCEP()" />
+                                        <input asp-for="Fornecedor.CEP" class="form-control validate-required" id="Fornecedor_CEP" maxlength="8" onblur="fetchAddress(); validateCEP()" />
                                         <span asp-validation-for="Fornecedor.CEP" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -336,7 +336,7 @@
                                 <div class="col-md-3">
                                     <label for="CNPJContaTitular">CNPJ Titular Conta:</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="CNPJContaTitular" asp-for="DadosBancarios.CNPJCONTATITULAR" onblur="validateCNPJContaTitular()" />
+                                        <input type="text" class="form-control validate-required" id="CNPJContaTitular" asp-for="DadosBancarios.CNPJCONTATITULAR" maxlength="14" onblur="validateCNPJContaTitular()" />
                                         <span asp-validation-for="DadosBancarios.CNPJCONTATITULAR" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -370,21 +370,21 @@
                                 <div class="col-md-1">
                                     <label for="DDDVENDEDOR">DDD</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="DDDVENDEDOR" asp-for="Contatos.DDDVENDEDOR" onblur="validateDDDVendedor()" />
+                                        <input type="text" class="form-control validate-required" id="DDDVENDEDOR" asp-for="Contatos.DDDVENDEDOR" maxlength="2" onblur="validateDDDVendedor()" />
                                         <span asp-validation-for="Contatos.DDDVENDEDOR" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="TELEFONEVENDEDOR">Telefone</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="TELEFONEVENDEDOR" asp-for="Contatos.TELEFONEVENDEDOR" onblur="validateTelefoneVendedor()" />
+                                        <input type="text" class="form-control validate-required" id="TELEFONEVENDEDOR" asp-for="Contatos.TELEFONEVENDEDOR" maxlength="9" onblur="validateTelefoneVendedor()" />
                                         <span asp-validation-for="Contatos.TELEFONEVENDEDOR" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="EMAILVENDEDOR">Email</label>
                                     <div class="form-group mb-3">
-                                        <input type="email" class="form-control validate-required" id="EMAILVENDEDOR" asp-for="Contatos.EMAILVENDEDOR" onblur="validateEmailVendedor()" />
+                                        <input type="email" class="form-control validate-required" id="EMAILVENDEDOR" asp-for="Contatos.EMAILVENDEDOR"  onblur="validateEmailVendedor()" />
                                         <span asp-validation-for="Contatos.EMAILVENDEDOR" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -400,14 +400,14 @@
                                 <div class="col-md-1">
                                     <label for="DDDGERENTE">DDD</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="DDDGERENTE" asp-for="Contatos.DDDGERENTE" onblur="validateDDDGereente()" />
+                                        <input type="text" class="form-control validate-required" id="DDDGERENTE" asp-for="Contatos.DDDGERENTE" maxlength="2" onblur="validateDDDGereente()" />
                                         <span asp-validation-for="Contatos.DDDGERENTE" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="TELEFONEGERENTE">Telefone</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="TELEFONEGERENTE" asp-for="Contatos.TELEFONEGERENTE" onblur="validateTelefoneGerente()" />
+                                        <input type="text" class="form-control validate-required" id="TELEFONEGERENTE" asp-for="Contatos.TELEFONEGERENTE" maxlength="9" onblur="validateTelefoneGerente()" />
                                         <span asp-validation-for="Contatos.TELEFONEGERENTE" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -430,14 +430,14 @@
                                 <div class="col-md-1">
                                     <label for="DDDRESPFINANCEIRO">DDD</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="DDDRESPFINANCEIRO" asp-for="Contatos.DDDRESPFINANCEIRO" onblur="validateDDDRespFinanceiro()" />
+                                        <input type="text" class="form-control validate-required" id="DDDRESPFINANCEIRO" asp-for="Contatos.DDDRESPFINANCEIRO" maxlength="2" onblur="validateDDDRespFinanceiro()" />
                                         <span asp-validation-for="Contatos.DDDRESPFINANCEIRO" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="TELEFONERESPFINANCEIRO">Telefone</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="TELEFONERESPFINANCEIRO" asp-for="Contatos.TELEFONERESPFINANCEIRO" onblur="validateTelefoneRespFinanceiro()" />
+                                        <input type="text" class="form-control validate-required" id="TELEFONERESPFINANCEIRO" asp-for="Contatos.TELEFONERESPFINANCEIRO" maxlength="9" onblur="validateTelefoneRespFinanceiro()" />
                                         <span asp-validation-for="Contatos.TELEFONERESPFINANCEIRO" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -456,14 +456,14 @@
                                 <div class="col-md-1">
                                     <label for="DDDTELEFONEFIXOEMPRESA">DDD</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="DDDTELEFONEFIXOEMPRESA" asp-for="Contatos.DDDTELEFONEFIXOEMPRESA" onblur="validateDDDTelefoneFixoEmpresa()" />
+                                        <input type="text" class="form-control validate-required" id="DDDTELEFONEFIXOEMPRESA" asp-for="Contatos.DDDTELEFONEFIXOEMPRESA" maxlength="2" onblur="validateDDDTelefoneFixoEmpresa()" />
                                         <span asp-validation-for="Contatos.DDDTELEFONEFIXOEMPRESA" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="TELEFONEFIXOEMPRESA">Telefone</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control validate-required" id="TELEFONEFIXOEMPRESA" asp-for="Contatos.TELEFONEFIXOEMPRESA" onblur="validateTelefoneFixoEmpresa()" />
+                                        <input type="text" class="form-control validate-required" id="TELEFONEFIXOEMPRESA" asp-for="Contatos.TELEFONEFIXOEMPRESA" maxlength="9" onblur="validateTelefoneFixoEmpresa()" />
                                         <span asp-validation-for="Contatos.TELEFONEFIXOEMPRESA" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -556,14 +556,14 @@
                                 <div class="col-md-1">
                                     <label for="idTecnicoForn">DDD</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.DDDTECNICO" class="form-control" id="DDDTECNICO" />
+                                        <input asp-for="SegurancaAlimentos.DDDTECNICO" class="form-control" id="DDDTECNICO" maxlength="2" />
                                         <span asp-validation-for="SegurancaAlimentos.DDDTECNICO" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="idTelefoneTecnicoForn">Telefone</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.TELEFONETECNICO" class="form-control" id="TELEFONETECNICO"/>
+                                        <input asp-for="SegurancaAlimentos.TELEFONETECNICO" class="form-control" id="TELEFONETECNICO" maxlength="9"/>
                                         <span asp-validation-for="SegurancaAlimentos.TELEFONETECNICO" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -685,87 +685,13 @@
                     <!-- Submit Button Row -->
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary" onclick="return validateSintegraBeforeSubmit()">Salvar Alterações</button>
-                            <span id="sintegraWarning" class="text-danger" style="display:none;">O documento SINTEGRA deve ser anexado.</span>
-
+                            <button type="submit" class="btn btn-primary">Avançar</button>
                         </div>
                     </div>
                     <!-- Add other sections similarly with proper IDs and structure -->
                 </form>
 
-                <!-- Documentos Card -->
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <h4 class="card-title text-primary">Documentos</h4>
-                        <p class="card-text text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
-                        <form method="post" enctype="multipart/form-data" asp-page-handler="Upload">
-                            <div class="row align-items-end">
-                                <div class="col-md-3 mb-2">
-                                    <label class="control-label">Documento</label>
-                                    <div class="form-group">
-                                        <select asp-for="TIPODOCUMENTO" class="form-control" id="TIPODOCUMENTO">
-                                            <option value="">Escolher...</option>
-                                            <option value="SINTEGRA">SINTEGRA</option>
-                                            <option value="Documentação Sanitária">Documentação Sanitária</option>
-                                            <option value="Documentação Ambiental ou Operacional">Documentação Ambiental ou Operacional</option>
-                                            <option value="Documentação Controle de Pragas">Documentação Controle de Pragas</option>
-                                            <option value="Documentação Controle de Água">Documentação Controle de Água</option>
-                                            <option value="Documentação Manual Boas Práticas">Documentação Manual Boas Práticas</option>
-                                            <option value="Documentação Segurança de Alimentos">Documentação Segurança de Alimentos</option>
-                                            <option value="Documentação PAC">Documentação PAC</option>
-                                            <option value="Documentação APPCC">Documentação APPCC</option>
-                                        </select>
-                                        <span asp-validation-for="TIPODOCUMENTO" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <label for="fileUpload" class="sr-only">Escolher</label>
-                                    <input asp-for="UploadedFile" class="form-control" type="file" id="fileUpload" accept="application/pdf" placeholder="Escolher" />
-                                    <span asp-validation-for="UploadedFile" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-1 mb-2">
-                                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <hr />
-
-                        <div class="mt-4">
-                            <h5 class="text-primary">Documentos Enviados</h5>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    @if (Model.UploadedFiles?.Count > 0)
-                                    {
-                                        <table class="table">
-                                            <tbody>
-                                                @foreach (var file in Model.UploadedFiles)
-                                                {
-                                                    <tr>
-                                                        <td class="col-md-3">
-                                                            <a asp-page-handler="Download" asp-route-filePath="@file.CAMINHOARQUIVO" class="text-primary">
-                                                                @file.TIPODOCUMENTO
-                                                            </a>
-                                                        </td>
-                                                        <td class="col-md-1">
-                                                            <form method="post" asp-page-handler="Delete" asp-route-id="@file.ID" class="d-inline">
-                                                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    }
-                                    else
-                                    {
-                                        <div class="text-center text-danger">Nenhum Documento Enviado</div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        
 
                 <br />
 
@@ -777,24 +703,10 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
-        function showSuccessMessage() {
-            alert("Dados Enviados para Analise com Sucesso");
-            return true;
-        }
-
-        function validateSintegraBeforeSubmit() {
-            var uploadedFiles = @Html.Raw(Json.Serialize(Model.UploadedFiles.Select(f => f.TIPODOCUMENTO).ToList()));
-            var sintegraWarning = document.getElementById("sintegraWarning");
-
-            // Check if SINTEGRA has been uploaded
-            if (!uploadedFiles.includes("SINTEGRA")) {
-                sintegraWarning.style.display = "block";
-                return false; // Prevent form submission
-            }
-
-            sintegraWarning.style.display = "none"; // Hide the warning if SINTEGRA is uploaded
-            return true; // Allow form submission
-        }
+        // function showSuccessMessage() {
+        //     alert("Dados Enviados para Analise com Sucesso");
+        //     return true;
+        // }
 
         function setValidationMessage(fieldId, message) {
             var field = document.getElementById(fieldId);
