@@ -24,6 +24,13 @@ namespace PortalArcomix.Pages
         public string? TIPODOCUMENTO { get; set; }
 
         public List<Tbl_FornecedorDocumentos> UploadedFiles { get; set; }
+        public bool IsSintegraUploaded { get; set; }
+        public bool IsDocumentacaoSanitariaUploaded { get; set; }
+        public bool IsDocumentacaoAmbientalUploaded { get; set; }
+        public bool IsDocumentacaoControlePragasUploaded { get; set; }
+        public bool IsDocumentacaoControleAguaUploaded { get; set; }
+
+        public bool IsAlimentosNaoIndustrializados { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -34,30 +41,38 @@ namespace PortalArcomix.Pages
                 return NotFound();
             }
 
-            UploadedFiles = await _context.Tbl_FornecedorDocumentos
-                                          .Where(d => d.CNPJ == cnpjClaim)
-                                          .ToListAsync();
-
-            return Page();
-        }
-
-        public IActionResult OnGetDownload(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath) || !System.IO.File.Exists(filePath))
+            // Load Fornecedor data
+            var fornecedor = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
+            if (fornecedor == null)
             {
                 return NotFound();
             }
 
-            var fileName = Path.GetFileName(filePath);
-            var mimeType = "application/pdf"; // Assuming all files are PDFs; adjust as needed
+            IsAlimentosNaoIndustrializados = fornecedor.FORNECEDORALIMENTOS == "Alimentos Não Industrializados";
 
-            return PhysicalFile(filePath, mimeType, fileName);
+            // Load uploaded files
+            UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
+
+            // Check if SINTEGRA is uploaded
+            IsSintegraUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "SINTEGRA");
+
+            // Check additional document types if necessary
+            if (IsAlimentosNaoIndustrializados)
+            {
+                IsDocumentacaoSanitariaUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Sanitária");
+                IsDocumentacaoAmbientalUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Ambiental ou Operacional");
+                IsDocumentacaoControlePragasUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Pragas");
+                IsDocumentacaoControleAguaUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Água");
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostUploadAsync()
         {
             if (!ModelState.IsValid)
             {
+                await LoadUploadedFilesAsync();
                 return Page();
             }
 
@@ -70,6 +85,25 @@ namespace PortalArcomix.Pages
 
             if (UploadedFile != null)
             {
+                // Check if the document type has already been uploaded
+                bool documentAlreadyUploaded = await _context.Tbl_FornecedorDocumentos
+                    .AnyAsync(d => d.CNPJ == cnpjClaim && d.TIPODOCUMENTO == TIPODOCUMENTO);
+
+                if (documentAlreadyUploaded)
+                {
+                    ModelState.AddModelError(string.Empty, $"O documento '{TIPODOCUMENTO}' já foi enviado.");
+                    await LoadUploadedFilesAsync();
+                    return Page();
+                }
+
+                const long maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+                if (UploadedFile.Length > maxFileSize)
+                {
+                    ModelState.AddModelError(string.Empty, "Tamanho Máximo 5MB");
+                    await LoadUploadedFilesAsync();
+                    return Page();
+                }
+
                 var fileName = Path.GetFileName(UploadedFile.FileName);
                 var baseUploadPath = Path.Combine("C:\\Users\\Gutemberg\\source\\repos\\PortalArcomix\\wwwroot\\uploads", cnpjClaim, "Documentos");
 
@@ -94,7 +128,48 @@ namespace PortalArcomix.Pages
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage();
+            // Reload data after upload
+            await LoadUploadedFilesAsync();
+
+            return Page();
+        }
+
+        public IActionResult OnGetDownload(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath) || !System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var fileName = Path.GetFileName(filePath);
+            var mimeType = "application/pdf"; // Adjust as needed for different file types
+
+            return PhysicalFile(filePath, mimeType, fileName);
+        }
+
+        private async Task LoadUploadedFilesAsync()
+        {
+            var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
+
+            if (cnpjClaim != null)
+            {
+                var fornecedor = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
+                if (fornecedor == null) return;
+
+                IsAlimentosNaoIndustrializados = fornecedor.FORNECEDORALIMENTOS == "Alimentos Não Industrializados";
+
+                UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
+
+                IsSintegraUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "SINTEGRA");
+
+                if (IsAlimentosNaoIndustrializados)
+                {
+                    IsDocumentacaoSanitariaUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Sanitária");
+                    IsDocumentacaoAmbientalUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Ambiental ou Operacional");
+                    IsDocumentacaoControlePragasUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Pragas");
+                    IsDocumentacaoControleAguaUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Água");
+                }
+            }
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)

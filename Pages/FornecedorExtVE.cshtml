@@ -9,7 +9,39 @@
     <div class="row">
         <div class="col">
             <h4 class="text-primary">Documentos</h4>
-            <p class="text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
+
+            <!-- Conditional SINTEGRA Warning -->
+            @if (!Model.IsSintegraUploaded)
+            {
+                <p class="text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
+            }
+            @if (!Model.IsDocumentacaoSanitariaUploaded)
+            {
+                <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Sanitária</strong></p>
+            }
+            @if (!Model.IsDocumentacaoAmbientalUploaded)
+            {
+                <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Ambiental ou Operacional</strong></p>
+            }
+            @if (!Model.IsDocumentacaoControlePragasUploaded)
+            {
+                <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Pragas</strong></p>
+            }
+            @if (!Model.IsDocumentacaoControleAguaUploaded)
+            {
+                <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Água</strong></p>
+            }
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+
+            <!-- Upload Form -->
             <form method="post" enctype="multipart/form-data" asp-page-handler="Upload">
                 <div class="row align-items-end">
                     <div class="col-md-3 mb-2">
