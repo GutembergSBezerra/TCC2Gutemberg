@@ -31,15 +31,7 @@
             {
                 <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Água</strong></p>
             }
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <p>@error.ErrorMessage</p>
-                    }
-                </div>
-            }
+           
 
             <!-- Upload Form -->
             <form method="post" enctype="multipart/form-data" asp-page-handler="Upload">
@@ -72,7 +64,15 @@
                     </div>
                 </div>
             </form>
-
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
             <hr />
 
             <div class="mt-4">
@@ -108,6 +108,8 @@
                     </div>
                 </div>
             </div>
+            <hr />
+
         </div>
     </div>
 </div>

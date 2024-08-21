@@ -96,6 +96,18 @@ namespace PortalArcomix.Pages
                     return Page();
                 }
 
+                // Check if the file name has already been uploaded for this CNPJ
+                var fileName = Path.GetFileName(UploadedFile.FileName);
+                bool fileNameAlreadyExists = await _context.Tbl_FornecedorDocumentos
+                    .AnyAsync(d => d.CNPJ == cnpjClaim && d.NOMEARQUIVO == fileName);
+
+                if (fileNameAlreadyExists)
+                {
+                    ModelState.AddModelError(string.Empty, $"O arquivo com o nome '{fileName}' já foi enviado.");
+                    await LoadUploadedFilesAsync();
+                    return Page();
+                }
+
                 const long maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
                 if (UploadedFile.Length > maxFileSize)
                 {
@@ -104,7 +116,6 @@ namespace PortalArcomix.Pages
                     return Page();
                 }
 
-                var fileName = Path.GetFileName(UploadedFile.FileName);
                 var baseUploadPath = Path.Combine("C:\\Users\\Gutemberg\\source\\repos\\PortalArcomix\\wwwroot\\uploads", cnpjClaim, "Documentos");
 
                 Directory.CreateDirectory(baseUploadPath);
