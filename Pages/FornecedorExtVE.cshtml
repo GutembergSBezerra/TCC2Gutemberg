@@ -19,21 +19,24 @@
                     {
                         <p class="text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
                     }
-                    @if (!Model.IsDocumentacaoSanitariaUploaded)
+                    @if (Model.IsAlimentosNaoIndustrializados)
                     {
-                        <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Sanitária</strong></p>
-                    }
-                    @if (!Model.IsDocumentacaoAmbientalUploaded)
-                    {
-                        <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Ambiental ou Operacional</strong></p>
-                    }
-                    @if (!Model.IsDocumentacaoControlePragasUploaded)
-                    {
-                        <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Pragas</strong></p>
-                    }
-                    @if (!Model.IsDocumentacaoControleAguaUploaded)
-                    {
-                        <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Água</strong></p>
+                        @if (!Model.IsDocumentacaoSanitariaUploaded)
+                        {
+                            <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Sanitária</strong></p>
+                        }
+                        @if (!Model.IsDocumentacaoAmbientalUploaded)
+                        {
+                            <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Ambiental ou Operacional</strong></p>
+                        }
+                        @if (!Model.IsDocumentacaoControlePragasUploaded)
+                        {
+                            <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Pragas</strong></p>
+                        }
+                        @if (!Model.IsDocumentacaoControleAguaUploaded)
+                        {
+                            <p class="text-danger">Documentos Obrigatórios: <strong>Documentação Controle de Água</strong></p>
+                        }
                     }
 
                     <!-- Upload Form -->
