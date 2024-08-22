@@ -515,10 +515,11 @@
                                         <span asp-validation-for="SegurancaAlimentos.ATIVIDADEEMPRESA" class="text-danger"></span>
                                     </div>
                                 </div>
+
                                 <div class="col-md-2">
                                     <label for="idOrgaoFiscalizacaoForn">Orgão de Fiscalização</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="SegurancaAlimentos.ORGAOFISCALIZACAO" class="form-control" id="OrgaoFiscalizacaoForn">
+                                        <select asp-for="SegurancaAlimentos.ORGAOFISCALIZACAO" class="form-control" id="OrgaoFiscalizacaoForn" onchange="toggleNumRegistroForn()">
                                             <option value="">Selecione</option>
                                             <option value="ADAGRO/SIE">ADAGRO/SIE</option>
                                             <option value="MAPA/SIF">MAPA/SIF</option>
@@ -532,10 +533,12 @@
                                 <div class="col-md-2">
                                     <label for="idNumRegistroForn">Nº Registro</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.NUMEROREGISTROORGAO" class="form-control" id="NumRegistroForn" readonly/>
+                                        <input asp-for="SegurancaAlimentos.NUMEROREGISTROORGAO" class="form-control" id="NumRegistroForn" onblur="validateField('NumRegistroForn', 'digits')" />
                                         <span asp-validation-for="SegurancaAlimentos.NUMEROREGISTROORGAO" class="text-danger"></span>
                                     </div>
                                 </div>
+
+
                                 <div class="col-md-4">
                                     <label for="idResponsavelTecnico">Responsavel Técnico</label>
                                     <div class="form-group mb-3">
@@ -812,6 +815,29 @@
             }
             return true;
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleNumRegistroForn(); // Call the function on page load
+        });
+
+        function toggleNumRegistroForn() {
+            var orgaoFiscalizacao = document.getElementById("OrgaoFiscalizacaoForn").value;
+            var numRegistroForn = document.getElementById("NumRegistroForn");
+
+            if (orgaoFiscalizacao === "" || orgaoFiscalizacao === "VISA Licença") {
+                numRegistroForn.disabled = true;
+                numRegistroForn.value = ""; // Clear the field when disabling it
+
+                // Clear the validation message
+                var validationSpan = numRegistroForn.nextElementSibling;
+                if (validationSpan && validationSpan.classList.contains('text-danger')) {
+                    validationSpan.innerText = ""; // Clear the validation message
+                }
+            } else {
+                numRegistroForn.disabled = false;
+            }
+        }
+
 
         function fetchAddress() {
             var cep = document.getElementById("Fornecedor_CEP").value.replace(/\D/g, ''); // Remove non-digit characters
