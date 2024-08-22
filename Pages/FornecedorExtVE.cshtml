@@ -111,7 +111,6 @@
                             </div>
                         </div>
                     </div>
-                    <hr />
                 </div>
             </div>
 
@@ -121,47 +120,50 @@
     <br />
     <div class="row">
         <div class="col">
-            <!-- Comentarios Card -->
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="text-primary">Comentarios</h4>
-                    <div class="row">
-                        <!-- Left Column: Textarea -->
-                        <div class="col-md-6">
-                            <form method="post" asp-page-handler="AddComment">
+            <form method="post" asp-page-handler="AddComment">
+                <!-- Comentarios Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="text-primary">Comentarios</h4>
+                        <div class="row">
+                            <!-- Left Column: Textarea -->
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="comentario">Adicionar Comentário:</label>
                                     <textarea asp-for="COMENTARIO" class="form-control" id="comentario" rows="6"></textarea>
                                     <span asp-validation-for="COMENTARIO" class="text-danger"></span>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </form>
-                        </div>
+                            </div>
 
-                        <!-- Right Column: List of Comments -->
-                        <div class="col-md-6">
-                            <h5 class="text-primary">Comentários Anteriores</h5>
-                            @if (Model.Comentarios?.Count > 0)
-                            {
-                                <ul class="list-group">
-                                    @foreach (var comentario in Model.Comentarios)
-                                    {
-                                        <li class="list-group-item">
-                                            <strong>@comentario.ID_USUARIO:</strong> @comentario.COMENTARIO
-                                            <br />
-                                            <small class="text-muted">@comentario.DATACOMENTARIO.ToString("dd/MM/yyyy HH:mm")</small>
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <div class="text-center text-danger">Nenhum Comentário Adicionado</div>
-                            }
+                            <!-- Right Column: List of Comments -->
+                            <div class="col-md-6">
+                                <h5 class="text-primary">Comentários Anteriores</h5>
+                                @if (Model.ComentariosViewModel?.Count > 0)
+                                {
+                                    <ul class="list-group">
+                                        @foreach (var comentario in Model.ComentariosViewModel)
+                                        {
+                                            <li class="list-group-item">
+                                                <strong>@comentario.UsuarioNome (@comentario.UsuarioTipo) - <small class="text-muted">@comentario.DATACOMENTARIO.ToString("dd/MM/yyyy HH:mm")</small>:</strong>
+                                                <br />
+                                                <p>@comentario.COMENTARIO</p>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <div class="text-center text-danger">Nenhum Comentário Adicionado</div>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!-- Submit Button Outside the Card -->
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
+                </div>
+            </form>
         </div>
     </div>
     <br />

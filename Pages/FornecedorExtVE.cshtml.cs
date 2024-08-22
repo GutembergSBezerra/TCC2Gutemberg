@@ -5,6 +5,8 @@ using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using static PortalArcomix.Pages.FornecedorExtVEModel;
 
 namespace PortalArcomix.Pages
 {
@@ -19,15 +21,17 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public IFormFile? UploadedFile { get; set; }
+
         [BindProperty]
         public string COMENTARIO { get; set; }
-
 
         [BindProperty]
         public string? TIPODOCUMENTO { get; set; }
 
         public List<Tbl_FornecedorDocumentos> UploadedFiles { get; set; }
         public List<Tbl_FornecedorComentarios> Comentarios { get; set; } // List to hold existing comments
+        public List<ComentarioViewModel> ComentariosViewModel { get; set; } // List to hold transformed comments with user info
+
 
         public bool IsSintegraUploaded { get; set; }
         public bool IsDocumentacaoSanitariaUploaded { get; set; }
@@ -58,9 +62,25 @@ namespace PortalArcomix.Pages
             // Load uploaded files
             UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
 
-            // Load existing comments
-            Comentarios = await _context.Tbl_FornecedorComentarios.Where(c => c.CNPJ == cnpjClaim).ToListAsync();
+            // Load existing comments with user info
+            var comentarios = await _context.Tbl_FornecedorComentarios
+                .Where(c => c.CNPJ == cnpjClaim)
+                .Join(
+                    _context.Tbl_Usuario,
+                    comentario => comentario.ID_USUARIO,
+                    usuario => usuario.ID_Usuario,
+                    (comentario, usuario) => new ComentarioViewModel
+                    {
+                        ID = comentario.ID,
+                        CNPJ = comentario.CNPJ,
+                        COMENTARIO = comentario.COMENTARIO,
+                        DATACOMENTARIO = comentario.DATACOMENTARIO,
+                        UsuarioNome = usuario.Usuario,
+                        UsuarioTipo = usuario.TipoUsuario
+                    }
+                ).ToListAsync();
 
+            ComentariosViewModel = comentarios;
 
             // Check if SINTEGRA is uploaded
             IsSintegraUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "SINTEGRA");
@@ -77,6 +97,7 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
+
         public async Task<IActionResult> OnPostUploadAsync()
         {
             // Don't bind COMENTARIO here to avoid validation issues
@@ -84,7 +105,7 @@ namespace PortalArcomix.Pages
 
             if (!ModelState.IsValid)
             {
-                await LoadUploadedFilesAsync();
+                await LoadDataAsync();
                 return Page();
             }
 
@@ -104,7 +125,7 @@ namespace PortalArcomix.Pages
                 if (documentAlreadyUploaded)
                 {
                     ModelState.AddModelError(string.Empty, $"O documento '{TIPODOCUMENTO}' já foi enviado.");
-                    await LoadUploadedFilesAsync();
+                    await LoadDataAsync();
                     return Page();
                 }
 
@@ -116,7 +137,7 @@ namespace PortalArcomix.Pages
                 if (fileNameAlreadyExists)
                 {
                     ModelState.AddModelError(string.Empty, $"O arquivo com o nome '{fileName}' já foi enviado.");
-                    await LoadUploadedFilesAsync();
+                    await LoadDataAsync();
                     return Page();
                 }
 
@@ -124,7 +145,7 @@ namespace PortalArcomix.Pages
                 if (UploadedFile.Length > maxFileSize)
                 {
                     ModelState.AddModelError(string.Empty, "Tamanho Máximo 5MB");
-                    await LoadUploadedFilesAsync();
+                    await LoadDataAsync();
                     return Page();
                 }
 
@@ -152,7 +173,7 @@ namespace PortalArcomix.Pages
             }
 
             // Reload data after upload
-            await LoadUploadedFilesAsync();
+            await LoadDataAsync();
 
             return Page();
         }
@@ -170,7 +191,7 @@ namespace PortalArcomix.Pages
             return PhysicalFile(filePath, mimeType, fileName);
         }
 
-        private async Task LoadUploadedFilesAsync()
+        private async Task LoadDataAsync()
         {
             var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
 
@@ -192,8 +213,24 @@ namespace PortalArcomix.Pages
                     IsDocumentacaoControlePragasUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Pragas");
                     IsDocumentacaoControleAguaUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Água");
                 }
-                // Load existing comments
-                Comentarios = await _context.Tbl_FornecedorComentarios.Where(c => c.CNPJ == cnpjClaim).ToListAsync();
+
+                // Load existing comments with user info
+                ComentariosViewModel = await _context.Tbl_FornecedorComentarios
+                    .Where(c => c.CNPJ == cnpjClaim)
+                    .Join(
+                        _context.Tbl_Usuario,
+                        comentario => comentario.ID_USUARIO,
+                        usuario => usuario.ID_Usuario,
+                        (comentario, usuario) => new ComentarioViewModel
+                        {
+                            ID = comentario.ID,
+                            CNPJ = comentario.CNPJ,
+                            COMENTARIO = comentario.COMENTARIO,
+                            DATACOMENTARIO = comentario.DATACOMENTARIO,
+                            UsuarioNome = usuario.Usuario,
+                            UsuarioTipo = usuario.TipoUsuario
+                        }
+                    ).ToListAsync();
             }
         }
 
@@ -245,11 +282,20 @@ namespace PortalArcomix.Pages
             }
 
             // Reload data after adding the comment
-            await LoadUploadedFilesAsync();
+            await LoadDataAsync(); // This replaces the previous LoadUploadedFilesAsync
 
             return RedirectToPage(); // Redirect to avoid resubmission
         }
 
+        public class ComentarioViewModel
+        {
+            public int ID { get; set; }
+            public string CNPJ { get; set; }
+            public string COMENTARIO { get; set; }
+            public DateTime DATACOMENTARIO { get; set; }
+            public string UsuarioNome { get; set; }
+            public string UsuarioTipo { get; set; }
+        }
 
     }
 }
