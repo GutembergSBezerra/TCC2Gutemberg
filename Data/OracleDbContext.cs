@@ -18,6 +18,8 @@ namespace PortalArcomix.Data
         public DbSet<Tbl_FornecedorNegociacao> Tbl_FornecedorNegociacao { get; set; }
         public DbSet<Tbl_FornecedorSegurancaAlimentos> Tbl_FornecedorSegurancaAlimentos { get; set; }
         public DbSet<Tbl_FornecedorDocumentos> Tbl_FornecedorDocumentos { get; set; }
+        public DbSet<Tbl_FornecedorComentarios> Tbl_FornecedorComentarios { get; set; }
+
 
 
         // DbSet for Produto

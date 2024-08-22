@@ -12,7 +12,7 @@ namespace PortalArcomix.Data.Entities
 
         [Required]
         [MaxLength(14)]
-        public string CNPJ { get; set; } 
+        public string CNPJ { get; set; } // CNPJ associated with the comment
 
         public int ID_USUARIO { get; set; } // Foreign key to Tbl_Usuario
 

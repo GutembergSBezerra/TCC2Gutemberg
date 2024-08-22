@@ -19,11 +19,16 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public IFormFile? UploadedFile { get; set; }
+        [BindProperty]
+        public string COMENTARIO { get; set; }
+
 
         [BindProperty]
         public string? TIPODOCUMENTO { get; set; }
 
         public List<Tbl_FornecedorDocumentos> UploadedFiles { get; set; }
+        public List<Tbl_FornecedorComentarios> Comentarios { get; set; } // List to hold existing comments
+
         public bool IsSintegraUploaded { get; set; }
         public bool IsDocumentacaoSanitariaUploaded { get; set; }
         public bool IsDocumentacaoAmbientalUploaded { get; set; }
@@ -53,6 +58,10 @@ namespace PortalArcomix.Pages
             // Load uploaded files
             UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
 
+            // Load existing comments
+            Comentarios = await _context.Tbl_FornecedorComentarios.Where(c => c.CNPJ == cnpjClaim).ToListAsync();
+
+
             // Check if SINTEGRA is uploaded
             IsSintegraUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "SINTEGRA");
 
@@ -70,6 +79,9 @@ namespace PortalArcomix.Pages
 
         public async Task<IActionResult> OnPostUploadAsync()
         {
+            // Don't bind COMENTARIO here to avoid validation issues
+            ModelState.Remove("COMENTARIO");
+
             if (!ModelState.IsValid)
             {
                 await LoadUploadedFilesAsync();
@@ -180,6 +192,8 @@ namespace PortalArcomix.Pages
                     IsDocumentacaoControlePragasUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Pragas");
                     IsDocumentacaoControleAguaUploaded = UploadedFiles.Any(f => f.TIPODOCUMENTO == "Documentação Controle de Água");
                 }
+                // Load existing comments
+                Comentarios = await _context.Tbl_FornecedorComentarios.Where(c => c.CNPJ == cnpjClaim).ToListAsync();
             }
         }
 
@@ -204,5 +218,38 @@ namespace PortalArcomix.Pages
 
             return RedirectToPage();
         }
+
+        public async Task<IActionResult> OnPostAddCommentAsync()
+        {
+            var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value;
+
+            if (cnpjClaim == null || userIdClaim == null)
+            {
+                return BadRequest();
+            }
+
+            // Only save the comment if it is not null or empty
+            if (!string.IsNullOrWhiteSpace(COMENTARIO))
+            {
+                var newComment = new Tbl_FornecedorComentarios
+                {
+                    CNPJ = cnpjClaim,
+                    ID_USUARIO = int.Parse(userIdClaim),
+                    COMENTARIO = COMENTARIO,
+                    DATACOMENTARIO = DateTime.Now
+                };
+
+                _context.Tbl_FornecedorComentarios.Add(newComment);
+                await _context.SaveChangesAsync();
+            }
+
+            // Reload data after adding the comment
+            await LoadUploadedFilesAsync();
+
+            return RedirectToPage(); // Redirect to avoid resubmission
+        }
+
+
     }
 }
