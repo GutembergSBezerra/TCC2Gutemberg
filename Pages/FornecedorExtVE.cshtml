@@ -169,3 +169,13 @@
     </div>
     <br />
 </div>
+
+@section Scripts {
+    @if (TempData["ShowSuccessAlert"] != null && (bool)TempData["ShowSuccessAlert"])
+    {
+        <script type="text/javascript">
+            alert('Dados Enviados para Análise com Sucesso');
+            window.location.href = '@Url.Page("/Index")';
+        </script>
+    }
+}

@@ -62,7 +62,7 @@ namespace PortalArcomix.Pages
             // Load uploaded files
             UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
 
-            // Load existing comments with user info
+            // Load existing comments with user info, ordered by DATACOMENTARIO descending
             var comentarios = await _context.Tbl_FornecedorComentarios
                 .Where(c => c.CNPJ == cnpjClaim)
                 .Join(
@@ -78,7 +78,9 @@ namespace PortalArcomix.Pages
                         UsuarioNome = usuario.Usuario,
                         UsuarioTipo = usuario.TipoUsuario
                     }
-                ).ToListAsync();
+                )
+                .OrderByDescending(c => c.DATACOMENTARIO) // Order by DATACOMENTARIO descending
+                .ToListAsync();
 
             ComentariosViewModel = comentarios;
 
@@ -323,11 +325,22 @@ namespace PortalArcomix.Pages
                 await _context.SaveChangesAsync();
             }
 
-            // Reload data after adding the comment
-            await LoadDataAsync(); // This replaces the previous LoadUploadedFilesAsync
+            // Update the Tbl_Fornecedor record
+            var fornecedor = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);
+            if (fornecedor != null)
+            {
+                fornecedor.ESTAGIO = "Comprador";
+                fornecedor.TEMPOESTAGIO = DateTime.Now;
 
-            return RedirectToPage(); // Redirect to avoid resubmission
+                _context.Tbl_Fornecedor.Update(fornecedor);
+                await _context.SaveChangesAsync();
+            }
+
+            // Instead of redirecting immediately, we return the current page with a flag
+            TempData["ShowSuccessAlert"] = true;
+            return Page(); // Stay on the current page
         }
+
 
         public class ComentarioViewModel
         {

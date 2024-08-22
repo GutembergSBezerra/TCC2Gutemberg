@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PortalArcomix.Data.Entities
 {
@@ -7,8 +8,8 @@ namespace PortalArcomix.Data.Entities
     {
         public int ID { get; set; } // Primary Key
         public string? CNPJ { get; set; } // CHAR(14 BYTE)
-        public string? RAZAOSOCIAL { get; set; } // NVARCHAR2(150 CHAR), nullable
-        public string? FANTASIA { get; set; } // NVARCHAR2(100 CHAR), nullable
+        public string? RAZAOSOCIAL { get; set; } // NVARCHAR2(150 CHAR)
+        public string? FANTASIA { get; set; } // NVARCHAR2(100 CHAR)
         public string? IE { get; set; } // CHAR(9 BYTE)
         public string? CNAE { get; set; } // CHAR(7 BYTE)
         public string? CEP { get; set; } // CHAR(8 BYTE)
@@ -24,5 +25,8 @@ namespace PortalArcomix.Data.Entities
         public string? TIPOFORNECEDOR { get; set; } // NVARCHAR2(14 CHAR)
         public string? FORNECEDORALIMENTOS { get; set; } // NVARCHAR2(30 CHAR)
         public string? COMPRADORPRINCIPAL { get; set; } // NVARCHAR2(30 CHAR)
+        public int? CODIGO { get; set; } // NUMBER
+        public string? ESTAGIO { get; set; } // NVARCHAR2(30 CHAR)
+        public DateTime? TEMPOESTAGIO { get; set; } // DATE
     }
 }
