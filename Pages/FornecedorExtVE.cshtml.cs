@@ -266,6 +266,48 @@ namespace PortalArcomix.Pages
                 return BadRequest();
             }
 
+            // Remove the COMENTARIO from ModelState if it's empty or whitespace
+            if (string.IsNullOrWhiteSpace(COMENTARIO))
+            {
+                ModelState.Remove("COMENTARIO");
+            }
+
+            // Load data to check if required documents are uploaded
+            await LoadDataAsync();
+
+            // Validate if all required documents are uploaded
+            if (!IsSintegraUploaded)
+            {
+                ModelState.AddModelError(string.Empty, "O documento SINTEGRA é obrigatório.");
+            }
+
+            if (IsAlimentosNaoIndustrializados)
+            {
+                if (!IsDocumentacaoSanitariaUploaded)
+                {
+                    ModelState.AddModelError(string.Empty, "O documento Documentação Sanitária é obrigatório");
+                }
+                if (!IsDocumentacaoAmbientalUploaded)
+                {
+                    ModelState.AddModelError(string.Empty, "O documento Documentação Ambiental ou Operacional é obrigatório.");
+                }
+                if (!IsDocumentacaoControlePragasUploaded)
+                {
+                    ModelState.AddModelError(string.Empty, "O documento Documentação Controle de Pragas é obrigatório.");
+                }
+                if (!IsDocumentacaoControleAguaUploaded)
+                {
+                    ModelState.AddModelError(string.Empty, "O documento Documentação Controle de Água é obrigatório.");
+                }
+            }
+
+            // If any validation failed, reload data and return to the page with errors
+            if (!ModelState.IsValid)
+            {
+                await LoadDataAsync();
+                return Page();
+            }
+
             // Only save the comment if it is not null or empty
             if (!string.IsNullOrWhiteSpace(COMENTARIO))
             {
