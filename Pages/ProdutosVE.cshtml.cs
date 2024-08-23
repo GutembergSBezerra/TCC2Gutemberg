@@ -153,6 +153,9 @@ namespace PortalArcomix.Pages
                 produtoToUpdate.VERBACADASTRO = Produto.VERBACADASTRO;
                 produtoToUpdate.MOTIVOVERBAZERADA = Produto.MOTIVOVERBAZERADA;
 
+                // Update the DESCRICAOCOMPLETA field
+                produtoToUpdate.DESCRICAOCOMPLETA = Produto.DESCRICAOCOMPLETA;
+
                 _context.Attach(produtoToUpdate).State = EntityState.Modified;
 
                 produtoVendaCompraToUpdate.EAN13 = ProdutoVendaCompra.EAN13;
@@ -218,6 +221,7 @@ namespace PortalArcomix.Pages
 
             return RedirectToPage("/Index");
         }
+
 
         private bool ProdutoExists(int id)
         {
