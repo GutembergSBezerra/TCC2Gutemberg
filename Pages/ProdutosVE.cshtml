@@ -101,7 +101,7 @@
                                 <div class="form-group mb-3">
                                     <label asp-for="Produto.MARCA">Marca</label>
                                     <div class="form-group mb-3">
-                                        <select asp-for="Produto.MARCA" class="form-control" id="marcaSelect" onchange="toggleNovaMarca()">
+                                        <select asp-for="Produto.MARCA" class="form-control" id="marcaSelect" onblur="validateSelect('marcaSelect')" onchange="toggleNovaMarca()">
                                             <option value="">Escolher</option>
                                             <option value="Nova Marca">Nova Marca</option>
                                             <option value="Sadia">Sadia</option>
@@ -118,7 +118,7 @@
                                 <div class="form-group mb-3">
                                     <label for="novaMarcaInput">Nova Marca</label>
                                     <div class="form-group mb-3">
-                                        <input type="text" class="form-control" id="novaMarcaInput" disabled="disabled" />
+                                        <input type="text" class="form-control" id="novaMarcaInput" disabled="disabled" onblur="if(!this.disabled) validateField('novaMarcaInput', 'default')" onchange="toggleNovaMarca()"  />
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@
                             <div class="col-md-8">
                                 <div class="form-group mb-3">
                                     <label asp-for="Produto.DESCRICAOCOMPLETA">
-                                        Descrição <strong>sem abreviação</strong> (Para Ecommerce/Tabloides)
+                                        Descrição para Publicidade (sem abreviação e com acento)
                                     </label>
                                     <div class="form-group mb-3">
                                         <input asp-for="Produto.DESCRICAOCOMPLETA" class="form-control" id="DescricaoCompleta" maxlength="100" onblur="validateField('DescricaoCompleta', 'default')" />
