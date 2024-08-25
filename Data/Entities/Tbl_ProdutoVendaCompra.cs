@@ -6,10 +6,10 @@ namespace PortalArcomix.Data.Entities
     [Table("TBL_PRODUTOVENDACOMPRA")]
     public class Tbl_ProdutoVendaCompra
     {
-        [Key, ForeignKey("Produto")]
-        public int ID { get; set; } // PK and FK
+        [Key]
+        public int ID { get; set; } // NUMBER, Primary Key
 
-        public int? PRODUTOID { get; set; } // NUMBER, nullable (Foreign Key)
+        public int? IDCONSINCO { get; set; } // NUMBER, nullable
         public string? EAN13 { get; set; } // CHAR(13 BYTE), nullable
         public string? REFERENCIA { get; set; } // NVARCHAR2(30 CHAR), nullable
         public decimal? PESOBRUTOKG { get; set; } // NUMBER(8,2), nullable
@@ -29,7 +29,5 @@ namespace PortalArcomix.Data.Entities
         public int? MESACAIXAS { get; set; } // NUMBER, nullable
         public decimal? ALTURACAIXAS { get; set; } // NUMBER, nullable
         public int? SHELFLIFEDIAS { get; set; } // NUMBER, nullable
-
-
     }
 }

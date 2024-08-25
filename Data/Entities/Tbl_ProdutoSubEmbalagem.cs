@@ -6,10 +6,8 @@ namespace PortalArcomix.Data.Entities
     [Table("TBL_PRODUTOSUBEMBALAGEM")]
     public class Tbl_ProdutoSubEmbalagem
     {
-        [Key, ForeignKey("Produto")]
-        public int ID { get; set; } // PK and FK
-
-        public int? PRODUTOID { get; set; } // NUMBER, nullable (Foreign Key)
+        [Key]
+        public int ID { get; set; } // NUMBER, Primary Key
         public string? EAN13 { get; set; } // CHAR(13 BYTE), nullable
         public string? REFERENCIA { get; set; } // NVARCHAR2(30 CHAR), nullable
         public decimal? PESOBRUTOKG { get; set; } // NUMBER(8,2), nullable

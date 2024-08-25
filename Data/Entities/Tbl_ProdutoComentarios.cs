@@ -19,12 +19,5 @@ namespace PortalArcomix.Data.Entities
         public string COMENTARIO { get; set; } // Comment text
 
         public DateTime DATACOMENTARIO { get; set; } // Timestamp of the comment
-
-        //// Navigation properties
-        //[ForeignKey("PRODUTOID")]
-        //public virtual Tbl_Produto Produto { get; set; } // Navigation property to Tbl_Produto
-
-        //[ForeignKey("ID_USUARIO")]
-        //public virtual Tbl_Usuario Usuario { get; set; } // Navigation property to Tbl_Usuario
     }
 }

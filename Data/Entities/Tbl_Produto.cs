@@ -10,7 +10,7 @@ namespace PortalArcomix.Data.Entities
         public string? GESTORCOMPRAS { get; set; } // NVARCHAR2(30 CHAR), nullable
         public string? MARCA { get; set; } // NVARCHAR2(20 CHAR), nullable
         public bool? IMPORTADO { get; set; } // NUMBER(1,0), nullable (assuming 1/0 for true/false)
-        public string? DESCRICAOPRODUTO { get; set; } // NVARCHAR2(30 CHAR), nullable
+        public string? DESCRICAOPRODUTO { get; set; } // NVARCHAR2(40 CHAR), nullable
         public string? NCM { get; set; } // CHAR(8 BYTE), nullable
         public string? CEST { get; set; } // CHAR(7 BYTE), nullable
         public decimal? ICMS { get; set; } // NUMBER(5,2), nullable
@@ -24,7 +24,7 @@ namespace PortalArcomix.Data.Entities
         public decimal? VERBACADASTRO { get; set; } // NUMBER(9,2), nullable
         public string? MOTIVOVERBAZERADA { get; set; } // NVARCHAR2(255 CHAR), nullable
         public string? CNPJ { get; set; } // CHAR(14 BYTE), nullable
+        public string? ESTAGIO { get; set; } // NVARCHAR2(20 CHAR), nullable
         public string? DESCRICAOCOMPLETA { get; set; } // NVARCHAR2(100 CHAR), nullable
-
     }
 }
