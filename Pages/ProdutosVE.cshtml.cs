@@ -27,7 +27,7 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public Tbl_ProdutoSubEmbalagem ProdutoSubEmbalagem { get; set; }
         [BindProperty]
-        public Tbl_ProdutoComentarios ProdutoComentario { get; set; }  // Binding for comments
+        public Tbl_ProdutoComentarios? ProdutoComentario { get; set; }  // Binding for comments
 
 
         public async Task<IActionResult> OnGetAsync()
@@ -149,11 +149,15 @@ namespace PortalArcomix.Pages
                 _context.Tbl_ProdutoSubEmbalagem.Add(ProdutoSubEmbalagem);
 
                 // Save the comment if provided
-                if (!string.IsNullOrWhiteSpace(ProdutoComentario?.COMENTARIO))
+                if (!string.IsNullOrWhiteSpace(Request.Form["ProdutoComentario.COMENTARIO"]))
                 {
-                    ProdutoComentario.PRODUTOID = Produto.ID;
-                    ProdutoComentario.ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0");
-                    ProdutoComentario.DATACOMENTARIO = DateTime.Now;
+                    ProdutoComentario = new Tbl_ProdutoComentarios
+                    {
+                        PRODUTOID = Produto.ID,
+                        ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0"),
+                        COMENTARIO = Request.Form["ProdutoComentario.COMENTARIO"],
+                        DATACOMENTARIO = DateTime.Now
+                    };
 
                     _context.Tbl_ProdutoComentarios.Add(ProdutoComentario);
                 }
@@ -227,11 +231,15 @@ namespace PortalArcomix.Pages
                 _context.Attach(produtoSubEmbalagemToUpdate).State = EntityState.Modified;
 
                 // Save the comment if provided
-                if (!string.IsNullOrWhiteSpace(ProdutoComentario?.COMENTARIO))
+                if (!string.IsNullOrWhiteSpace(Request.Form["ProdutoComentario.COMENTARIO"]))
                 {
-                    ProdutoComentario.PRODUTOID = Produto.ID;
-                    ProdutoComentario.ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0");
-                    ProdutoComentario.DATACOMENTARIO = DateTime.Now;
+                    ProdutoComentario = new Tbl_ProdutoComentarios
+                    {
+                        PRODUTOID = Produto.ID,
+                        ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0"),
+                        COMENTARIO = Request.Form["ProdutoComentario.COMENTARIO"],
+                        DATACOMENTARIO = DateTime.Now
+                    };
 
                     _context.Tbl_ProdutoComentarios.Add(ProdutoComentario);
                 }
@@ -255,8 +263,6 @@ namespace PortalArcomix.Pages
 
             return RedirectToPage("/Index");
         }
-
-
 
         private bool ProdutoExists(int id)
         {
