@@ -26,11 +26,14 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public Tbl_ProdutoSubEmbalagem ProdutoSubEmbalagem { get; set; }
+
         [BindProperty]
         public Tbl_ProdutoComentarios? ProdutoComentario { get; set; }  // Binding for comments
 
+        [BindProperty]
+        public List<string?> AvailableMarcas { get; set; }  // For storing unique Marca values
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(bool newProduct = false)
         {
             if (User?.Identity?.IsAuthenticated != true)
             {
@@ -38,41 +41,63 @@ namespace PortalArcomix.Pages
             }
 
             var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
-            var produtoIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ProdutoID")?.Value;
 
-            if (cnpjClaim == null || produtoIdClaim == null)
+            if (cnpjClaim == null)
             {
                 return RedirectToPage("/Login");
             }
 
-            if (!int.TryParse(produtoIdClaim, out int id))
+            if (newProduct)
             {
-                return NotFound(); // Handle the case where the ProdutoID claim is not valid
+                // Initialize a new product object for creation
+                Produto = new Tbl_Produto
+                {
+                    CNPJ = cnpjClaim,
+                };
+                ProdutoVendaCompra = new Tbl_ProdutoVendaCompra();
+                ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem();
+                ProdutoComentario = null; // No comments yet
+            }
+            else
+            {
+                var produtoIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ProdutoID")?.Value;
+
+                if (!int.TryParse(produtoIdClaim, out int id))
+                {
+                    return NotFound(); // Handle the case where the ProdutoID claim is not valid
+                }
+
+                Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
+                ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
+                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
+
+                if (Produto == null)
+                {
+                    return NotFound();
+                }
+
+                if (ProdutoVendaCompra == null)
+                {
+                    ProdutoVendaCompra = new Tbl_ProdutoVendaCompra { ID = Produto.ID };
+                }
+
+                if (ProdutoSubEmbalagem == null)
+                {
+                    ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem { ID = Produto.ID };
+                }
             }
 
-            Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
-            ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
-            ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
-
-            if (Produto == null)
-            {
-                return NotFound();
-            }
-
-            if (ProdutoVendaCompra == null)
-            {
-                ProdutoVendaCompra = new Tbl_ProdutoVendaCompra { ID = Produto.ID };
-            }
-
-            if (ProdutoSubEmbalagem == null)
-            {
-                ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem { ID = Produto.ID };
-            }
+            // Retrieve the list of unique MARCA values
+            AvailableMarcas = await _context.Tbl_Produto
+                .Where(p => !string.IsNullOrEmpty(p.MARCA))
+                .Select(p => p.MARCA)
+                .Distinct()
+                .ToListAsync();
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(bool newProduct = false)
         {
             if (User?.Identity?.IsAuthenticated != true)
             {
@@ -88,18 +113,20 @@ namespace PortalArcomix.Pages
 
             if (!ModelState.IsValid)
             {
-                // Re-fetch the Produto from the database to maintain the correct ID and other properties
-                var produtoIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ProdutoID")?.Value;
-
-                if (!int.TryParse(produtoIdClaim, out int id))
+                if (!newProduct)
                 {
-                    return NotFound(); // Handle the case where the ProdutoID claim is not valid
+                    // Re-fetch the Produto from the database to maintain the correct ID and other properties
+                    var produtoIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ProdutoID")?.Value;
+
+                    if (!int.TryParse(produtoIdClaim, out int id))
+                    {
+                        return NotFound(); // Handle the case where the ProdutoID claim is not valid
+                    }
+
+                    Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
+                    ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
+                    ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
                 }
-
-                Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
-                ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
-                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
-
                 return Page(); // Return the page with the original data
             }
 

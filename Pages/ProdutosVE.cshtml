@@ -105,7 +105,6 @@
                                 </div>
                             </div>
 
-                            <!-- Marca -->
                             <div class="col-md-2">
                                 <div class="form-group mb-3">
                                     <label asp-for="Produto.MARCA">Marca</label>
@@ -113,14 +112,16 @@
                                         <select asp-for="Produto.MARCA" class="form-control" id="marcaSelect" onblur="validateSelect('marcaSelect')" onchange="toggleNovaMarca()">
                                             <option value="">Escolher</option>
                                             <option value="Nova Marca">Nova Marca</option>
-                                            <option value="Sadia">Sadia</option>
-                                            <option value="Perdigão">Perdigão</option>
-                                            <option value="Seara">Seara</option>
+                                            @foreach (var marca in Model.AvailableMarcas)
+                                            {
+                                                <option value="@marca">@marca</option>
+                                            }                                            
                                         </select>
                                         <span asp-validation-for="Produto.MARCA" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
+
 
                             <!-- Nova Marca (this uses the same MARCA property) -->
                             <div class="col-md-2">
