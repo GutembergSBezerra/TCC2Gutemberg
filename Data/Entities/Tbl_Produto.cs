@@ -24,7 +24,7 @@ namespace PortalArcomix.Data.Entities
         public decimal? VERBACADASTRO { get; set; } // NUMBER(9,2), nullable
         public string? MOTIVOVERBAZERADA { get; set; } // NVARCHAR2(255 CHAR), nullable
         public string? CNPJ { get; set; } // CHAR(14 BYTE), nullable
-        public string? ESTAGIO { get; set; } // NVARCHAR2(20 CHAR), nullable
+        //public string? ESTAGIO { get; set; } // NVARCHAR2(20 CHAR), nullable
         public string? DESCRICAOCOMPLETA { get; set; } // NVARCHAR2(100 CHAR), nullable
     }
 }

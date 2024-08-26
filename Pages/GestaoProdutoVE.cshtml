@@ -60,10 +60,14 @@
                                             <td>@produto.DESCRICAOPRODUTO</td>
                                             <td>@produto.GESTORCOMPRAS</td>
                                             <td>
-                                                <a href="/ProdutosVE?id=@produto.ID" role="button">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
+                                                <form method="post" asp-page-handler="ClaimProductId">
+                                                    <input type="hidden" name="id" value="@produto.ID" />
+                                                    <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </form>
                                             </td>
+
                                         </tr>
                                     }
                                 </tbody>

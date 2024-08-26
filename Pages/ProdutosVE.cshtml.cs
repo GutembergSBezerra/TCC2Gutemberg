@@ -27,10 +27,9 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public Tbl_ProdutoSubEmbalagem ProdutoSubEmbalagem { get; set; }
 
-        [BindProperty]
         public Tbl_ProdutoComentarios ProdutoComentario { get; set; }  // Binding for comments
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync()
         {
             if (User?.Identity?.IsAuthenticated != true)
             {
@@ -38,38 +37,35 @@ namespace PortalArcomix.Pages
             }
 
             var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
+            var produtoIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ProdutoID")?.Value;
 
-            if (cnpjClaim == null)
+            if (cnpjClaim == null || produtoIdClaim == null)
             {
                 return RedirectToPage("/Login");
             }
 
-            if (id == null)
+            if (!int.TryParse(produtoIdClaim, out int id))
             {
-                Produto = new Tbl_Produto();
-                ProdutoVendaCompra = new Tbl_ProdutoVendaCompra();
-                ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem();
+                return NotFound(); // Handle the case where the ProdutoID claim is not valid
             }
-            else
+
+            Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
+            ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
+            ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
+
+            if (Produto == null)
             {
-                Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
-                ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
-                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
+                return NotFound();
+            }
 
-                if (Produto == null)
-                {
-                    return NotFound();
-                }
+            if (ProdutoVendaCompra == null)
+            {
+                ProdutoVendaCompra = new Tbl_ProdutoVendaCompra { ID = Produto.ID };
+            }
 
-                if (ProdutoVendaCompra == null)
-                {
-                    ProdutoVendaCompra = new Tbl_ProdutoVendaCompra { PRODUTOID = Produto.ID };
-                }
-
-                if (ProdutoSubEmbalagem == null)
-                {
-                    ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem { PRODUTOID = Produto.ID };
-                }
+            if (ProdutoSubEmbalagem == null)
+            {
+                ProdutoSubEmbalagem = new Tbl_ProdutoSubEmbalagem { ID = Produto.ID };
             }
 
             return Page();
@@ -91,21 +87,45 @@ namespace PortalArcomix.Pages
 
             if (!ModelState.IsValid)
             {
-                return Page();
+                // Re-fetch the Produto from the database to maintain the correct ID and other properties
+                var produtoIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ProdutoID")?.Value;
+
+                if (!int.TryParse(produtoIdClaim, out int id))
+                {
+                    return NotFound(); // Handle the case where the ProdutoID claim is not valid
+                }
+
+                Produto = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == id);
+                ProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(p => p.ID == id);
+                ProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(p => p.ID == id);
+
+                return Page(); // Return the page with the original data
             }
 
-            if (!string.IsNullOrEmpty(ProdutoVendaCompra.EAN13) &&
-                await _context.Tbl_ProdutoVendaCompra.AnyAsync(pvc => pvc.EAN13 == ProdutoVendaCompra.EAN13))
+            // Check for unique EAN13 in Tbl_ProdutoVendaCompra
+            if (!string.IsNullOrEmpty(ProdutoVendaCompra.EAN13))
             {
-                ModelState.AddModelError("ProdutoVendaCompra.EAN13", "EAN já Cadastrado");
-                return Page();
+                var existingProdutoVendaCompra = await _context.Tbl_ProdutoVendaCompra
+                    .FirstOrDefaultAsync(pvc => pvc.EAN13 == ProdutoVendaCompra.EAN13);
+
+                if (existingProdutoVendaCompra != null && existingProdutoVendaCompra.ID != Produto.ID)
+                {
+                    ModelState.AddModelError("ProdutoVendaCompra.EAN13", "EAN já Cadastrado para outro produto");
+                    return Page();
+                }
             }
 
-            if (!string.IsNullOrEmpty(ProdutoSubEmbalagem.EAN13) &&
-                await _context.Tbl_ProdutoSubEmbalagem.AnyAsync(pse => pse.EAN13 == ProdutoSubEmbalagem.EAN13))
+            // Check for unique EAN13 in Tbl_ProdutoSubEmbalagem
+            if (!string.IsNullOrEmpty(ProdutoSubEmbalagem.EAN13))
             {
-                ModelState.AddModelError("ProdutoSubEmbalagem.EAN13", "EAN já Cadastrado");
-                return Page();
+                var existingProdutoSubEmbalagem = await _context.Tbl_ProdutoSubEmbalagem
+                    .FirstOrDefaultAsync(pse => pse.EAN13 == ProdutoSubEmbalagem.EAN13);
+
+                if (existingProdutoSubEmbalagem != null && existingProdutoSubEmbalagem.ID != Produto.ID)
+                {
+                    ModelState.AddModelError("ProdutoSubEmbalagem.EAN13", "EAN já Cadastrado para outro produto");
+                    return Page();
+                }
             }
 
             if (Request.Form["Produto.MARCA"] == "Nova Marca")
@@ -115,18 +135,31 @@ namespace PortalArcomix.Pages
 
             if (Produto.ID == 0)
             {
+                // New product: save product first to generate ID
                 Produto.CNPJ = cnpjClaim;
                 _context.Tbl_Produto.Add(Produto);
                 await _context.SaveChangesAsync();
 
+                // After saving, Produto.ID is now available
                 ProdutoVendaCompra.ID = Produto.ID;
                 ProdutoSubEmbalagem.ID = Produto.ID;
 
                 _context.Tbl_ProdutoVendaCompra.Add(ProdutoVendaCompra);
                 _context.Tbl_ProdutoSubEmbalagem.Add(ProdutoSubEmbalagem);
+
+                // Save the comment if provided
+                if (!string.IsNullOrWhiteSpace(ProdutoComentario?.COMENTARIO))
+                {
+                    ProdutoComentario.PRODUTOID = Produto.ID;
+                    ProdutoComentario.ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0");
+                    ProdutoComentario.DATACOMENTARIO = DateTime.Now;
+
+                    _context.Tbl_ProdutoComentarios.Add(ProdutoComentario);
+                }
             }
             else
             {
+                // Existing product: update
                 var produtoToUpdate = await _context.Tbl_Produto.FirstOrDefaultAsync(p => p.ID == Produto.ID && p.CNPJ == cnpjClaim);
                 var produtoVendaCompraToUpdate = await _context.Tbl_ProdutoVendaCompra.FirstOrDefaultAsync(pvc => pvc.ID == Produto.ID);
                 var produtoSubEmbalagemToUpdate = await _context.Tbl_ProdutoSubEmbalagem.FirstOrDefaultAsync(pse => pse.ID == Produto.ID);
@@ -136,6 +169,7 @@ namespace PortalArcomix.Pages
                     return NotFound();
                 }
 
+                // Update the product details
                 produtoToUpdate.GESTORCOMPRAS = Produto.GESTORCOMPRAS;
                 produtoToUpdate.DESCRICAOPRODUTO = Produto.DESCRICAOPRODUTO;
                 produtoToUpdate.IMPORTADO = Produto.IMPORTADO;
@@ -152,12 +186,11 @@ namespace PortalArcomix.Pages
                 produtoToUpdate.EMBALAGEMFAT = Produto.EMBALAGEMFAT;
                 produtoToUpdate.VERBACADASTRO = Produto.VERBACADASTRO;
                 produtoToUpdate.MOTIVOVERBAZERADA = Produto.MOTIVOVERBAZERADA;
-
-                // Update the DESCRICAOCOMPLETA field
                 produtoToUpdate.DESCRICAOCOMPLETA = Produto.DESCRICAOCOMPLETA;
 
                 _context.Attach(produtoToUpdate).State = EntityState.Modified;
 
+                // Update related entities
                 produtoVendaCompraToUpdate.EAN13 = ProdutoVendaCompra.EAN13;
                 produtoVendaCompraToUpdate.REFERENCIA = ProdutoVendaCompra.REFERENCIA;
                 produtoVendaCompraToUpdate.PESOBRUTOKG = ProdutoVendaCompra.PESOBRUTOKG;
@@ -191,16 +224,16 @@ namespace PortalArcomix.Pages
                 produtoSubEmbalagemToUpdate.QUANTIDADEUNIDADES = ProdutoSubEmbalagem.QUANTIDADEUNIDADES;
 
                 _context.Attach(produtoSubEmbalagemToUpdate).State = EntityState.Modified;
-            }
 
-            // Save the comment if it's provided
-            if (!string.IsNullOrWhiteSpace(ProdutoComentario?.COMENTARIO))
-            {
-                ProdutoComentario.PRODUTOID = Produto.ID;
-                ProdutoComentario.ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0");
-                ProdutoComentario.DATACOMENTARIO = DateTime.Now;
+                // Save the comment if provided
+                if (!string.IsNullOrWhiteSpace(ProdutoComentario?.COMENTARIO))
+                {
+                    ProdutoComentario.PRODUTOID = Produto.ID;
+                    ProdutoComentario.ID_USUARIO = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID_Usuario")?.Value ?? "0");
+                    ProdutoComentario.DATACOMENTARIO = DateTime.Now;
 
-                _context.Tbl_ProdutoComentarios.Add(ProdutoComentario);
+                    _context.Tbl_ProdutoComentarios.Add(ProdutoComentario);
+                }
             }
 
             try
@@ -221,6 +254,7 @@ namespace PortalArcomix.Pages
 
             return RedirectToPage("/Index");
         }
+
 
 
         private bool ProdutoExists(int id)

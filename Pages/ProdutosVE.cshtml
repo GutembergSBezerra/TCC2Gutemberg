@@ -6,6 +6,8 @@
 }
 
 <form method="post">
+    <!-- Hidden field for ID -->
+    <input type="hidden" asp-for="Produto.ID" />
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar Column -->
@@ -36,9 +38,6 @@
 
             <!-- Main Content Column -->
             <div class="col-md-11">
-                <p style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; font-weight: bold;">Solicitação de Produto: @Model.Produto?.ID</p>
-                <hr />
-
                 <!-- Card Dados do Produto -->
                 <div class="card" id="idDadosdoProduto">
                     <div class="card-body">
@@ -50,6 +49,16 @@
                         </div>
 
                         <div class="row">
+                            <!-- ID -->
+                            <div class="col-md-1">
+                                <div class="form-group mb-3">
+                                    <label>ID</label>
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control" value="@Model.Produto?.ID" readonly />
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Descrição -->
                             <div class="col-md-4">
                                 <div class="form-group mb-3">
@@ -122,8 +131,10 @@
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            
+                        </div>
 
+                        <div class="row">
                             <!-- NCM/SH -->
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
@@ -132,10 +143,6 @@
                                     <span asp-validation-for="Produto.NCM" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                           
 
                             <!-- CEST -->
                             <div class="col-md-1">
