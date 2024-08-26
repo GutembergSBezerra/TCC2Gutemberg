@@ -14,7 +14,6 @@ namespace PortalArcomix.Data.Entities
 
         public int ID_USUARIO { get; set; } // Foreign key to Tbl_Usuario
 
-        [Required]
         [MaxLength(500)]
         public string COMENTARIO { get; set; } // Comment text
 

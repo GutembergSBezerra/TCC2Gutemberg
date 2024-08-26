@@ -26,8 +26,9 @@ namespace PortalArcomix.Pages
 
         [BindProperty]
         public Tbl_ProdutoSubEmbalagem ProdutoSubEmbalagem { get; set; }
-
+        [BindProperty]
         public Tbl_ProdutoComentarios ProdutoComentario { get; set; }  // Binding for comments
+
 
         public async Task<IActionResult> OnGetAsync()
         {
