@@ -29,16 +29,6 @@ namespace PortalArcomix.Pages
         [BindProperty]
         public Tbl_FornecedorSegurancaAlimentos SegurancaAlimentos { get; set; }
 
-        [BindProperty]
-        public IFormFile? UploadedFile { get; set; }  // Make the UploadedFile nullable
-
-        [BindProperty]
-        public string? TIPODOCUMENTO { get; set; }  // Make TIPODOCUMENTO nullable
-
-
-        public List<Tbl_FornecedorDocumentos> UploadedFiles { get; set; }
-
-
         public async Task<IActionResult> OnGetAsync()
         {
             if (User?.Identity?.IsAuthenticated != true)
@@ -63,11 +53,7 @@ namespace PortalArcomix.Pages
             DadosBancarios = await _context.Tbl_FornecedorDadosBancarios.FirstOrDefaultAsync(db => db.CNPJ == cnpjClaim);
             Contatos = await _context.Tbl_FornecedorContatos.FirstOrDefaultAsync(c => c.CNPJ == cnpjClaim);
             SegurancaAlimentos = await _context.Tbl_FornecedorSegurancaAlimentos.FirstOrDefaultAsync(sa => sa.CNPJ == cnpjClaim);
-
-            // Load uploaded files
-            UploadedFiles = await _context.Tbl_FornecedorDocumentos.Where(d => d.CNPJ == cnpjClaim).ToListAsync();
-
-
+           
             bool isNew = false;
 
             if (DadosBancarios == null)
@@ -115,14 +101,7 @@ namespace PortalArcomix.Pages
 
             if (!ModelState.IsValid)
             {
-                // Remove the validation errors related to TIPODOCUMENTO and UploadedFile
-                ModelState.Remove("TIPODOCUMENTO");
-                ModelState.Remove("UploadedFile");
-
-                if (!ModelState.IsValid)
-                {
-                    return Page();
-                }
+                return Page();
             }
 
             var fornecedorToUpdate = await _context.Tbl_Fornecedor.FirstOrDefaultAsync(f => f.CNPJ == cnpjClaim);

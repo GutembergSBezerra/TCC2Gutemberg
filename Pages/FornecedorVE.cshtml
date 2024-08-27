@@ -36,7 +36,7 @@
 
             <!-- Main Content Column -->
             <div class="col-md-11">
-                <form method="post">
+                <form method="post" id="IdBotaoAvançar">
                     <br />
                     <!-- Dados Fornecedor Card -->
                     <div class="card" id="DadosFornecedorCadastro">
@@ -688,7 +688,7 @@
                     <!-- Submit Button Row -->
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary">Avançar</button>
+                            <button type="submit" class="btn btn-primary" onclick="return validateAndSubmit()">Avançar</button>
                         </div>
                     </div>
                     <!-- Add other sections similarly with proper IDs and structure -->
@@ -888,6 +888,33 @@
             }
         });
 
+        function triggerBlurOnAllFields(formId) {
+            var form = document.getElementById(formId);
+            var fields = form.querySelectorAll('input, select, textarea');
+
+            var allValid = true;
+            fields.forEach(function (field) {
+                if (typeof field.onblur === 'function') {
+                    field.onblur();
+                    if (field.nextElementSibling && field.nextElementSibling.classList.contains('text-danger') && field.nextElementSibling.innerText !== "") {
+                        allValid = false;
+                    }
+                }
+            });
+            return allValid;
+        }
+
+        function validateAndSubmit() {
+            // Trigger blur on all fields in the form with ID "IdBotaoAvançar"
+            var allFieldsValid = triggerBlurOnAllFields('IdBotaoAvançar');
+
+            // If all fields are valid, allow form submission
+            if (allFieldsValid) {
+                return true; // Proceed with form submission
+            } else {
+                return false; // Prevent form submission
+            }
+        }
 
     </script>
 }
