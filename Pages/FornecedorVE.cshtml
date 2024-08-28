@@ -551,7 +551,7 @@
                                 <div class="col-md-3">
                                     <label for="idRegRespTecnico">Registro Resp.Técnico</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.REGRESPTECNICO" class="form-control" id="RegRespTecnico"/>
+                                        <input asp-for="SegurancaAlimentos.REGRESPTECNICO" class="form-control" id="RegRespTecnico" onblur="validateField('RegRespTecnico')" />
                                         <span asp-validation-for="SegurancaAlimentos.REGRESPTECNICO" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -559,17 +559,19 @@
                                 <div class="col-md-1">
                                     <label for="idTecnicoForn">DDD</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.DDDTECNICO" class="form-control" id="DDDTECNICO" maxlength="2" />
+                                        <input asp-for="SegurancaAlimentos.DDDTECNICO" class="form-control" id="DDDTECNICO" maxlength="2" onblur="validateField('DDDTECNICO', '2digits')" />
                                         <span asp-validation-for="SegurancaAlimentos.DDDTECNICO" class="text-danger"></span>
                                     </div>
                                 </div>
+
                                 <div class="col-md-3">
                                     <label for="idTelefoneTecnicoForn">Telefone</label>
                                     <div class="form-group mb-3">
-                                        <input asp-for="SegurancaAlimentos.TELEFONETECNICO" class="form-control" id="TELEFONETECNICO" maxlength="9"/>
+                                        <input asp-for="SegurancaAlimentos.TELEFONETECNICO" class="form-control" id="TELEFONETECNICO" maxlength="9" onblur="validateField('TELEFONETECNICO', 'digits8or9')" />
                                         <span asp-validation-for="SegurancaAlimentos.TELEFONETECNICO" class="text-danger"></span>
                                     </div>
                                 </div>
+
                                 <div class="col-md-5">
                                     <label for="idEmailTecnicoForn">Email</label>
                                     <div class="form-group mb-3">
@@ -802,6 +804,25 @@
         //function validateTELEFONETECNICO() { return validateField("TELEFONETECNICO", 'digits8or9'); }
         //function validateEMAILTECNICO() { return validateField("EMAILTECNICO", 'email'); }
 
+        function validateSegurancaAlimentosFields() {
+            var fornecedorAlimentos = document.getElementById("Fornecedor_FORNECEDORALIMENTOS").value;
+
+            if (fornecedorAlimentos === "Alimentos Não Industrializados") { var allValid = true;
+
+                // Validate Registro Resp.Técnico
+                if (!validateField("RegRespTecnico")) { allValid = false; }
+
+                // Validate DDD Técnico
+                if (!validateField("DDDTECNICO", '2digits')) { allValid = false; }
+
+                // Validate Telefone Técnico
+                if (!validateField("TELEFONETECNICO", 'digits8or9')) { allValid = false; }
+
+                return allValid;
+            }
+
+            return true; // If condition is not met, consider it valid
+        }
 
 
         function validateSelect(selectId) {
@@ -894,6 +915,20 @@
 
             var allValid = true;
             fields.forEach(function (field) {
+                // Skip validation for numRegistroForn if not needed
+                if (field.id === "NumRegistroForn") {
+                    var orgaoFiscalizacao = document.getElementById("OrgaoFiscalizacaoForn").value;
+                    if (orgaoFiscalizacao === "" || orgaoFiscalizacao === "VISA Licença") {
+                        return; // Skip validation
+                    }
+                }
+
+                // Skip specific SegurancaAlimentos fields as they will be validated separately
+                if (["RegRespTecnico", "DDDTECNICO", "TELEFONETECNICO"].includes(field.id)) {
+                    return; // Skip these fields in the general validation loop
+                }
+
+                // Trigger onblur if it exists and validate the field
                 if (typeof field.onblur === 'function') {
                     field.onblur();
                     if (field.nextElementSibling && field.nextElementSibling.classList.contains('text-danger') && field.nextElementSibling.innerText !== "") {
@@ -901,6 +936,12 @@
                     }
                 }
             });
+
+            // Validate SegurancaAlimentos specific fields if needed
+            if (!validateSegurancaAlimentosFields()) {
+                allValid = false;
+            }
+
             return allValid;
         }
 
@@ -915,6 +956,7 @@
                 return false; // Prevent form submission
             }
         }
+
 
     </script>
 }
