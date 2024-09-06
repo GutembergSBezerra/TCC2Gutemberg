@@ -1,0 +1,1222 @@
+﻿@page
+@model PortalArcomix.Pages.TempModel
+@{
+    ViewData["Title"] = "Upload Documents";
+    Layout = "_Layout";
+}
+
+@* <div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-md-1 sidebar">
+            <!-- Sidebar navigation items -->
+            <div class="sidebar-item">
+                <a href="#idDadosdoProduto" class="sidebar-link">
+                    <i class="sidebar-icon fa-solid fa-table"></i>
+                    <span class="sidebar-text">Dados do Produto</span>
+                </a>
+            </div>
+            <div class="sidebar-item">
+                <a href="#idGC" class="sidebar-link">
+                    <i class="sidebar-icon fa-solid fa-list"></i>
+                    <span class="sidebar-text">Gerenciamento de Categoria</span>
+                </a>
+            </div>
+            <div class="sidebar-item">
+                <a href="#idDadosTributarios" class="sidebar-link">
+                    <i class="sidebar-icon fa-solid fa-square-root-variable"></i>
+                    <span class="sidebar-text">Dados Tributários</span>
+                </a>
+            </div>
+            <div class="sidebar-item">
+                <a href="#idDadosLogísticos" class="sidebar-link">
+                    <i class="sidebar-icon fa-solid fa-truck"></i>
+                    <span class="sidebar-text">Dados Logísticos</span>
+                </a>
+            </div>
+            <div class="sidebar-item">
+                <a href="#idCadastro" class="sidebar-link">
+                    <i class="sidebar-icon fa-solid fa-address-card"></i>
+                    <span class="sidebar-text">Cadastro</span>
+                </a>
+            </div>
+
+            <div class="sidebar-item">
+                <a href="#idComentarios" class="sidebar-link">
+                    <i class="sidebar-icon fa-solid fa-comments"></i>
+                    <span class="sidebar-text">Comentários</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-11">
+
+            <p style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; font-weight: bold;">Solicitação de Produto: xxx</p>
+            <hr />
+
+            <%--Fluxo de Trabalho--%>
+            <div class="row text-center">
+
+                <div class="gap-2">
+                    <a class="btn btn-success" href="GestaoProdutos.aspx" role="button">Gerenciamento de Categoria</a>
+                    <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
+                    <a class="btn btn-warning" href="#" role="button">Comercial</a>
+                    <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
+                    <a class="btn btn-primary" href="#" role="button">Compras</a>
+                    <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
+                    <a class="btn btn-primary" href="#" role="button">Contabilidade</a>
+                    <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
+                    <a class="btn btn-primary" href="#" role="button">Cadastro</a>
+                </div>
+            </div>
+            <br />
+
+            <%-- <%--Card Dados do Produto--%>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" id="idDadosdoProduto">
+                        <div class="col">
+                            <h4 style="color: #1878BB;">Dados do Produto</h4>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Descrição (Completa)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="idDescricaoProduto" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Descrição (Reduzida)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox32" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Fornecedor</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox33" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="idFornTipo">Tipo</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList5" runat="server">
+                                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Distribuidor" Value="Distribuidor"></asp:ListItem>
+                                    <asp:ListItem Text="Industria" Value="Industria"></asp:ListItem>
+                                    <asp:ListItem Text="Transportadora" Value="Transportadora"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-2">
+                            <label for="idGestorCompras">Gestor de Compras</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList1" runat="server">
+                                    <asp:ListItem Text="Escolher" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Ana Sales" Value="Ana Sales"></asp:ListItem>
+                                    <asp:ListItem Text="Bruno Santos" Value="Bruno Santos"></asp:ListItem>
+                                    <asp:ListItem Text="Carlos Costa" Value="Carlos Costa"></asp:ListItem>
+                                    <asp:ListItem Text="DoCarmo" Value="DoCarmo"></asp:ListItem>
+                                    <asp:ListItem Text="Hugo Souza" Value="Hugo Souza"></asp:ListItem>
+                                    <asp:ListItem Text="João Vieira" Value="João Vieira"></asp:ListItem>
+                                    <asp:ListItem Text="Juliana Maria" Value="Juliana Maria"></asp:ListItem>
+                                    <asp:ListItem Text="Juliana Medeiros" Value="Juliana Medeiros"></asp:ListItem>
+                                    <asp:ListItem Text="Melque" Value="Melque"></asp:ListItem>
+                                    <asp:ListItem Text="Raphael Mendes" Value="Raphael Mendes"></asp:ListItem>
+                                    <asp:ListItem Text="Gilberto" Value="Gilberto"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-1">
+                            <label for="idImportado">Importado</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="idImportado" runat="server">
+                                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="SIM" Value="true"></asp:ListItem>
+                                    <asp:ListItem Text="NÃO" Value="false"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Negócio</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList6" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Varejo" Value="Varejo"></asp:ListItem>
+                                        <asp:ListItem Text="Atacado" Value="Atacado"></asp:ListItem>
+                                        <asp:ListItem Text="Varejo e Atacado" Value="Varejo e Atacado"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Fracionamento</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList7" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="SIM" Value="SIM"></asp:ListItem>
+                                        <asp:ListItem Text="SIM, Apenas Atacado" Value="SIM, Apenas Atacado"></asp:ListItem>
+                                        <asp:ListItem Text="SIM, Apenas Varejo" Value="SIM, Apenas Varejo"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Posicionamento</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList8" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Low Price" Value="Low Price"></asp:ListItem>
+                                        <asp:ListItem Text="Intermediário" Value="Intermediário"></asp:ListItem>
+                                        <asp:ListItem Text="Premium" Value="Premium"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <label>Forma de Abastecimento</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList9" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Compra Central Entrega Central" Value="Compra Central Entrega Central"></asp:ListItem>
+                                        <asp:ListItem Text="Compra Central / Entrega de Loja (Diretíssimo)" Value="Compra Central / Entrega de Loja (Diretíssimo)"></asp:ListItem>
+                                        <asp:ListItem Text="Negociação Central Compra Empresa" Value="Negociação Central Compra Empresa"></asp:ListItem>
+                                        <asp:ListItem Text="Direto Loja" Value="Direto Loja"></asp:ListItem>
+                                        <asp:ListItem Text="Negociação e Compra Empresa" Value="Negociação e Compra Empresa"></asp:ListItem>
+                                        <asp:ListItem Text="Seleção Inversa" Value="Seleção Inversa"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Emb.Compra</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList10" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Caixa" Value="Caixa"></asp:ListItem>
+                                        <asp:ListItem Text="Fardo" Value="Fardo"></asp:ListItem>
+                                        <asp:ListItem Text="Display" Value="Display"></asp:ListItem>
+                                        <asp:ListItem Text="Unidade" Value="Unidade"></asp:ListItem>
+                                        <asp:ListItem Text="Kilo" Value="Kilo"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Emb.Transf</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList11" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Caixa" Value="Caixa"></asp:ListItem>
+                                        <asp:ListItem Text="Fardo" Value="Fardo"></asp:ListItem>
+                                        <asp:ListItem Text="Display" Value="Display"></asp:ListItem>
+                                        <asp:ListItem Text="Unidade" Value="Unidade"></asp:ListItem>
+                                        <asp:ListItem Text="Kilo" Value="Kilo"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Cód XML</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox2" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Embalagem (XML)</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList12" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="DUN 14" Value="DUN 14"></asp:ListItem>
+                                        <asp:ListItem Text="EAN 13" Value="EAN 13"></asp:ListItem>
+                                        <asp:ListItem Text="Display " Value="Display "></asp:ListItem>
+                                        <asp:ListItem Text="KG" Value="KG"></asp:ListItem>
+                                        <asp:ListItem Text="Fardo" Value="Fardo"></asp:ListItem>
+                                        <asp:ListItem Text="Cód Inter Forn (Ref DUN 14)" Value="Cód Inter Forn (Ref DUN 14)"></asp:ListItem>
+                                        <asp:ListItem Text="Cód Inter Forn (Ref EAN 13)" Value="Cód Inter Forn (Ref EAN 13)"></asp:ListItem>
+                                        <asp:ListItem Text="Cód Inter Forn (Ref Display)" Value="Cód Inter Forn (Ref Display)"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Custo Un(R$)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox7" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Custo Cx(R$)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox8" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>NºContrato</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox27" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Verba de Cadastro(R$)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox28" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Motivo da Verba Zerada</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList13" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Isento" Value="Isento"></asp:ListItem>
+                                        <asp:ListItem Text="Contrato" Value="Contrato"></asp:ListItem>
+                                        <asp:ListItem Text="Sem Contrato" Value="Sem Contrato"></asp:ListItem>
+                                        <asp:ListItem Text="Não Houve Compra" Value="Não Houve Compra"></asp:ListItem>
+                                        <asp:ListItem Text="Não Paga Verba" Value="Não Paga Verba"></asp:ListItem>
+                                        <asp:ListItem Text="Pack / Promocional" Value="Pack / Promocional"></asp:ListItem>
+                                        <asp:ListItem Text="Produto Arco-Vita" Value="Produto Arco-Vita"></asp:ListItem>
+                                        <asp:ListItem Text="Produto de Substituição" Value="Produto de Substituição"></asp:ListItem>
+                                        <asp:ListItem Text="Produto Filho / Pai" Value="Produto Filho / Pai"></asp:ListItem>
+                                        <asp:ListItem Text="Verba apuração ou Desconto" Value="Verba apuração ou Desconto"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Tipo de Solicitação</label>
+                                <div class="form-group mb-3">
+                                    <asp:DropDownList CssClass="form-control" ID="DropDownList14" runat="server">
+                                        <asp:ListItem Text="" Value=""></asp:ListItem>
+                                        <asp:ListItem Text="Novo Produto" Value="Novo Produto"></asp:ListItem>
+                                        <asp:ListItem Text="Substituição" Value="Substituição"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Marca:</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList3" runat="server">
+                                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Nova Marca" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Kicaldo" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Masterboi" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Embaré" Value=""></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Nova Marca:</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="idNovaMarca" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <label>Familia</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox1" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Marca (Produto Substituido)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox3" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <label>Produto (Substituido)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox6" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+
+            <%-- <%--Card Gerenciamento de Categoria--%>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row" id="idGC">
+                                <div class="col">
+                                    <h4 style="color: #1878BB;">Gerenciamento de Categoria</h4>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Master text box where the user will type -->
+                                <div class="col-md-2 text-center" style="margin-top: 25px; font-weight: bold;">
+                                    <p>Minimo:</p>
+                                    <p>Máximo:</p>
+                                </div>
+                                <div class="col-md-2 text-center form-group">
+                                    <span style="font-weight: bold;">Principal</span>
+                                    <input type="Number" id="masterInputMAX" class="form-control">
+                                    <input type="Number" id="masterInputMIN" class="form-control">
+                                </div>
+                                <!-- Example checkboxes and text boxes that will be filled -->
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store1Check" class="store-check" checked>
+                                    <label for="store1Input">Loja 1:</label>
+                                    <input type="Number" id="store1InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store1InputMIN" class="form-control store-input">
+                                </div>
+
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store2Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 2:</label>
+                                    <input type="Number" id="store2InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store2InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store3Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 3:</label>
+                                    <input type="Number" id="store3InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store3InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store4Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 4:</label>
+                                    <input type="Number" id="store4InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store4InputMIN" class="form-control store-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store5Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 5:</label>
+                                    <input type="Number" id="store5InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store5InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store6Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 6:</label>
+                                    <input type="Number" id="store6InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store6InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store7Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 7:</label>
+                                    <input type="Number" id="store7InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store7InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store8Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 8:</label>
+                                    <input type="Number" id="store8InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store8InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store9Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 9:</label>
+                                    <input type="Number" id="store9InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store9InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store10Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 10:</label>
+                                    <input type="Number" id="store10InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store10InputMIN" class="form-control store-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store11Check" class="store-check" checked>
+                                    <label for="store1Input">Loja 11:</label>
+                                    <input type="Number" id="store11InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store11InputMIN" class="form-control store-input">
+                                </div>
+
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store12Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 12:</label>
+                                    <input type="Number" id="store12InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store12InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store13Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 13:</label>
+                                    <input type="Number" id="store13InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store13InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store14Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 14:</label>
+                                    <input type="Number" id="store14InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store14InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store15Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 15:</label>
+                                    <input type="Number" id="store15InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store15InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store16Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 16:</label>
+                                    <input type="Number" id="store16InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store16InputMIN" class="form-control store-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store17Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 17:</label>
+                                    <input type="Number" id="store17InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store17InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store18Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 18:</label>
+                                    <input type="Number" id="store18InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store18InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store19Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 19:</label>
+                                    <input type="Number" id="store19InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store19InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store20Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 20:</label>
+                                    <input type="Number" id="store20InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store20InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store21Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 21:</label>
+                                    <input type="Number" id="store21InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store21InputMIN" class="form-control store-input">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <input type="checkbox" id="store22Check" class="store-check" checked>
+                                    <label for="store2Input">Loja 22:</label>
+                                    <input type="Number" id="store22InputMAX" class="form-control store-input">
+                                    <input type="Number" id="store22InputMIN" class="form-control store-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%--Card Imagem--%>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row" id="idImagem">
+                                <div class="col">
+                                    <h4 style="color: #1878BB;">Imagem do Produto</h4>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="row" style="height: 45vh;">
+                                <div class="col d-flex justify-content-center align-items-center" style="height: 100%;">
+                                    <img src="imgs/login_arcomix_alta.png" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br />
+
+            <%-- <%--Card Dados Tributários--%>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" id="idDadosTributarios">
+                        <div class="col">
+                            <h4 style="color: #1878BB;">Dados Tributários</h4>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>NCM/SH:</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox20" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>CEST</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox21" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>MVA</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox30" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="idFornTipo">Cesta Basica</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList15" runat="server">
+                                    <asp:ListItem Text="escolher" Value="escolher"></asp:ListItem>
+                                    <asp:ListItem Text="Sim" Value="Sim"></asp:ListItem>
+                                    <asp:ListItem Text="Não" Value="Não"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>ICMS%</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox31" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>ICMS-ST%</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox42" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>IPI%</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox43" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>PIS%</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox44" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>COFINS%</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox45" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Tributação</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox46" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="idFornTipo">CST PIS/COFINS Entrada</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList16" runat="server">
+                                    <asp:ListItem Text="escolher" Value="escolher"></asp:ListItem>
+                                    <asp:ListItem Text="Sim" Value="Sim"></asp:ListItem>
+                                    <asp:ListItem Text="Não" Value="Não"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="idFornTipo">CST PIS/COFINS Saída</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList17" runat="server">
+                                    <asp:ListItem Text="escolher" Value="escolher"></asp:ListItem>
+                                    <asp:ListItem Text="Sim" Value="Sim"></asp:ListItem>
+                                    <asp:ListItem Text="Não" Value="Não"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="idFornTipo">Natureza da Receita</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList18" runat="server">
+                                    <asp:ListItem Text="escolher" Value="escolher"></asp:ListItem>
+                                    <asp:ListItem Text="Sim" Value="Sim"></asp:ListItem>
+                                    <asp:ListItem Text="Não" Value="Não"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+
+            <%--Card Dados Logisticos--%>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" id="idDadosLogísticos">
+                        <div class="col">
+                            <h4 style="color: #1878BB;">Dados Logísticos</h4>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>EAN 13</label>
+                            <div class="form-group mb-2">
+                                <asp:TextBox CssClass="form-control" ID="TextBox22" runat="server" TextMode="Number"></asp:TextBox>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Referencia Venda</label>
+                            <div class="form-group mb-3">
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox23" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>P.Bruto(Kg)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox4" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>P.Liquido(Kg)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox24" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Altura (cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox10" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Largura(cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox25" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Profund(cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox26" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Mesa(Caixas)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox5" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Altura(Caixas)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox9" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>ShelfLife(Dias)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox29" runat="server" TextMode="Number"></asp:TextBox>
+                                    <span>
+                                        <asp:CheckBox ID="CheckBox02" runat="server" Text="Não Possui" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>DUN 14</label>
+                                <span style="margin-left: 15px;">
+                                    <asp:CheckBox ID="CheckBox05" runat="server" Text="Não Possui" />
+                                </span>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox11" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Referencia Compra</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox12" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>P.Bruto(Kg)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox13" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>P.Liquido(Kg)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox14" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Altura(cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox15" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Largura(cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox16" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Profund(cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox17" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Embalagem</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList2" runat="server">
+                                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Caixa" Value="Caixa"></asp:ListItem>
+                                    <asp:ListItem Text="Fardo" Value="Fardo"></asp:ListItem>
+                                    <asp:ListItem Text="Display" Value="Display"></asp:ListItem>
+                                    <asp:ListItem Text="Unidade" Value="Unidade"></asp:ListItem>
+                                    <asp:ListItem Text="Kilo" Value="Kilo"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Quantidade</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox19" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>EAN 13 SubEmbalagem</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox34" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group mb-3">
+                                <label>Referencia SubEmbalagem</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox35" runat="server"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>P.Bruto(Kg)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox36" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>P.Liquido(Kg)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox37" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Altura(Cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox38" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Largura(Cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox39" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Profund(Cm)</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox40" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>SubEmbalagem</label>
+                            <div class="form-group mb-3">
+                                <asp:DropDownList CssClass="form-control" ID="DropDownList4" runat="server">
+                                    <asp:ListItem Text="" Value=""></asp:ListItem>
+                                    <asp:ListItem Text="Caixeta" Value="Caixeta"></asp:ListItem>
+                                    <asp:ListItem Text="Pacote" Value="Pacote"></asp:ListItem>
+                                    <asp:ListItem Text="Display" Value="Display"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group mb-3">
+                                <label>Quantidade</label>
+                                <div class="form-group mb-3">
+                                    <asp:TextBox CssClass="form-control" ID="TextBox41" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="form-group" style="margin-top: 25px;">
+                                <a id="idValidar" style="margin-right: 5px;" class="btn btn-primary" href="#" role="button">Validar</a>
+                                <span><i class="fa-solid fa-right-long" style="color: #74C0FC;"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
+                            <div class="form-group">
+                                <label for="commentBox">Alertas</label>
+                                <asp:TextBox ID="TextBox18" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="1" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <br />
+
+            <%-- <%--Card Cadastro--%>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" id="idCadastro">
+                        <div class="col">
+                            <h4 style="color: #1878BB;">Cadastro</h4>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <%--Card Comentários--%>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" id="idComentarios">
+                        <div class="col">
+                            <h4 style="color: #1878BB;">Comentários</h4>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="commentBox">Para incluir um comentário, preencher o campo abaixo:</label>
+                                <asp:TextBox ID="commentBox" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <div class="gap-2">
+                <a id="idvoltar" class="btn btn-danger" href="GestaoProdutos.aspx" role="button">Voltar</a>
+                <a id="idAtivaçãoProduto" class="btn btn-primary" href="#" role="button">Ativação Produto</a>
+                <a id="idAtivaçãoECommerce" class="btn btn-primary" href="#" role="button">Ativação E-Commerce</a>
+                <a id="idAtivaçãoProduto/ECommerce" class="btn btn-primary" href="#" role="button">Ativação Produto/E-Commerce</a>
+            </div>
+            <br />
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to update all checked text boxes for max values
+    function updateCheckedBoxesMax(value) {
+        var checkboxes = document.querySelectorAll('.store-check');
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                var inputIdMax = checkbox.id.replace('Check', 'InputMAX');
+                var inputMax = document.getElementById(inputIdMax);
+                if (inputMax) inputMax.value = value;
+            }
+        });
+    }
+
+    // Function to update all checked text boxes for min values
+    function updateCheckedBoxesMin(value) {
+        var checkboxes = document.querySelectorAll('.store-check');
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                var inputIdMin = checkbox.id.replace('Check', 'InputMIN');
+                var inputMin = document.getElementById(inputIdMin);
+                if (inputMin) inputMin.value = value;
+            }
+        });
+    }
+
+    // Attach event listeners to the master inputs for 'input' event
+    document.getElementById('masterInputMAX').addEventListener('input', function () {
+        updateCheckedBoxesMax(this.value);
+    });
+
+    document.getElementById('masterInputMIN').addEventListener('input', function () {
+        updateCheckedBoxesMin(this.value);
+    });
+</script> *@
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-primary">Documentos</h4>
+                    <p class="card-text text-danger">Documentos Obrigatórios: <strong>SINTEGRA</strong></p>
+                    <form method="post" enctype="multipart/form-data" class="row align-items-center" onsubmit="return validateFile()">
+                        <div class="col-md-4 mb-2">
+                            <label class="control-label">Documento</label>
+                            <div class="form-group mb-3">
+                                <select asp-for="TIPODOCUMENTO" class="form-control" id="TIPODOCUMENTO">
+                                    <option value="">Escolher...</option>
+                                    <option value="SINTEGRA">SINTEGRA</option>
+                                    <option value="Documentação Sanitária">Documentação Sanitária</option>
+                                    <option value="Documentação Ambiental ou Operacional">Documentação Ambiental ou Operacional</option>
+                                    <option value="Documentação Controle de Pragas">Documentação Controle de Pragas</option>
+                                    <option value="Documentação Controle de Água">Documentação Controle de Água</option>
+                                    <option value="Documentação Manual Boas Práticas">Documentação Manual Boas Práticas</option>
+                                    <option value="Documentação Segurança de Alimentos">Documentação Segurança de Alimentos</option>
+                                    <option value="Documentação PAC">Documentação PAC</option>
+                                    <option value="Documentação APPCC">Documentação APPCC</option>
+                                </select>
+                                <span asp-validation-for="TIPODOCUMENTO" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="fileUpload" class="sr-only">Escolher</label>
+                            <input asp-for="UploadedFile" class="form-control" type="file" id="fileUpload" accept="application/pdf" placeholder="Escolher" />
+                            <span asp-validation-for="UploadedFile" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2 mb-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                        </div>
+                    </form>
+
+                    <hr />
+
+                    <div class="mt-4">
+                        <h5 class="text-primary">Documentos Enviados</h5>
+                        <div class="row">
+                            <div class="col-md-8">
+                                @if (Model.UploadedFiles.Any())
+                                {
+                                    @foreach (var file in Model.UploadedFiles)
+                                    {
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="col-5">
+                                                <span>@file.TIPODOCUMENTO</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <a asp-page-handler="Download" asp-route-filePath="@file.CAMINHOARQUIVO" class="text-primary">
+                                                    @file.NOMEARQUIVO
+                                                </a>
+                                            </div>
+                                            <div class="col-1">
+                                                <form method="post" asp-page-handler="Delete" asp-route-id="@file.ID" style="display:inline;">
+                                                    <button type="submit" class="btn btn-link p-0">
+                                                        <i class="fa-solid fa-delete-left" style="color: #d60505;"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="text-center text-danger">Nenhum Documento Enviado</div>
+                                }
+                            </div>
+                            <div class="col-md-4"></div> <!-- Empty column for spacing -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function validateFile() {
+            const fileInput = document.getElementById('fileUpload');
+            const file = fileInput.files[0];
+            const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    alert('O arquivo deve ser em .PDF');
+                    return false;
+                }
+                if (file.size > maxSizeInBytes) {
+                    alert('O Arquivo deve ser menor que 5MB.');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <text>
+                alert('@Html.Raw(Model.ErrorMessage)');
+            </text>
+        }
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <text>
+                alert('@Html.Raw(Model.SuccessMessage)');
+            </text>
+        }
+    </script>
+}
