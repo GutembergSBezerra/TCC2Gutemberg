@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore; // Ensure this is added
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
@@ -45,25 +45,17 @@ namespace PortalArcomix.Pages
 
             if (user != null)
             {
-                // Create claims including the role and ID_Usuario
+                // Create claims for the user
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, Email),
-            new Claim(ClaimTypes.Role, user.TipoUsuario),
-            new Claim("ID_Usuario", user.ID_Usuario.ToString())  // Corrected property name
-        };
-
-                // Add CNPJ claim if it exists
-                if (!string.IsNullOrEmpty(user.CNPJ))
                 {
-                    claims.Add(new Claim("CNPJ", user.CNPJ));
-                    HttpContext.Session.SetString("CNPJ", user.CNPJ);  // Store CNPJ in session
-                }
+                    new Claim(ClaimTypes.Name, Email),
+                    new Claim("ID_Usuario", user.ID_Usuario.ToString())  // Claim for user ID
+                };
 
                 // Create claims identity
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                // Sign in
+                // Sign in the user
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                 // Redirect to the Index page
@@ -75,13 +67,10 @@ namespace PortalArcomix.Pages
             return Page();
         }
 
-
-
         private async Task<Tbl_Usuario?> AuthenticateUserAsync(string email, string password)
         {
-            var user = await _context.Tbl_Usuario
-                                     .FirstOrDefaultAsync(u => u.Email == email && u.Senha == password);
-            return user;
+            return await _context.Tbl_Usuario
+                                 .FirstOrDefaultAsync(u => u.Email == email && u.Senha == password);
         }
     }
 }

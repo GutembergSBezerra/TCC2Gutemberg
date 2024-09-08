@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PortalArcomix.Data;
 using PortalArcomix.Data.Entities;
 using System;
@@ -33,38 +32,11 @@ namespace PortalArcomix.Pages
         [Required(ErrorMessage = "O campo Usuário é obrigatório.")]
         public string Usuario { get; set; } = string.Empty;
 
-        [BindProperty]
-        [Required(ErrorMessage = "O campo Tipo Usuario é obrigatório.")]
-        public string TipoUsuario { get; set; } = string.Empty;
-
-        [BindProperty]
-        public string? CNPJ { get; set; } = string.Empty;
-
         public string ErrorMessage { get; set; } = string.Empty;
         public string SuccessMessage { get; set; } = string.Empty;
 
-        public SelectList TipoUsuarioOptions { get; } = new SelectList(new[]
-        {
-            new { Value = "", Text = "" },
-            new { Value = "Fornecedor", Text = "Fornecedor" },
-            new { Value = "Comprador", Text = "Comprador" },
-            new { Value = "Gerência", Text = "Gerência" },
-            new { Value = "GC", Text = "GC" },
-            new { Value = "Cadastro", Text = "Cadastro" },
-            new { Value = "Controladoria", Text = "Controladoria" },
-            new { Value = "Logistica", Text = "Logistica" }
-        }, "Value", "Text");
-
         public IActionResult OnGet()
         {
-            // Check if the user is authenticated
-            if (User?.Identity?.IsAuthenticated != true)
-            {
-                // Redirect to the Login page if the user is not authenticated
-                return RedirectToPage("/Login");
-            }
-
-            // If authenticated, continue with the normal page processing
             return Page();
         }
 
@@ -81,12 +53,6 @@ namespace PortalArcomix.Pages
                 return Page();
             }
 
-            if (TipoUsuario == "Fornecedor" && (CNPJ == null || CNPJ.Length != 14))
-            {
-                ErrorMessage = "O CNPJ deve conter exatamente 14 dígitos.";
-                return Page();
-            }
-
             try
             {
                 string senha = GenerateValidPassword();
@@ -95,9 +61,7 @@ namespace PortalArcomix.Pages
                 {
                     Email = Email,
                     Senha = senha,
-                    TipoUsuario = TipoUsuario,
-                    Usuario = Usuario,
-                    CNPJ = TipoUsuario == "Fornecedor" ? CNPJ : null
+                    Usuario = Usuario
                 };
 
                 _context.Tbl_Usuario.Add(novoUsuario);
@@ -163,8 +127,8 @@ namespace PortalArcomix.Pages
                 MailMessage mail = new MailMessage
                 {
                     From = new MailAddress("gutemberg@hgstech.com.br"),
-                    Subject = "Bem-vindo ao Portal Arco-mix! Sua senha de acesso temporária",
-                    Body = $"Olá {usuario},\n\nÉ com prazer que damos as boas-vindas ao Portal do Arco-mix! Como parte do processo de configuração inicial, estamos enviando sua senha temporária para garantir seu acesso ao sistema.\n\nAqui está sua senha temporária: {password}\n\nPor favor, siga estas etapas para acessar o sistema pela primeira vez:\n\nAcesse [link do site].\nInsira seu endereço de e-mail e a senha temporária fornecida acima.\nVocê será solicitado a alterar sua senha na primeira vez que fizer login. Escolha uma senha forte e segura que você possa lembrar facilmente.\n\nSe você encontrar alguma dificuldade ou tiver dúvidas, sinta-se à vontade para entrar em contato com nossa equipe de suporte através do e-mail [email de suporte] ou do telefone [número de suporte]. Estamos aqui para ajudar!\n\nObrigado por fazer parte da nossa comunidade. Esperamos que você aproveite ao máximo todos os recursos e benefícios que o Portal do Arco-mix tem a oferecer.\n\nAtenciosamente,\nEquipe Arco-mix",
+                    Subject = "Bem-vindo ao Sistema de Fatos Relevantes Simplificados!",
+                    Body = $"Olá {usuario},\n\nÉ com grande satisfação que damos as boas-vindas ao Sistema de Fatos Relevantes Simplificados! Nosso objetivo é facilitar o acesso e a compreensão dos fatos relevantes do mercado de ações, tornando as informações financeiras mais acessíveis para novos investidores.\n\nPara começar, aqui está sua senha temporária: {password}\n\nSiga estas etapas para acessar o sistema pela primeira vez:\n\n1. Acesse [link do site].\n2. Insira seu e-mail e a senha temporária fornecida acima.\n3. Você será solicitado a alterar sua senha no primeiro acesso. Recomendamos que escolha uma senha forte e segura.\n\nCaso tenha dúvidas ou enfrente dificuldades, entre em contato com nossa equipe de suporte através do e-mail [email de suporte] ou pelo telefone [número de suporte]. Estamos aqui para ajudar você a explorar todas as funcionalidades do sistema e a tomar decisões de investimento mais informadas.\n\nObrigado por fazer parte da nossa plataforma! Esperamos que você aproveite todos os recursos que oferecemos para melhorar sua jornada como investidor.\n\nAtenciosamente,\nEquipe do Sistema de Fatos Relevantes Simplificados",
                     IsBodyHtml = false
                 };
                 mail.To.Add(toEmail);
@@ -184,5 +148,3 @@ namespace PortalArcomix.Pages
         }
     }
 }
-
-

@@ -1,7 +1,7 @@
 ﻿@page
 @model PortalArcomix.Pages.NovoUsuarioModel
 @{
-    ViewData["Title"] = "Cadastro Novo Usuario";
+    ViewData["Title"] = "Cadastro Novo Usuário";
     Layout = "_Layout";
 }
 
@@ -12,7 +12,7 @@
                 <div class="card-body framelogin">
                     <div class="row">
                         <div class="col text-center">
-                            <h5 style="color: #1878BB;">Cadastro Novo Usuario</h5>
+                            <h5 style="color: #1878BB;">Cadastro Novo Usuário</h5>
                         </div>
                     </div>
                     <div class="row">
@@ -29,25 +29,11 @@
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group mb-3">
-                                    <label>Usuário</label>
+                                    <label>Nome Usuário</label>
                                     <input asp-for="Usuario" class="form-control" />
                                     <span asp-validation-for="Usuario" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group mb-3">
-                                    <label for="TipoUsuario">Tipo Usuario</label>
-                                    <select asp-for="TipoUsuario" class="form-control" asp-items="Model.TipoUsuarioOptions" onchange="handleUserTypeChange()"></select>
-                                    <span asp-validation-for="TipoUsuario" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-3" id="idCNPJFornecedor" style="display: none;">
-                                <div class="form-group mb-3">
-                                    <label for="CNPJ">CNPJ</label>
-                                    <input asp-for="CNPJ" class="form-control" type="text" id="CNPJ" onblur="validateCNPJ()" />
-                                    <span asp-validation-for="CNPJ" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -60,45 +46,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        function handleUserTypeChange() {
-            var userTypeSelect = document.getElementById("TipoUsuario");
-            var cnpjFornecedorDiv = document.getElementById("idCNPJFornecedor");
-
-            if (userTypeSelect.value === "Fornecedor") {
-                cnpjFornecedorDiv.style.display = "block";
-            } else {
-                cnpjFornecedorDiv.style.display = "none";
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            handleUserTypeChange();
-        });
-
-        function validateCNPJ() {
-            var cnpjField = document.getElementById("CNPJ");
-            var cnpjValue = cnpjField.value.trim();
-
-            if (cnpjValue.length !== 14) {
-                alert("O CNPJ deve conter exatamente 14 dígitos.");
-                setTimeout(function () { cnpjField.focus(); }, 10);
-            }
-        }
-    </script>
-
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <script>
-            alert('@Html.Raw(Model.ErrorMessage)');
-        </script>
-    }
-    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
-    {
-        <script>
-            alert('@Html.Raw(Model.SuccessMessage)');
-        </script>
-    }
-}

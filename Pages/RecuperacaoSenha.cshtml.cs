@@ -144,8 +144,8 @@ namespace PortalArcomix.Pages
                 MailMessage mail = new MailMessage
                 {
                     From = new MailAddress("gutemberg@hgstech.com.br"),
-                    Subject = "Sua senha temporária de acesso ao Portal Arco-mix",
-                    Body = $"Olá {username}, \n\nConforme solicitado, estamos enviando uma senha temporária de acesso ao sistema. Aqui está sua senha temporária: {tempPassword}\n\nPor motivos de segurança, recomendamos que você altere sua senha imediatamente após o acesso. \n\nSe você não solicitou uma senha temporária, por favor, ignore este e-mail ou notifique-nos imediatamente.\n\nAtenciosamente,\nEquipe de Suporte do Portal Arco-mix",
+                    Subject = "Sua senha temporária de acesso ao Sistema de Fatos Relevantes Simplificados",
+                    Body = $"Olá {username}, \n\nConforme solicitado, estamos enviando uma senha temporária de acesso ao Sistema de Fatos Relevantes Simplificados. Aqui está sua senha temporária: {tempPassword}\n\nPor motivos de segurança, recomendamos que você altere sua senha imediatamente após o acesso.\n\nSe você não solicitou uma senha temporária, por favor, ignore este e-mail ou nos avise imediatamente.\n\nAtenciosamente,\nEquipe de Suporte do Sistema de Fatos Relevantes Simplificados",
                     IsBodyHtml = false
                 };
 
@@ -161,8 +161,9 @@ namespace PortalArcomix.Pages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error sending email: {ex.Message}");
+                Console.WriteLine($"Erro ao enviar e-mail: {ex.Message}");
             }
         }
+
     }
 }

@@ -27,27 +27,6 @@ namespace PortalArcomix.Pages
                 return RedirectToPage("/Login");
             }
 
-            // Retrieve the CNPJ claim from the authenticated user
-            var cnpjClaim = User.Claims.FirstOrDefault(c => c.Type == "CNPJ")?.Value;
-
-            if (cnpjClaim != null)
-            {
-                // Check if the CNPJ exists in the Tbl_Fornecedor table
-                var fornecedorExists = await _context.Tbl_Fornecedor.AnyAsync(f => f.CNPJ == cnpjClaim);
-
-                if (!fornecedorExists)
-                {
-                    // Insert a new entry with the CNPJ
-                    var newFornecedor = new Tbl_Fornecedor
-                    {
-                        CNPJ = cnpjClaim
-                        // Set other properties as needed
-                    };
-
-                    _context.Tbl_Fornecedor.Add(newFornecedor);
-                    await _context.SaveChangesAsync();
-                }
-            }
 
             // If authenticated, continue with the normal page processing
             return Page();

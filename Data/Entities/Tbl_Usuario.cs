@@ -21,20 +21,6 @@ namespace PortalArcomix.Data.Entities
         [Column("SENHA", TypeName = "NVARCHAR2(20 CHAR)")]
         public string Senha { get; set; } = string.Empty;
 
-        [Required]
-        [MaxLength(20)]
-        [Column("TIPOUSUARIO", TypeName = "NVARCHAR2(20 CHAR)")]
-        public string TipoUsuario { get; set; } = string.Empty;
-
-        [StringLength(14, MinimumLength = 14)]
-        [RegularExpression(@"^\d{14}$", ErrorMessage = "CNPJ inválido")]
-        [Column("CNPJ", TypeName = "CHAR(14 BYTE)")]
-        public string? CNPJ { get; set; }
-
-        [MaxLength(20)]
-        [Column("ACCOUNTSTATUS", TypeName = "NVARCHAR2(20 CHAR)")]
-        public string? AccountStatus { get; set; }
-
         [MaxLength(30)]
         [Column("USUARIO", TypeName = "NVARCHAR2(30 CHAR)")]
         public string? Usuario { get; set; }

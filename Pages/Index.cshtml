@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Sistema de Fatos Relevantes Simplificados";
     Layout = "_Layout";
 }
 
@@ -9,86 +9,77 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
-                <h1 style="color: #1878BB; margin-top: 20px; margin-bottom: 60px;">Bem Vindo ao Portal do Arco-mix!</h1>
+                <h1 style="color: #1878BB; margin-top: 20px; margin-bottom: 60px;">Bem-vindo ao Sistema de Fatos Relevantes Simplificados!</h1>
             </div>
 
             <!-- First line of Buttons Homepage -->
             <div class="row">
-
-                @if (User.IsInRole("Fornecedor"))
-                {
-                    <div class="col-md-4 text-center">
-                        <a asp-page="/FornecedorVE" class="text-center" style="text-decoration: none; color: inherit; display: block;">
-                            <div class="frame">
-                                <img width="80px" src="~/imgs/ic_Cadastro_de_fornecedores.png" alt="Cadastro de Fornecedores" />
-                                <h5>DADOS FORNECEDOR</h5>
-                                <p class="text-justify">Cadastrar, Editar, Consultar</p>
-                            </div>
-                        </a>
-                    </div>
-                }
-
-                 @if (User.IsInRole("Fornecedor"))
-                {
-                    <div class="col-md-4 text-center">
-                        <div class="frame" onclick="window.location.href = '@Url.Page("GestaoProdutoVE")'">
-                            <img width="80px" src="~/imgs/ic_cadastro_de_produtos.png" alt="Gestão de Produtos" />
-                            <h5>GESTÃO DE PRODUTOS</h5>
-                            <p class="text-justify">Cadastrar, Editar, Substituir</p>
+                <div class="col-md-4 text-center">
+                    <a asp-page="/HistoricoFatosRelevantes" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_alteracoes_de_xml.png" />
+                            <h5>HISTÓRICO DE FATOS RELEVANTES</h5>
+                            <p class="text-justify">Consulte o histórico de fatos relevantes das empresas que você acompanha.</p>
                         </div>
-                    </div>
-                }
 
-                @if (!User.IsInRole("Fornecedor"))
-                {
-                    <div class="col-md-4 text-center">
-                        <div class="frame" onclick="window.location.href = '@Url.Page("GestaoProdutoVI")'">
-                            <img width="80px" src="~/imgs/ic_cadastro_de_produtos.png" alt="Gestão de Produtos" />
-                            <h5>GESTÃO DE PRODUTOS</h5>
-                            <p class="text-justify">Cadastrar, Editar, Substituir</p>
-                        </div>
-                    </div>
-                }
-
-                @if (!User.IsInRole("Fornecedor"))
-                {
-                    <div class="col-md-4 text-center">
-                        <a asp-page="/GestaoFornecedor" class="text-center" style="text-decoration: none; color: inherit; display: block;">
-                            <div class="frame">
-                                <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
-                                <h5>GESTÃO DE FORNECEDORES</h5>
-                                <p class="text-justify">Cadastrar, Editar, Consultar</p>
-                            </div>
-                        </a>
-                    </div>
-                }
-
-                @if (User.IsInRole("Gerência"))
-                {
-                    <div class="col-md-4 text-center">
-                        <a asp-page="/NovoUsuario" class="text-center" style="text-decoration: none; color: inherit; display: block;">
-                            <div class="frame">
-                                <img width="80px" src="~/imgs/ic_NovoCadastro.png" />
-                                <h5>NOVO CADASTRO</h5>
-                                <p class="text-justify">Cadastrar, Editar, Consultar</p>
-                            </div>
-                        </a>
-                    </div>
-                }
-
+                    </a>
+                </div>
 
                 <div class="col-md-4 text-center">
-                    <a asp-page="/MeusDados" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                    <a asp-page="/EmpresasSelecionadas" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_ativacao_inativacao_de_produtos.png" />
+                            <h5>EMPRESAS SELECIONADAS</h5>
+                            <p class="text-justify">Acompanhe as empresas de seu interesse e receba notificações.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <a asp-page="/FatosRelevantes" class="text-center" style="text-decoration: none; color: inherit; display: block;">
                         <div class="frame">
                             <img width="80px" src="~/imgs/ic_MeusDados.png" />
+                            <h5>FATOS RELEVANTES SIMPLIFICADOS</h5>
+                            <p class="text-justify">Visualize fatos relevantes em versões simplificadas para fácil compreensão.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Second line of Buttons Homepage -->
+            <div class="row mt-4">
+                <div class="col-md-4 text-center">
+                    <a asp-page="/ResumosPeriodicos" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_Cadastro_de_fornecedores.png" />
+                            <h5>RESUMOS PERIÓDICOS</h5>
+                            <p class="text-justify">Receba resumos semanais ou mensais com as principais informações do mercado.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <a asp-page="/EducacaoInvestidor" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_tabela_de_custos_de_fornecedor.png" />
+                            <h5>EDUCAÇÃO PARA INVESTIDORES</h5>
+                            <p class="text-justify">Aprenda conceitos básicos e avançados sobre o mercado de ações.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    
+                    <a asp-page="/MeusDados" class="text-center" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="frame">
+                            <img width="80px" src="~/imgs/ic_NovoCadastro.png" />
                             <h5>MEUS DADOS</h5>
-                            <p class="text-justify">Cadastrar, Editar, Consultar</p>
+                            <p class="text-justify">Atualize suas informações de segurança. </p>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    <br />
     <br />
 </section>
