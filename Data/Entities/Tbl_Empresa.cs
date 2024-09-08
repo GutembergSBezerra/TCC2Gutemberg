@@ -16,11 +16,18 @@ namespace PortalArcomix.Data.Entities
         [Column("NOME", TypeName = "NVARCHAR2(100 CHAR)")]
         public string Nome { get; set; } = string.Empty;
 
+        [Required]
+        [MaxLength(20)]
+        [Column("TICKER", TypeName = "NVARCHAR2(20 CHAR)")]
+        public string Ticker { get; set; } = string.Empty;
+
         [MaxLength(20)]
         [Column("CNPJ", TypeName = "NVARCHAR2(20 CHAR)")]
         public string? CNPJ { get; set; }
 
         // Relacionamento com usuários - Cada usuário pode acompanhar várias empresas
-        public ICollection<Tbl_Usuario>? Usuarios { get; set; }
+        public ICollection<Tbl_Usuario> Usuarios { get; set; } = new List<Tbl_Usuario>();
+        public ICollection<Tbl_Usuario_Empresa> EmpresaUsuarios { get; set; } = new List<Tbl_Usuario_Empresa>();
+
     }
 }

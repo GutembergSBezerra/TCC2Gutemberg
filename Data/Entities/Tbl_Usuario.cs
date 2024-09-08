@@ -24,6 +24,9 @@ namespace PortalArcomix.Data.Entities
         [MaxLength(30)]
         [Column("USUARIO", TypeName = "NVARCHAR2(30 CHAR)")]
         public string? Usuario { get; set; }
+        public ICollection<Tbl_Empresa> Empresas { get; set; } = new List<Tbl_Empresa>();
+        public ICollection<Tbl_Usuario_Empresa> UsuarioEmpresas { get; set; } = new List<Tbl_Usuario_Empresa>();
+
 
     }
 }
