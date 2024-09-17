@@ -28,6 +28,8 @@ namespace PortalArcomix.Data.Entities
         // Relacionamento com usuários - Cada usuário pode acompanhar várias empresas
         public ICollection<Tbl_Usuario> Usuarios { get; set; } = new List<Tbl_Usuario>();
         public ICollection<Tbl_Usuario_Empresa> EmpresaUsuarios { get; set; } = new List<Tbl_Usuario_Empresa>();
+        public ICollection<Tbl_FatoRelevante> FatosRelevantes { get; set; } = new List<Tbl_FatoRelevante>();
+
 
     }
 }
